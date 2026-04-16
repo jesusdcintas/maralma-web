@@ -138,20 +138,23 @@ const cms = await loadCms();
   .event-card:hover .event-card-cover img { transform: scale(1.06); }
   .event-card-body { padding: 22px 20px; }
   .event-card-tipo {
-    font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
-    color: var(--color-azul-claro); margin-bottom: 8px; display: block;
+    font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: rgba(255,255,255,0.45); margin-bottom: 8px; display: block;
   }
   .event-card-title {
-    font-family: var(--font-serif); font-size: 22px; font-weight: 300;
-    color: var(--color-blanco); line-height: 1.2; margin-bottom: 4px;
+    font-family: var(--font-serif); font-size: 16px; font-weight: 500;
+    color: rgba(255,255,255,0.85); line-height: 1.2; margin-bottom: 4px;
   }
   .event-card-subtitle {
     font-family: var(--font-serif); font-style: italic; font-size: 14px;
-    font-weight: 300; color: rgba(253,252,250,0.45); margin-bottom: 12px;
+    font-weight: 300; color: rgba(255,255,255,0.65); margin-bottom: 12px;
   }
   .event-card-meta {
-    font-size: 11px; color: rgba(253,252,250,0.35);
-    display: flex; gap: 12px; flex-wrap: wrap;
+    font-size: 12px; color: rgba(255,255,255,0.45);
+    display: flex; gap: 0; flex-wrap: wrap;
+  }
+  .event-card-meta span + span::before {
+    content: ' · '; color: rgba(255,255,255,0.25);
   }
 
   /* CTA */
@@ -246,8 +249,8 @@ const cms = await loadCms();
           `<h3 class="event-card-title">${escapeHtml(ev.titulo)}</h3>` +
           (ev.subtitulo ? `<p class="event-card-subtitle">${escapeHtml(ev.subtitulo)}</p>` : "") +
           `<div class="event-card-meta">` +
-            (fecha ? `<span>${fecha}</span>` : "") +
-            (ev.ubicacion ? `<span>${escapeHtml(ev.ubicacion)}</span>` : "") +
+            (fecha ? `<span class="event-card-fecha">${fecha}</span>` : "") +
+            (ev.ubicacion ? `<span class="event-card-lugar">${escapeHtml(ev.ubicacion)}</span>` : "") +
           `</div>` +
         `</div>`;
 
