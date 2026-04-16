@@ -9,7 +9,7 @@ export const prerender = true;
   <!-- ═══ HERO VIDEO ═══ -->
   <section class="hero">
     <div class="hero-video-fallback"></div>
-    <video class="hero-video" autoplay muted loop playsinline>
+    <video class="hero-video" id="heroVideo" autoplay muted loop playsinline>
       <source src="/video/hero.mp4" type="video/mp4" />
     </video>
     <div class="hero-overlay"></div>
@@ -855,4 +855,17 @@ export const prerender = true;
     paused = !paused;
     if (paused) { heroVideo.pause(); } else { heroVideo.play(); }
   });
+
+  // Load hero video from Cloudinary if available
+  (async () => {
+    try {
+      const res = await fetch("/api/settings?key=hero_video_url");
+      const { value } = await res.json();
+      if (value && heroVideo) {
+        heroVideo.src = value;
+        heroVideo.load();
+        if (!paused) heroVideo.play().catch(() => {});
+      }
+    } catch {}
+  })();
 </script>

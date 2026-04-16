@@ -78,6 +78,25 @@ export const prerender = true;
 
         <!-- EMPTY STATE -->
         <p class="grid-empty hidden" id="gridEmpty">No hay imágenes en esta carpeta.</p>
+
+        <!-- ═══ HERO VIDEO SECTION ═══ -->
+        <div class="hero-video-section">
+          <h2 class="hvs-title">Video del Hero</h2>
+          <p class="hvs-desc">Sube un video MP4 para la portada. Se almacena en Cloudinary.</p>
+          <div class="hvs-current" id="hvsCurrentWrap">
+            <p class="hvs-status" id="hvsStatus">Cargando...</p>
+            <video id="hvsPreview" class="hvs-preview hidden" muted loop playsinline controls></video>
+          </div>
+          <div class="hvs-upload">
+            <label for="videoInput" class="hvs-btn">Subir nuevo video</label>
+            <input type="file" id="videoInput" accept="video/mp4,video/webm,video/quicktime" class="hidden" />
+            <div class="hvs-progress hidden" id="hvsProgress">
+              <span class="hvs-progress-text" id="hvsProgressText">Subiendo...</span>
+              <div class="up-bar"><div class="up-fill" id="hvsFill" style="width:0%"></div></div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -310,6 +329,37 @@ export const prerender = true;
   .img-card.selected .ic-check svg { opacity: 1; }
   .img-card .ic-check svg { opacity: 0; transition: opacity 0.15s; }
   .select-mode .img-card { cursor: pointer; }
+
+  /* HERO VIDEO SECTION */
+  .hero-video-section {
+    margin-top: 60px; padding-top: 40px;
+    border-top: 0.5px solid var(--color-crema-oscuro);
+  }
+  .hvs-title {
+    font-family: var(--font-serif); font-size: 22px; font-weight: 300;
+    color: var(--color-azul); margin-bottom: 6px;
+  }
+  .hvs-desc {
+    font-size: 12px; color: var(--color-texto-suave);
+    margin-bottom: 20px;
+  }
+  .hvs-current { margin-bottom: 20px; }
+  .hvs-status { font-size: 13px; color: var(--color-texto-suave); }
+  .hvs-preview {
+    width: 100%; max-width: 480px; border-radius: 8px;
+    background: var(--color-negro);
+  }
+  .hvs-upload { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .hvs-btn {
+    display: inline-block; padding: 10px 24px;
+    font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+    font-family: var(--font-sans); font-weight: 400;
+    color: var(--color-blanco); background: var(--color-azul);
+    border-radius: 6px; cursor: pointer; transition: opacity 0.2s;
+  }
+  .hvs-btn:hover { opacity: 0.85; }
+  .hvs-progress { flex: 1; min-width: 200px; }
+  .hvs-progress-text { font-size: 12px; color: var(--color-texto-suave); display: block; margin-bottom: 6px; }
 
   @media (max-width: 768px) {
     .admin-wrap { padding: 100px 16px 60px; }
@@ -745,4 +795,84 @@ export const prerender = true;
   function escapeHtml(str: string): string {
     return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   }
+
+  // ─── HERO VIDEO ───
+  const hvsStatus = document.getElementById("hvsStatus") as HTMLParagraphElement;
+  const hvsPreview = document.getElementById("hvsPreview") as HTMLVideoElement;
+  const videoInput = document.getElementById("videoInput") as HTMLInputElement;
+  const hvsProgress = document.getElementById("hvsProgress") as HTMLDivElement;
+  const hvsProgressText = document.getElementById("hvsProgressText") as HTMLSpanElement;
+  const hvsFill = document.getElementById("hvsFill") as HTMLDivElement;
+
+  // Load current hero video
+  async function loadHeroVideo() {
+    try {
+      const res = await fetch("/api/settings?key=hero_video_url");
+      const { value } = await res.json();
+      if (value) {
+        hvsPreview.src = value;
+        hvsPreview.classList.remove("hidden");
+        hvsStatus.textContent = "Video actual:";
+      } else {
+        hvsStatus.textContent = "No hay video configurado.";
+      }
+    } catch {
+      hvsStatus.textContent = "Error al cargar el video.";
+    }
+  }
+
+  if (session) loadHeroVideo();
+
+  videoInput.addEventListener("change", async () => {
+    const file = videoInput.files?.[0];
+    if (!file) return;
+    videoInput.value = "";
+
+    hvsProgress.classList.remove("hidden");
+    hvsProgressText.textContent = "Subiendo " + file.name + " (" + formatSize(file.size) + ")...";
+    hvsFill.style.width = "0%";
+
+    try {
+      const fd = new FormData();
+      fd.append("file", file);
+      fd.append("upload_preset", uploadPreset);
+      fd.append("folder", "maralma/hero");
+      fd.append("resource_type", "video");
+
+      const result: { secure_url: string; public_id: string } = await new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "https://api.cloudinary.com/v1_1/" + cloudName + "/video/upload");
+        xhr.upload.addEventListener("progress", (pe) => {
+          if (pe.lengthComputable) {
+            const pct = Math.round((pe.loaded / pe.total) * 100);
+            hvsFill.style.width = pct + "%";
+            hvsProgressText.textContent = "Subiendo... " + pct + "%";
+          }
+        });
+        xhr.onload = () => {
+          if (xhr.status >= 200 && xhr.status < 300) resolve(JSON.parse(xhr.responseText));
+          else reject(new Error("Upload failed: " + xhr.status));
+        };
+        xhr.onerror = () => reject(new Error("Network error"));
+        xhr.send(fd);
+      });
+
+      // Save URL to settings
+      await fetch("/api/settings", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + accessToken,
+        },
+        body: JSON.stringify({ key: "hero_video_url", value: result.secure_url, public_id: result.public_id }),
+      });
+
+      hvsProgressText.textContent = "Video subido correctamente";
+      hvsPreview.src = result.secure_url;
+      hvsPreview.classList.remove("hidden");
+      hvsStatus.textContent = "Video actual:";
+    } catch (err) {
+      hvsProgressText.textContent = "Error al subir el video";
+    }
+  });
 </script>
