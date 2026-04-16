@@ -109,14 +109,22 @@ const c = (key: string) => _c(cms, key, lang);
         <p class="form-section-title">{t("contact.form.yourEvent")}</p>
         <div class="form-row">
           <div class="form-group">
-            <label for="tipo_evento">{t("contact.form.eventType")} *</label>
-            <select id="tipo_evento" name="tipo_evento" required>
-              <option value="" disabled selected>{t("contact.form.eventTypePlaceholder")}</option>
-              <option value="boda">{t("contact.form.eventTypes.wedding")}</option>
-              <option value="corporativo">{t("contact.form.eventTypes.corporate")}</option>
-              <option value="privado">{t("contact.form.eventTypes.private")}</option>
-              <option value="otro">{t("contact.form.eventTypes.other")}</option>
-            </select>
+            <label>{t("contact.form.eventType")} *</label>
+            <input type="hidden" id="tipo_evento" name="tipo_evento" required />
+            <div class="custom-select" id="customSelect">
+              <button type="button" class="custom-select-trigger" id="selectTrigger">
+                <span class="custom-select-value" id="selectValue">{t("contact.form.eventTypePlaceholder")}</span>
+                <svg class="custom-select-arrow" width="10" height="6" viewBox="0 0 10 6" fill="none">
+                  <path d="M1 1l4 4 4-4" stroke="#6b7f87" stroke-width="1" fill="none"/>
+                </svg>
+              </button>
+              <ul class="custom-select-options" id="selectOptions">
+                <li data-value="boda">{t("contact.form.eventTypes.wedding")}</li>
+                <li data-value="corporativo">{t("contact.form.eventTypes.corporate")}</li>
+                <li data-value="privado">{t("contact.form.eventTypes.private")}</li>
+                <li data-value="otro">{t("contact.form.eventTypes.other")}</li>
+              </ul>
+            </div>
           </div>
           <div class="form-group">
             <label for="fecha_evento">{t("contact.form.date")}</label>
@@ -126,7 +134,11 @@ const c = (key: string) => _c(cms, key, lang);
         <div class="form-row">
           <div class="form-group">
             <label for="comensales">{t("contact.form.guests")}</label>
-            <input type="number" id="comensales" name="comensales" placeholder={t("contact.form.guestsPlaceholder")} />
+            <div class="number-stepper">
+              <button type="button" class="stepper-btn stepper-minus" id="guestsMinus" aria-label="Menos">−</button>
+              <input type="text" inputmode="numeric" pattern="[0-9]*" id="comensales" name="comensales" placeholder={t("contact.form.guestsPlaceholder")} />
+              <button type="button" class="stepper-btn stepper-plus" id="guestsPlus" aria-label="Más">+</button>
+            </div>
           </div>
           <div class="form-group">
             <label for="zona">{t("contact.form.venue")}</label>
@@ -302,15 +314,15 @@ const c = (key: string) => _c(cms, key, lang);
 }
 .form-group:last-child { margin-bottom: 0; }
 .form-group label {
-  font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
-  color: var(--color-texto-suave);
+  font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: #2a3a42;
 }
 .form-group input,
 .form-group select,
 .form-group textarea {
-  background: var(--color-blanco);
-  border: 0.5px solid var(--color-crema-oscuro);
-  color: var(--color-texto);
+  background: #fdfcfa;
+  border: 0.5px solid #e8e0d0;
+  color: #2a3a42;
   font-family: var(--font-sans); font-size: 13px; font-weight: 300;
   padding: 13px 16px; outline: none;
   transition: border-color 0.2s, background 0.2s;
@@ -326,12 +338,68 @@ const c = (key: string) => _c(cms, key, lang);
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
-  border-color: var(--color-azul-claro);
-  background: var(--color-crema);
+  border-color: #a8c4c8;
+  background: #fdfcfa;
 }
 .form-group input::placeholder,
-.form-group textarea::placeholder { color: var(--color-crema-oscuro); }
+.form-group textarea::placeholder { color: #b4b2a9; }
 .form-group textarea { resize: none; height: 120px; }
+
+/* ── Custom Select ── */
+.custom-select { position: relative; }
+.custom-select-trigger {
+  display: flex; align-items: center; justify-content: space-between;
+  width: 100%; padding: 13px 16px;
+  background: #fdfcfa; border: 0.5px solid #e8e0d0;
+  font-family: var(--font-sans); font-size: 13px; font-weight: 300;
+  color: #2a3a42; cursor: pointer; border-radius: 0;
+  transition: border-color 0.2s;
+}
+.custom-select-trigger:focus { border-color: #a8c4c8; outline: none; }
+.custom-select-trigger.placeholder .custom-select-value { color: #b4b2a9; }
+.custom-select-arrow { flex-shrink: 0; transition: transform 0.2s; }
+.custom-select.open .custom-select-arrow { transform: rotate(180deg); }
+.custom-select-options {
+  display: none; position: absolute; top: 100%; left: 0; right: 0;
+  z-index: 50; list-style: none; margin: 2px 0 0; padding: 0;
+  background: #fdfcfa; border: 0.5px solid #e8e0d0;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+}
+.custom-select.open .custom-select-options { display: block; }
+.custom-select-options li {
+  padding: 11px 16px;
+  font-family: var(--font-sans); font-size: 13px; font-weight: 300;
+  color: #2a3a42; cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  border-left: 2px solid transparent;
+}
+.custom-select-options li:hover { background: #f5f0e8; }
+.custom-select-options li.selected {
+  color: #1e3a4f; font-weight: 400;
+  border-left: 2px solid #a8c4c8;
+}
+
+/* ── Number Stepper ── */
+.number-stepper {
+  display: flex; align-items: stretch;
+}
+.number-stepper input {
+  flex: 1; text-align: center;
+  border-left: none; border-right: none;
+  -moz-appearance: textfield;
+}
+.number-stepper input::-webkit-inner-spin-button,
+.number-stepper input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+.stepper-btn {
+  width: 44px; display: flex; align-items: center; justify-content: center;
+  background: #fdfcfa; border: 0.5px solid #e8e0d0;
+  font-family: var(--font-sans); font-size: 18px; font-weight: 300;
+  color: #2a3a42; cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  user-select: none;
+}
+.stepper-btn:hover { background: #f5f0e8; color: #1e3a4f; border-color: #a8c4c8; }
+.stepper-btn:active { background: #e8e0d0; }
 
 .form-footer {
   display: flex; align-items: center; justify-content: space-between;
@@ -425,5 +493,51 @@ const c = (key: string) => _c(cms, key, lang);
       document.getElementById("formError")?.classList.remove("hidden");
       setTimeout(() => document.getElementById("formError")?.classList.add("hidden"), 6000);
     }
+  });
+
+  // Custom select dropdown
+  const customSelect = document.getElementById("customSelect");
+  const selectTrigger = document.getElementById("selectTrigger");
+  const selectValue = document.getElementById("selectValue");
+  const selectOptions = document.getElementById("selectOptions");
+  const hiddenInput = document.getElementById("tipo_evento") as HTMLInputElement;
+
+  selectTrigger?.classList.add("placeholder");
+
+  selectTrigger?.addEventListener("click", () => {
+    customSelect?.classList.toggle("open");
+  });
+
+  selectOptions?.querySelectorAll("li").forEach((li) => {
+    li.addEventListener("click", () => {
+      const value = li.getAttribute("data-value") ?? "";
+      if (hiddenInput) hiddenInput.value = value;
+      if (selectValue) selectValue.textContent = li.textContent;
+      selectTrigger?.classList.remove("placeholder");
+      selectOptions.querySelectorAll("li").forEach((o) => o.classList.remove("selected"));
+      li.classList.add("selected");
+      customSelect?.classList.remove("open");
+    });
+  });
+
+  document.addEventListener("click", (e) => {
+    if (customSelect && !customSelect.contains(e.target as Node)) {
+      customSelect.classList.remove("open");
+    }
+  });
+
+  // Number stepper
+  const guestsInput = document.getElementById("comensales") as HTMLInputElement;
+  const minusBtn = document.getElementById("guestsMinus");
+  const plusBtn = document.getElementById("guestsPlus");
+
+  minusBtn?.addEventListener("click", () => {
+    const current = parseInt(guestsInput?.value) || 0;
+    if (current > 0) guestsInput.value = String(current - 1);
+  });
+
+  plusBtn?.addEventListener("click", () => {
+    const current = parseInt(guestsInput?.value) || 0;
+    guestsInput.value = String(current + 1);
   });
 </script>

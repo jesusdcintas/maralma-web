@@ -220,6 +220,16 @@
       "eventDate": "Approximate date",
       "guests": "Number of guests",
       "guestsPlaceholder": "E.g. 80",
+      "date": "Approximate date",
+      "venue": "Event location",
+      "venuePlaceholder": "City or region",
+      "eventTypePlaceholder": "Select event type",
+      "eventTypes": {
+        "wedding": "Wedding",
+        "corporate": "Corporate event",
+        "private": "Private event",
+        "other": "Other"
+      },
       "area": "Celebration area",
       "areaPlaceholder": "City or province",
       "yourIdea": "Your idea",
@@ -229,6 +239,7 @@
       "privacyLink": "privacy policy",
       "submit": "Send message",
       "successTitle": "Message sent",
+      "successMessage": "Thank you for contacting Maralma. We'll get back to you within 24 hours.",
       "successText": "Thank you for contacting Maralma. We'll get back to you within 24 hours."
     }
   },

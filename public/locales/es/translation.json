@@ -220,6 +220,16 @@
       "eventDate": "Fecha aproximada",
       "guests": "Número de comensales",
       "guestsPlaceholder": "Ej: 80",
+      "date": "Fecha aproximada",
+      "venue": "Zona de celebración",
+      "venuePlaceholder": "Ciudad o provincia",
+      "eventTypePlaceholder": "Seleccionar tipo de evento",
+      "eventTypes": {
+        "wedding": "Boda",
+        "corporate": "Evento corporativo",
+        "private": "Evento privado",
+        "other": "Otro"
+      },
       "area": "Zona de celebración",
       "areaPlaceholder": "Ciudad o provincia",
       "yourIdea": "Tu idea",
@@ -229,6 +239,7 @@
       "privacyLink": "política de privacidad",
       "submit": "Enviar mensaje",
       "successTitle": "Mensaje enviado",
+      "successMessage": "Gracias por contactar con Maralma. Nos pondremos en contacto contigo en menos de 24h.",
       "successText": "Gracias por contactar con Maralma. Nos pondremos en contacto contigo en menos de 24h."
     }
   },
