@@ -244,16 +244,55 @@
     }
   },
   "about": {
-    "eyebrow": "About us",
-    "title": "The story behind the flavor.",
-    "subtitle": "Sea and Soul. Two words that sum up everything we do.",
-    "philosophy": {
-      "title": "Philosophy",
-      "items": [
-        { "title": "Produce", "desc": "From the land and sea of Cádiz to your table. Local suppliers, seasonal and traceable." },
-        { "title": "Customization", "desc": "Every menu is created from scratch. No fixed menu, just your event." },
-        { "title": "Experience", "desc": "We don't serve dishes, we create moments. Every detail matters." }
-      ]
+    "eyebrow": "Who are we?",
+    "juan": {
+      "name": "JUAN",
+      "role": "Co-founder and Chef of Maralma.",
+      "tagline": "Creativity, flavour and fire.",
+      "bio": "He gives free rein to the kitchen so every dish tells more than just a recipe. He studies each idea and concept to bring it to life with his own hands and to be tasted at every event."
+    },
+    "miriam": {
+      "name": "MIRIAM",
+      "role": "Co-founder, Front of House Manager, Client Relations and Staff Coordination.",
+      "tagline": "She is order, care and trust.",
+      "bio": "She organises, manages and paves the way for every client. Coordinating, caring for every detail, making sure everything flows as if magic took care of it."
+    },
+    "juntos": {
+      "title": "Side by side, they support and complete each other",
+      "body": "This is how Maralma was born: from the union of two souls who believe in the same thing, who work tirelessly so that every detail matters, so that every celebration has that unique flavour that leaves a mark."
+    },
+    "phrase1": "The essence of sea and land, served with soul.",
+    "quesomos": {
+      "title": "What are we?",
+      "body": "We adapt 100% to each client. All our menus and services are personalised for every one of them. We don't believe in having a single menu for all our couples — every wedding and event is unique, special and different. We aim to bring the fine-dining restaurant concept into the catering world, pursuing quality and excellence in every service."
+    },
+    "unboda": {
+      "text": "We only take on one wedding per day, to guarantee the highest quality in all our services."
+    },
+    "phrase2": "Every detail has flavour",
+    "comohacemos": {
+      "title": "How do we create each menu for every event?",
+      "body": "Before making a proposal, we always like to get to know our clients — their tastes and preferences, travels, gastronomic vision, type of celebration, favourite restaurants, the concept they want to convey... Based on that information we craft a personalised proposal. Thanks to this, we can fine-tune and adapt the menu to what they truly desire or need."
+    },
+    "comohacemos2": {
+      "body": "We strive for our gastronomic proposal to fit perfectly with that idea swirling in each client's mind. Making those wishes come true, creating a celebration that represents them. We will walk with you through the planning of one of the most important days of your lives or the event you've always dreamed of."
+    },
+    "filosofia": {
+      "title": "Philosophy?",
+      "body": "100% personalisation of every event. Each celebration is unique, special and different. Our priority is quality produce, precise technique and that creative touch that will make your guests remember it forever. The perfect balance between tradition and innovation, to delight every palate.",
+      "emphasis": "We elevate every celebration into a total experience, where gastronomy takes centre stage."
+    },
+    "equipo": {
+      "title": "Team:",
+      "tagline": "Attitude, attention and professionalism.",
+      "body": "They are the heart of Maralma. The team that cares for every service with dedication, warmth and excellence, ensuring every event runs flawlessly from start to finish."
+    },
+    "phraseFinal": "We care for every texture, every aroma, every moment.",
+    "cta": {
+      "eyebrow": "Let's talk",
+      "title": "Want to meet us in person?",
+      "body": "We love sitting down over a coffee to discuss your event. Tell us what you have in mind.",
+      "button": "Get in touch"
     }
   },
   "events": {

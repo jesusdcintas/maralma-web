@@ -1,248 +1,341 @@
 ---
+export const prerender = false;
 import Layout from "../layouts/Layout.astro";
 import { t as _t, type Lang } from "../utils/i18n";
-import { loadCms, imgStyle as _imgStyle } from "../utils/cms";
+import { loadCms, c as _c, imgStyle as _imgStyle } from "../utils/cms";
 
 const lang = (Astro.currentLocale ?? "es") as Lang;
 const t = (key: string) => _t(key, lang);
 const localePath = (path: string) => lang === "en" ? `/en${path}` : path;
 const cms = await loadCms();
+const c = (key: string) => _c(cms, key, lang);
 const img = (key: string) => _imgStyle(cms, key);
 ---
 
-<Layout title={`${t("about.eyebrow")} · Maralma`} description="Conoce al equipo detrás de Maralma. Juan y Miriam, pasión por la gastronomía desde Cádiz.">
+<Layout title={`${t("about.eyebrow")} · Maralma`} darkNav={true}>
 
-  <!-- PAGE HERO -->
-  <div class="page-hero">
+  <!-- 1. HERO OSCURO -->
+  <section class="page-hero">
+    <div class="page-hero-bg"></div>
+    <div class="page-hero-overlay"></div>
     <div class="page-hero-content">
-      <span class="page-eyebrow">Quiénes somos</span>
-      <h1 class="page-title" data-cms="about.hero.title">{cms.text["about.hero.title"] || "Dos almas,"}<br/><em>{cms.text["about.hero.title"] ? "" : "un mismo sabor."}</em></h1>
-      <p class="page-subtitle" data-cms="about.hero.subtitle">{cms.text["about.hero.subtitle"] || "Maralma nace de la unión de dos personas con la misma convicción: que cada celebración merece una experiencia gastronómica única."}</p>
-    </div>
-  </div>
-
-  <!-- ABOUT SPLIT -->
-  <section class="about">
-    <div class="about-visual">
-      <div class="about-pattern"></div>
-      <div class="about-quote">
-        <span class="about-quote-mark">&ldquo;</span>
-        <p class="about-quote-text" data-cms="about.quote">{cms.text["about.quote"] || "Codo con codo, se acompañan y se completan. Así nace Maralma."}</p>
-        <p class="about-quote-attr">Juan &amp; Miriam · Fundadores</p>
-      </div>
-    </div>
-    <div class="about-text-side">
-      <p class="section-eyebrow reveal">Nuestra historia</p>
-      <h2 class="section-title reveal reveal-delay-1" data-cms="about.history.title">{cms.text["about.history.title"] || "Creatividad y orden, fuego y mimo."}</h2>
-      <p class="about-body reveal reveal-delay-2" data-cms="about.history.body">{cms.text["about.history.body"] || "Juan y Miriam se complementan a la perfección. Él vive en la cocina, donde cada plato cuenta algo más que una receta. Ella organiza, gestiona y cuida cada detalle para que todo fluya como si la magia se hubiese encargado sola."}</p>
-      <div class="about-pills reveal reveal-delay-2">
-        <span class="pill">100% personalizado</span>
-        <span class="pill">1 boda por día</span>
-        <span class="pill">Alta cocina</span>
-        <span class="pill">Nivel nacional</span>
-      </div>
+      <span class="page-eyebrow" data-cms="about.eyebrow">{c("about.eyebrow")}</span>
     </div>
   </section>
 
-  <!-- TEAM -->
-  <section class="team">
-    <div class="section-header reveal">
-      <h2 class="section-title">El equipo</h2>
-      <span class="section-eyebrow">Actitud, atención y profesionalidad</span>
+  <!-- 2. JUAN — Split -->
+  <section class="split-section">
+    <div class="split-text">
+      <h2 class="split-name" data-cms="about.juan.name">{c("about.juan.name")}</h2>
+      <p class="split-role" data-cms="about.juan.role">{c("about.juan.role")}</p>
+      <p class="split-tagline" data-cms="about.juan.tagline">&ldquo;{c("about.juan.tagline")}&rdquo;</p>
+      <p class="split-body" data-cms="about.juan.bio">{c("about.juan.bio")}</p>
     </div>
-    <div class="team-grid">
-      <div class="team-card reveal">
-        <div class="team-photo">
-          <div class="team-photo-bg tp-juan" data-cms-img="about.team.juan.photo" style={img("about.team.juan.photo")}></div>
-          <div class="team-photo-pattern"></div>
-          <div class="team-initial">J</div>
-        </div>
-        <div class="team-info">
-          <p class="team-role" data-cms="about.team.juan.role">{cms.text["about.team.juan.role"] || "Co-fundador · Chef"}</p>
-          <h3 class="team-name" data-cms="about.team.juan.name">{cms.text["about.team.juan.name"] || "Juan"}</h3>
-          <p class="team-tagline" data-cms="about.team.juan.tagline">{cms.text["about.team.juan.tagline"] || "\u201CCreatividad, sabor y fuego.\u201D"}</p>
-          <p class="team-bio" data-cms="about.team.juan.bio">{cms.text["about.team.juan.bio"] || "Es la persona que da rienda suelta a la cocina para que cada plato cuente algo más que una receta. Estudia cada idea y la lleva a cabo con sus manos."}</p>
-        </div>
-      </div>
-      <div class="team-card reveal reveal-delay-1">
-        <div class="team-photo">
-          <div class="team-photo-bg tp-miriam" data-cms-img="about.team.miriam.photo" style={img("about.team.miriam.photo")}></div>
-          <div class="team-photo-pattern"></div>
-          <div class="team-initial">M</div>
-        </div>
-        <div class="team-info">
-          <p class="team-role" data-cms="about.team.miriam.role">{cms.text["about.team.miriam.role"] || "Co-fundadora · Sala & Coordinación"}</p>
-          <h3 class="team-name" data-cms="about.team.miriam.name">{cms.text["about.team.miriam.name"] || "Miriam"}</h3>
-          <p class="team-tagline" data-cms="about.team.miriam.tagline">{cms.text["about.team.miriam.tagline"] || "\u201CElla es orden, mimo y confianza.\u201D"}</p>
-          <p class="team-bio" data-cms="about.team.miriam.bio">{cms.text["about.team.miriam.bio"] || "Organiza, gestiona y abre camino con cada cliente. Cuida cada detalle asegurándose de que todo fluya como si la magia se hubiese encargado sola."}</p>
-        </div>
-      </div>
+    <div class="split-photo" data-cms-img="nosotros.juan.foto" style={img("nosotros.juan.foto")}>
+      <div class="split-photo-placeholder"></div>
     </div>
   </section>
 
-  <!-- FILOSOFÍA -->
-  <section class="filosofia">
-    <div class="filosofia-wrap">
-      <div class="section-header reveal">
-        <h2 class="section-title">Nuestra filosofía</h2>
-        <span class="section-eyebrow">Lo que nos define</span>
-      </div>
-      <div class="filosofia-grid">
-        <div class="filosofia-card reveal">
-          <p class="fc-number">01</p>
-          <h3 class="fc-title" data-cms="about.philosophy.0.title">{cms.text["about.philosophy.0.title"] || "Producto local"}</h3>
-          <p class="fc-desc" data-cms="about.philosophy.0.desc">{cms.text["about.philosophy.0.desc"] || "Trabajamos con proveedores de Cádiz y alrededores. Producto fresco, de temporada y con denominación de origen."}</p>
-        </div>
-        <div class="filosofia-card reveal reveal-delay-1">
-          <p class="fc-number">02</p>
-          <h3 class="fc-title" data-cms="about.philosophy.1.title">{cms.text["about.philosophy.1.title"] || "Un evento al día"}</h3>
-          <p class="fc-desc" data-cms="about.philosophy.1.desc">{cms.text["about.philosophy.1.desc"] || "No hacemos dos cosas a la vez. Tu evento es nuestra única prioridad ese día."}</p>
-        </div>
-        <div class="filosofia-card reveal reveal-delay-2">
-          <p class="fc-number">03</p>
-          <h3 class="fc-title" data-cms="about.philosophy.2.title">{cms.text["about.philosophy.2.title"] || "100% personalizado"}</h3>
-          <p class="fc-desc" data-cms="about.philosophy.2.desc">{cms.text["about.philosophy.2.desc"] || "No tenemos carta fija. Cada menú se diseña desde cero contigo, según tus gustos y tu historia."}</p>
-        </div>
-      </div>
+  <!-- 3. Separador — dos fotos lado a lado -->
+  <section class="photo-sep two-photos">
+    <div class="sep-framed" data-cms-img="nosotros.sep1.foto_izq" style={img("nosotros.sep1.foto_izq")}>
+      <div class="sep-framed-inner"></div>
+    </div>
+    <div class="sep-bleed" data-cms-img="nosotros.sep1.foto_der" style={img("nosotros.sep1.foto_der")}></div>
+  </section>
+
+  <!-- 4. MIRIAM — Split -->
+  <section class="split-section">
+    <div class="split-text">
+      <h2 class="split-name" data-cms="about.miriam.name">{c("about.miriam.name")}</h2>
+      <p class="split-role" data-cms="about.miriam.role">{c("about.miriam.role")}</p>
+      <p class="split-tagline" data-cms="about.miriam.tagline">&ldquo;{c("about.miriam.tagline")}&rdquo;</p>
+      <p class="split-body" data-cms="about.miriam.bio">{c("about.miriam.bio")}</p>
+    </div>
+    <div class="split-photo" data-cms-img="nosotros.miriam.foto" style={img("nosotros.miriam.foto")}>
+      <div class="split-photo-placeholder"></div>
     </div>
   </section>
 
-  <!-- CTA -->
+  <!-- 5. Separador — dos fotos lado a lado -->
+  <section class="photo-sep two-photos">
+    <div class="sep-framed" data-cms-img="nosotros.sep2.foto_izq" style={img("nosotros.sep2.foto_izq")}>
+      <div class="sep-framed-inner"></div>
+    </div>
+    <div class="sep-bleed" data-cms-img="nosotros.sep2.foto_der" style={img("nosotros.sep2.foto_der")}></div>
+  </section>
+
+  <!-- 6. Separador — foto a sangre completa -->
+  <section class="photo-sep full-bleed">
+    <div class="sep-full" data-cms-img="nosotros.sep3.foto" style={img("nosotros.sep3.foto")}></div>
+  </section>
+
+  <!-- 7. CODO CON CODO — Split -->
+  <section class="split-section">
+    <div class="split-text">
+      <h2 class="split-title" data-cms="about.juntos.title">{c("about.juntos.title")}</h2>
+      <p class="split-body" data-cms="about.juntos.body">{c("about.juntos.body")}</p>
+    </div>
+    <div class="split-photo" data-cms-img="nosotros.juntos.foto" style={img("nosotros.juntos.foto")}>
+      <div class="split-photo-placeholder"></div>
+    </div>
+  </section>
+
+  <!-- 8. Frase separadora -->
+  <section class="phrase-sep bg-crema">
+    <p class="phrase-text" data-cms="about.phrase1"><em>{c("about.phrase1")}</em></p>
+  </section>
+
+  <!-- 9. QUE SOMOS — Split -->
+  <section class="split-section">
+    <div class="split-text">
+      <h2 class="split-title" data-cms="about.quesomos.title">{c("about.quesomos.title")}</h2>
+      <p class="split-body" data-cms="about.quesomos.body">{c("about.quesomos.body")}</p>
+    </div>
+    <div class="split-photo" data-cms-img="nosotros.quesomos.foto" style={img("nosotros.quesomos.foto")}>
+      <div class="split-photo-placeholder"></div>
+    </div>
+  </section>
+
+  <!-- 10. Separador — dos fotos lado a lado -->
+  <section class="photo-sep two-photos">
+    <div class="sep-framed" data-cms-img="nosotros.sep4.foto_izq" style={img("nosotros.sep4.foto_izq")}>
+      <div class="sep-framed-inner"></div>
+    </div>
+    <div class="sep-bleed" data-cms-img="nosotros.sep4.foto_der" style={img("nosotros.sep4.foto_der")}></div>
+  </section>
+
+  <!-- 11. Solo realizamos una boda por dia — Split -->
+  <section class="split-section">
+    <div class="split-text">
+      <p class="split-highlight" data-cms="about.unboda.text">{c("about.unboda.text")}</p>
+    </div>
+    <div class="split-photo" data-cms-img="nosotros.unboda.foto" style={img("nosotros.unboda.foto")}>
+      <div class="split-photo-placeholder"></div>
+    </div>
+  </section>
+
+  <!-- 12. Frase separadora -->
+  <section class="phrase-sep bg-crema">
+    <p class="phrase-text" data-cms="about.phrase2"><em>{c("about.phrase2")}</em></p>
+  </section>
+
+  <!-- 13. Separador — foto a sangre completa -->
+  <section class="photo-sep full-bleed">
+    <div class="sep-full" data-cms-img="nosotros.sep5.foto" style={img("nosotros.sep5.foto")}></div>
+  </section>
+
+  <!-- 14. COMO HACEMOS CADA MENU — Split -->
+  <section class="split-section">
+    <div class="split-text">
+      <h2 class="split-title" data-cms="about.comohacemos.title">{c("about.comohacemos.title")}</h2>
+      <p class="split-body" data-cms="about.comohacemos.body">{c("about.comohacemos.body")}</p>
+    </div>
+    <div class="split-photo" data-cms-img="nosotros.comohacemos.foto" style={img("nosotros.comohacemos.foto")}>
+      <div class="split-photo-placeholder"></div>
+    </div>
+  </section>
+
+  <!-- 15. Continuacion COMO HACEMOS — Split -->
+  <section class="split-section">
+    <div class="split-text">
+      <p class="split-body" data-cms="about.comohacemos2.body">{c("about.comohacemos2.body")}</p>
+    </div>
+    <div class="split-photo" data-cms-img="nosotros.comohacemos2.foto" style={img("nosotros.comohacemos2.foto")}>
+      <div class="split-photo-placeholder"></div>
+    </div>
+  </section>
+
+  <!-- 16. FILOSOFIA — Split -->
+  <section class="split-section">
+    <div class="split-text">
+      <h2 class="split-title" data-cms="about.filosofia.title">{c("about.filosofia.title")}</h2>
+      <p class="split-body" data-cms="about.filosofia.body">{c("about.filosofia.body")}</p>
+      <p class="split-emphasis" data-cms="about.filosofia.emphasis"><em>{c("about.filosofia.emphasis")}</em></p>
+    </div>
+    <div class="split-photo" data-cms-img="nosotros.filosofia.foto" style={img("nosotros.filosofia.foto")}>
+      <div class="split-photo-placeholder"></div>
+    </div>
+  </section>
+
+  <!-- 17. EQUIPO — Split -->
+  <section class="split-section">
+    <div class="split-text">
+      <h2 class="split-title" data-cms="about.equipo.title">{c("about.equipo.title")}</h2>
+      <p class="split-tagline" data-cms="about.equipo.tagline">&ldquo;{c("about.equipo.tagline")}&rdquo;</p>
+      <p class="split-body" data-cms="about.equipo.body">{c("about.equipo.body")}</p>
+    </div>
+    <div class="split-photo" data-cms-img="nosotros.equipo.foto" style={img("nosotros.equipo.foto")}>
+      <div class="split-photo-placeholder"></div>
+    </div>
+  </section>
+
+  <!-- 18. Separador — dos fotos lado a lado -->
+  <section class="photo-sep two-photos">
+    <div class="sep-framed" data-cms-img="nosotros.sep6.foto_izq" style={img("nosotros.sep6.foto_izq")}>
+      <div class="sep-framed-inner"></div>
+    </div>
+    <div class="sep-bleed" data-cms-img="nosotros.sep6.foto_der" style={img("nosotros.sep6.foto_der")}></div>
+  </section>
+
+  <!-- 19. Separador — tres fotos en fila -->
+  <section class="photo-sep three-photos">
+    <div class="sep-third" data-cms-img="nosotros.sep7.foto1" style={img("nosotros.sep7.foto1")}></div>
+    <div class="sep-third" data-cms-img="nosotros.sep7.foto2" style={img("nosotros.sep7.foto2")}></div>
+    <div class="sep-third" data-cms-img="nosotros.sep7.foto3" style={img("nosotros.sep7.foto3")}></div>
+  </section>
+
+  <!-- 20. Frase final — fondo negro -->
+  <section class="phrase-sep bg-negro">
+    <p class="phrase-text phrase-white" data-cms="about.phraseFinal"><em>{c("about.phraseFinal")}</em></p>
+  </section>
+
+  <!-- 21. CTA final -->
   <section class="contact-cta">
-    <p class="cta-eyebrow reveal">Hablemos</p>
-    <h2 class="cta-title reveal reveal-delay-1" data-cms="about.cta.title">{cms.text["about.cta.title"] || "¿Quieres conocernos en persona?"}</h2>
-    <p class="cta-body reveal reveal-delay-2" data-cms="about.cta.body">{cms.text["about.cta.body"] || "Nos encanta sentarnos a hablar de tu evento con un café. Cuéntanos qué tienes en mente."}</p>
-    <a href={localePath("/contacto")} class="btn-dark reveal reveal-delay-3">Ponerse en contacto →</a>
+    <p class="cta-eyebrow reveal" data-cms="about.cta.eyebrow">{c("about.cta.eyebrow")}</p>
+    <h2 class="cta-title reveal" data-cms="about.cta.title">{c("about.cta.title")}</h2>
+    <p class="cta-body reveal" data-cms="about.cta.body">{c("about.cta.body")}</p>
+    <a href={localePath("/contacto")} class="btn-dark reveal" data-cms="about.cta.button">{c("about.cta.button")} &rarr;</a>
   </section>
 
 </Layout>
 
 <style>
+  /* HERO */
   .page-hero {
-    background: var(--color-azul); padding: 160px 60px 80px;
-    position: relative; overflow: hidden;
+    position: relative; min-height: 50vh;
+    display: flex; align-items: center;
+    overflow: hidden; background: var(--color-negro);
   }
-  .page-hero::after {
-    content: ''; position: absolute; inset: 0;
+  .page-hero-bg {
+    position: absolute; inset: 0;
+    background: linear-gradient(160deg, #0a1820 0%, #1e3a4f 45%, #2d5169 100%);
+  }
+  .page-hero-overlay {
+    position: absolute; inset: 0;
     background: radial-gradient(ellipse 60% 80% at 80% 50%, rgba(168,196,200,0.07) 0%, transparent 60%);
   }
-  .page-hero-content { position: relative; z-index: 1; max-width: 600px; }
+  .page-hero-content {
+    position: relative; z-index: 2;
+    padding: 180px 60px 100px; max-width: 680px;
+  }
   .page-eyebrow {
     font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase;
-    color: var(--color-azul-claro); margin-bottom: 20px; display: block;
+    color: var(--color-azul-claro); display: block;
+    animation: fadeUp 1s ease 0.3s both;
   }
-  .page-title {
-    font-family: var(--font-serif); font-size: clamp(44px, 6vw, 80px);
-    font-weight: 300; color: var(--color-blanco); line-height: 0.95;
-    letter-spacing: -0.01em; margin-bottom: 24px;
+
+  /* SPLIT SECTIONS */
+  .split-section {
+    display: grid; grid-template-columns: 1fr 1fr;
+    min-height: 560px;
   }
-  .page-title em { font-style: italic; color: var(--color-azul-claro); }
-  .page-subtitle {
-    font-family: var(--font-serif); font-style: italic; font-size: 18px;
-    font-weight: 300; color: rgba(253,252,250,0.55); line-height: 1.7;
-  }
-  .about { display: grid; grid-template-columns: 1fr 1fr; min-height: 500px; }
-  .about-visual {
-    background: var(--color-azul); position: relative; overflow: hidden;
-    display: flex; align-items: center; justify-content: center; min-height: 500px;
-  }
-  .about-pattern {
-    position: absolute; inset: 0;
-    background-image:
-      radial-gradient(circle at 30% 70%, rgba(168,196,200,0.12) 0%, transparent 50%),
-      radial-gradient(circle at 80% 20%, rgba(45,81,105,0.8) 0%, transparent 50%);
-  }
-  .about-quote { position: relative; z-index: 1; padding: 60px; text-align: center; }
-  .about-quote-mark {
-    font-family: var(--font-serif); font-size: 120px; line-height: 0.6;
-    color: rgba(168,196,200,0.2); display: block; margin-bottom: 20px;
-  }
-  .about-quote-text {
-    font-family: var(--font-serif); font-size: clamp(20px, 2.5vw, 28px);
-    font-weight: 300; font-style: italic; color: var(--color-blanco); line-height: 1.5;
-  }
-  .about-quote-attr {
-    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--color-azul-claro); margin-top: 28px;
-  }
-  .about-text-side {
-    background: var(--color-crema); padding: 80px 70px;
+  .split-text {
+    padding: 80px 72px;
     display: flex; flex-direction: column; justify-content: center;
+    background: var(--color-blanco);
   }
-  .section-header {
-    display: flex; align-items: baseline; justify-content: space-between;
-    margin-bottom: 60px; border-bottom: 0.5px solid var(--color-crema-oscuro); padding-bottom: 24px;
+  .split-name {
+    font-family: var(--font-serif);
+    font-size: clamp(48px, 5vw, 72px); font-weight: 300;
+    color: var(--color-azul); letter-spacing: 0.06em;
+    margin-bottom: 12px; line-height: 1;
   }
-  .section-title {
-    font-family: var(--font-serif); font-size: clamp(32px, 4vw, 52px);
-    font-weight: 300; color: var(--color-azul); letter-spacing: -0.01em;
+  .split-role {
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--color-texto-suave); margin-bottom: 24px;
+    border-left: 2px solid var(--color-azul-claro); padding-left: 12px;
   }
-  .section-eyebrow {
-    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--color-texto-suave);
+  .split-tagline {
+    font-family: var(--font-serif); font-size: 18px; font-style: italic;
+    color: var(--color-azul); margin-bottom: 24px; line-height: 1.5;
   }
-  .about-text-side .section-eyebrow { margin-bottom: 20px; }
-  .about-text-side .section-title { font-size: clamp(28px, 3vw, 42px); margin-bottom: 28px; }
-  .about-body {
-    font-size: 15px; font-weight: 300; color: var(--color-texto-suave);
-    line-height: 1.9; margin-bottom: 32px;
+  .split-title {
+    font-family: var(--font-serif);
+    font-size: clamp(28px, 3.5vw, 44px); font-weight: 300;
+    color: var(--color-azul); margin-bottom: 24px; line-height: 1.15;
   }
-  .about-pills { display: flex; flex-wrap: wrap; gap: 8px; }
-  .pill {
-    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
-    color: var(--color-azul); border: 0.5px solid rgba(30,58,79,0.3); padding: 8px 14px;
+  .split-body {
+    font-size: 15px; font-weight: 300;
+    color: var(--color-texto-suave); line-height: 1.9;
   }
-  .team { background: var(--color-blanco); padding: 100px 60px; }
-  .team-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 60px; }
-  .team-card {
-    display: grid; grid-template-columns: 220px 1fr; gap: 0;
-    overflow: hidden; border: 0.5px solid var(--color-crema-oscuro);
+  .split-highlight {
+    font-family: var(--font-serif);
+    font-size: clamp(24px, 3vw, 36px); font-weight: 300;
+    color: var(--color-azul); line-height: 1.4;
   }
-  .team-photo {
-    background: var(--color-azul); position: relative; overflow: hidden;
-    min-height: 320px; display: flex; align-items: flex-end;
+  .split-emphasis {
+    font-family: var(--font-serif); font-size: 16px;
+    color: var(--color-azul); margin-top: 20px; line-height: 1.7;
   }
-  .team-photo-bg { position: absolute; inset: 0; }
-  .tp-juan { background: linear-gradient(180deg, #1a3347 0%, #2d5169 100%); }
-  .tp-miriam { background: linear-gradient(180deg, #152a38 0%, #1e3a4f 100%); }
-  .team-photo-pattern {
+  .split-photo {
+    position: relative; overflow: hidden;
+    background: var(--color-crema);
+    background-size: cover; background-position: center;
+  }
+  .split-photo-placeholder {
     position: absolute; inset: 0;
-    background: radial-gradient(ellipse at 50% 30%, rgba(168,196,200,0.15) 0%, transparent 60%);
+    background: linear-gradient(160deg, rgba(30,58,79,0.08) 0%, rgba(168,196,200,0.12) 100%);
   }
-  .team-initial {
-    position: relative; z-index: 1; font-family: var(--font-serif);
-    font-size: 100px; font-weight: 300; color: rgba(168,196,200,0.25);
-    line-height: 1; padding: 20px 24px 16px; align-self: flex-end;
+
+  /* PHOTO SEPARATORS */
+  .photo-sep { width: 100%; }
+
+  .two-photos {
+    display: grid; grid-template-columns: 1fr 1fr;
+    min-height: 480px;
   }
-  .team-info { padding: 36px 32px; display: flex; flex-direction: column; justify-content: center; }
-  .team-role {
-    font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase;
-    color: var(--color-azul-claro); margin-bottom: 10px;
-    border-left: 2px solid var(--color-azul-claro); padding-left: 10px;
+  .sep-framed {
+    background-color: var(--color-crema);
+    display: flex; align-items: center; justify-content: center;
+    padding: 80px;
+    position: relative;
   }
-  .team-name {
-    font-family: var(--font-serif); font-size: 30px; font-weight: 300;
-    color: var(--color-azul); margin-bottom: 6px;
+  .sep-framed-inner {
+    width: 100%; height: 100%; min-height: 320px;
+    background: inherit; background-size: cover; background-position: center;
+    border: 0.5px solid var(--color-crema-oscuro);
   }
-  .team-tagline {
-    font-family: var(--font-serif); font-size: 14px; font-style: italic;
-    color: var(--color-texto-suave); margin-bottom: 18px;
+  .sep-bleed {
+    background-color: var(--color-crema);
+    background-size: cover; background-position: center;
   }
-  .team-bio { font-size: 13px; font-weight: 300; color: var(--color-texto-suave); line-height: 1.8; }
-  .filosofia { background: var(--color-crema); padding: 100px 60px; }
-  .filosofia-wrap { max-width: 1200px; margin: 0 auto; }
-  .filosofia-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 60px; }
-  .filosofia-card { background: var(--color-blanco); padding: 48px 40px; }
-  .fc-number {
-    font-family: var(--font-serif); font-size: 11px; letter-spacing: 0.2em;
-    color: var(--color-azul-claro); margin-bottom: 16px;
+
+  .full-bleed { min-height: 500px; }
+  .sep-full {
+    width: 100%; min-height: 500px;
+    background: var(--color-negro);
+    background-size: cover; background-position: center;
   }
-  .fc-title {
-    font-family: var(--font-serif); font-size: 24px; font-weight: 300;
-    color: var(--color-azul); margin-bottom: 14px;
+
+  .three-photos {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    min-height: 400px;
   }
-  .fc-desc { font-size: 13px; font-weight: 300; color: var(--color-texto-suave); line-height: 1.8; }
-  .contact-cta { background: var(--color-blanco); padding: 100px 60px; text-align: center; }
+  .sep-third {
+    background: var(--color-crema);
+    background-size: cover; background-position: center;
+    min-height: 400px;
+  }
+
+  /* PHRASE SEPARATORS */
+  .phrase-sep {
+    padding: 100px 60px; text-align: center;
+  }
+  .bg-crema { background: var(--color-crema); }
+  .bg-negro { background: var(--color-negro); }
+  .phrase-text {
+    font-family: var(--font-serif);
+    font-size: clamp(24px, 3.5vw, 42px); font-weight: 300;
+    color: var(--color-azul); line-height: 1.4;
+    max-width: 700px; margin: 0 auto;
+  }
+  .phrase-white { color: var(--color-blanco); }
+
+  /* CTA */
+  .contact-cta {
+    background: var(--color-blanco); padding: 100px 60px; text-align: center;
+  }
   .cta-eyebrow {
     font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
     color: var(--color-texto-suave); margin-bottom: 20px;
@@ -262,17 +355,30 @@ const img = (key: string) => _imgStyle(cms, key);
     padding: 14px 32px; text-decoration: none; transition: background 0.3s;
   }
   .btn-dark:hover { background: var(--color-azul-medio); }
+
+  /* REVEAL */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.8s ease, transform 0.8s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* RESPONSIVE */
   @media (max-width: 768px) {
-    .page-hero { padding: 120px 24px 60px; }
-    .about { grid-template-columns: 1fr; }
-    .about-text-side { padding: 48px 24px; }
-    .team { padding: 60px 24px; }
-    .team-grid { grid-template-columns: 1fr; }
-    .team-card { grid-template-columns: 1fr; }
-    .team-photo { min-height: 200px; }
-    .filosofia { padding: 60px 24px; }
-    .filosofia-grid { grid-template-columns: 1fr; }
+    .page-hero-content { padding: 120px 24px 60px; }
+    .split-section { grid-template-columns: 1fr; }
+    .split-text { padding: 48px 24px; }
+    .split-photo { min-height: 320px; }
+    .two-photos { grid-template-columns: 1fr; }
+    .sep-framed { padding: 40px; }
+    .sep-framed-inner { min-height: 240px; }
+    .sep-bleed { min-height: 320px; }
+    .three-photos { grid-template-columns: 1fr; }
+    .sep-third { min-height: 280px; }
+    .full-bleed, .sep-full { min-height: 300px; }
+    .phrase-sep { padding: 60px 24px; }
     .contact-cta { padding: 60px 24px; }
-    .section-header { flex-direction: column; gap: 8px; }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: none; }
   }
 </style>

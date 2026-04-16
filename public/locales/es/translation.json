@@ -244,16 +244,55 @@
     }
   },
   "about": {
-    "eyebrow": "Nosotros",
-    "title": "La historia detrás del sabor.",
-    "subtitle": "Mar y Alma. Dos palabras que resumen todo lo que hacemos.",
-    "philosophy": {
-      "title": "Filosofía",
-      "items": [
-        { "title": "Producto", "desc": "De la tierra y el mar de Cádiz a tu mesa. Proveedores locales, temporada y trazabilidad." },
-        { "title": "Personalización", "desc": "Cada menú se crea desde cero. No hay carta fija, solo tu evento." },
-        { "title": "Experiencia", "desc": "No servimos platos, creamos momentos. Cada detalle cuenta." }
-      ]
+    "eyebrow": "¿Quiénes somos?",
+    "juan": {
+      "name": "JUAN",
+      "role": "Co fundador y Chef de Maralma.",
+      "tagline": "Creatividad, sabor y fuego.",
+      "bio": "Es la persona que da rienda suelta a la cocina para que cada plato cuente algo más que una receta. Estudia cada idea y concepto para llevarlo a cabo en sus manos y poder degustarlo en cada evento."
+    },
+    "miriam": {
+      "name": "MIRIAM",
+      "role": "Co fundadora, Responsable de Sala, Atención al Cliente y Coordinación de Personal.",
+      "tagline": "Ella es orden, mimo y confianza.",
+      "bio": "Organiza, gestiona y abre camino con cada cliente. Coordinando, cuidando cada detalle, asegurándose de que todo fluya como si la magia se hubiese encargado sola."
+    },
+    "juntos": {
+      "title": "Codo con codo, se acompañan y se completan",
+      "body": "Así nace Maralma: de la unión de dos almas que creen en lo mismo, que trabajan incansablemente para que cada detalle importe, para que cada celebración tenga ese sabor único que deja huella."
+    },
+    "phrase1": "La esencia del mar y la tierra, servida con alma.",
+    "quesomos": {
+      "title": "¿Qué somos?",
+      "body": "Nos adaptamos al 100% al cliente, todos nuestros menús y servicios son personalizados para cada uno de ellos. No nos gusta tener un único menú para todos nuestros novios, cada boda y evento es único, especial y diferente. Buscamos bajar el concepto de restaurante gastronómico al servicio de catering, buscando la calidad y excelencia en cada servicio."
+    },
+    "unboda": {
+      "text": "Solo realizamos una boda por día, para garantizar la máxima calidad en todos nuestros servicios."
+    },
+    "phrase2": "Cada detalle tiene sabor",
+    "comohacemos": {
+      "title": "¿Cómo hacemos cada menú para cada evento?",
+      "body": "Antes de hacer una propuesta, siempre nos gusta conocer a nuestros clientes, que nos cuenten acerca de sus gustos y preferencias, sus viajes, idea gastronómica, tipo de celebración, restaurantes preferidos, concepto que quieren transmitir... En función de esa información elaboramos una propuesta personalizada. Gracias a ello, podemos ajustar y adaptar el menú, a lo que verdaderamente desean o necesitan."
+    },
+    "comohacemos2": {
+      "body": "Buscamos que nuestra propuesta gastronómica encaje a la perfección con esa idea que ronda en la cabeza de cada cliente. Haciendo realidad esos deseos, creando una celebración que les represente. Os acompañaremos en el camino de la planificación de uno de los días más importantes de vuestras vidas o del evento que siempre soñaste."
+    },
+    "filosofia": {
+      "title": "¿Filosofía?",
+      "body": "Personalización al 100% de cada evento. Cada celebración, es única, especial y diferente. Nuestra prioridad es el producto de calidad, técnica precisa y ese toque creativo que hará que sus invitados lo recuerden siempre. El tándem perfecto entre la tradición y la innovación, para poder acertar con cada paladar.",
+      "emphasis": "Cada celebración la elevamos a una experiencia total, donde la gastronomía es la protagonista."
+    },
+    "equipo": {
+      "title": "Equipo:",
+      "tagline": "Actitud, atención y profesionalidad.",
+      "body": "Son el corazón de Maralma. El equipo que cuida cada servicio con dedicación, cercanía y excelencia, haciendo que cada evento se desarrolle de forma impecable de principio a fin."
+    },
+    "phraseFinal": "Cuidamos cada textura, cada aroma, cada instante.",
+    "cta": {
+      "eyebrow": "Hablemos",
+      "title": "¿Quieres conocernos en persona?",
+      "body": "Nos encanta sentarnos a hablar de tu evento con un café. Cuéntanos qué tienes en mente.",
+      "button": "Ponerse en contacto"
     }
   },
   "events": {
