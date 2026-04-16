@@ -25,3 +25,4 @@ pnpm-debug.log*
 .vercel
 Dossier\ presentación\ Maralma\ 2026.pdf
 public/video/hero.mp4
+.env*.local
