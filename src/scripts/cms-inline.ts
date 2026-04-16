@@ -325,13 +325,27 @@ function openMediaPicker(): Promise<MediaResult | null> {
 
 /* ── Make image elements editable (opens media picker) ── */
 function enableImageEditing(el: HTMLElement, key: string) {
-  const wrapper = document.createElement("div");
-  wrapper.className = "cms-img-wrapper";
-  wrapper.style.position = "relative";
-  wrapper.style.display = el.tagName === "IMG" ? "inline-block" : "block";
+  let container: HTMLElement;
 
-  el.parentNode?.insertBefore(wrapper, el);
-  wrapper.appendChild(el);
+  if (el.tagName === "IMG") {
+    // For <img> elements, wrap in a new div
+    const wrapper = document.createElement("div");
+    wrapper.className = "cms-img-wrapper";
+    wrapper.style.position = "relative";
+    wrapper.style.display = "inline-block";
+    el.parentNode?.insertBefore(wrapper, el);
+    wrapper.appendChild(el);
+    container = wrapper;
+  } else {
+    // For background-image divs, use the parent as container
+    // (the element itself may be position:absolute or width/height:100%)
+    const parent = el.parentElement;
+    if (!parent) return;
+    const parentPos = getComputedStyle(parent).position;
+    if (parentPos === "static") parent.style.position = "relative";
+    parent.classList.add("cms-img-wrapper");
+    container = parent;
+  }
 
   const overlay = document.createElement("div");
   overlay.className = "cms-img-overlay";
@@ -343,7 +357,7 @@ function enableImageEditing(el: HTMLElement, key: string) {
       '</svg>' +
       ' Cambiar foto' +
     '</button>';
-  wrapper.appendChild(overlay);
+  container.appendChild(overlay);
 
   overlay.querySelector(".cms-img-btn")!.addEventListener("click", async (e) => {
     e.preventDefault();
