@@ -116,6 +116,42 @@ const cms = await loadCms();
   }
   .hidden { display: none !important; }
 
+  /* CTA */
+  .gallery-cta {
+    background: var(--color-crema); padding: 100px 60px; text-align: center;
+  }
+  .cta-eyebrow {
+    font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--color-texto-suave); margin-bottom: 20px;
+  }
+  .cta-title {
+    font-family: var(--font-serif); font-size: clamp(32px, 4vw, 52px);
+    font-weight: 300; color: var(--color-azul); margin-bottom: 40px; line-height: 1.1;
+  }
+  .cta-title em { font-style: italic; color: var(--color-azul-claro); }
+  .btn-dark {
+    display: inline-block; font-family: var(--font-sans);
+    font-size: 11px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--color-blanco); background: var(--color-azul);
+    padding: 14px 32px; text-decoration: none;
+    transition: background 0.3s;
+  }
+  .btn-dark:hover { background: var(--color-azul-medio); }
+
+  @media (max-width: 768px) {
+    .page-hero { padding: 120px 24px 60px; }
+    .gallery { padding: 60px 24px; }
+    .events-grid { grid-template-columns: 1fr; }
+    .gallery-cta { padding: 60px 24px; }
+    .gallery .section-header { flex-direction: column; gap: 8px; }
+  }
+  @media (min-width: 769px) and (max-width: 1024px) {
+    .events-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+
+<style is:global>
+  /* Event cards — global porque se crean dinámicamente con JS */
   .event-card {
     position: relative; overflow: hidden; cursor: pointer;
     background: rgba(253,252,250,0.03);
@@ -157,39 +193,6 @@ const cms = await loadCms();
   }
   .event-card-lugar {
     font-size: 13px; color: rgba(255,255,255,0.55);
-  }
-
-  /* CTA */
-  .gallery-cta {
-    background: var(--color-crema); padding: 100px 60px; text-align: center;
-  }
-  .cta-eyebrow {
-    font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
-    color: var(--color-texto-suave); margin-bottom: 20px;
-  }
-  .cta-title {
-    font-family: var(--font-serif); font-size: clamp(32px, 4vw, 52px);
-    font-weight: 300; color: var(--color-azul); margin-bottom: 40px; line-height: 1.1;
-  }
-  .cta-title em { font-style: italic; color: var(--color-azul-claro); }
-  .btn-dark {
-    display: inline-block; font-family: var(--font-sans);
-    font-size: 11px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase;
-    color: var(--color-blanco); background: var(--color-azul);
-    padding: 14px 32px; text-decoration: none;
-    transition: background 0.3s;
-  }
-  .btn-dark:hover { background: var(--color-azul-medio); }
-
-  @media (max-width: 768px) {
-    .page-hero { padding: 120px 24px 60px; }
-    .gallery { padding: 60px 24px; }
-    .events-grid { grid-template-columns: 1fr; }
-    .gallery-cta { padding: 60px 24px; }
-    .gallery .section-header { flex-direction: column; gap: 8px; }
-  }
-  @media (min-width: 769px) and (max-width: 1024px) {
-    .events-grid { grid-template-columns: repeat(2, 1fr); }
   }
 </style>
 
