@@ -31,7 +31,8 @@ const navLinks = [
 <html lang={currentLang}>
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
@@ -43,7 +44,10 @@ const navLinks = [
   <body>
     <!-- NAV -->
     <nav id="navbar" class:list={[darkNav ? "nav-dark" : "nav-light"]}>
-      <a href="/" class="nav-logo">Maralma</a>
+      <a href="/" class="nav-logo">
+        <img src="/img/logo-blanco-h.png" alt="Maralma" class="nav-logo-white" />
+        <img src="/img/logo-azul-h.png" alt="Maralma" class="nav-logo-dark" />
+      </a>
 
       <ul class="nav-center">
         {navLinks.map((link) => (
@@ -99,7 +103,9 @@ const navLinks = [
           <a href="#">{t("footer.cookies")}</a>
         </div>
       </div>
-      <div class="footer-logo">Maralma</div>
+      <div class="footer-logo">
+        <img src="/img/logo-blanco-h.png" alt="Maralma" />
+      </div>
       <div class="footer-right">
         <a href="https://instagram.com/maralma.catering" target="_blank" rel="noopener noreferrer">Instagram</a>
         <a href="https://threads.net/@maralma.catering" target="_blank" rel="noopener noreferrer">Threads</a>
@@ -139,7 +145,8 @@ const navLinks = [
         transition: background 0.4s, padding 0.4s, border-color 0.4s;
       }
 
-      .nav-dark .nav-logo { color: var(--color-blanco); }
+      .nav-dark .nav-logo-white { display: block; }
+      .nav-dark .nav-logo-dark { display: none; }
       .nav-dark .nav-center a { color: rgba(255,255,255,0.75); }
       .nav-dark .nav-center a:hover { color: var(--color-blanco); }
       .nav-dark .nav-cta {
@@ -161,7 +168,8 @@ const navLinks = [
         padding: 16px 60px;
         border-bottom: 0.5px solid var(--color-crema-oscuro);
       }
-      .nav-light .nav-logo { color: var(--color-azul); }
+      .nav-light .nav-logo-white { display: none; }
+      .nav-light .nav-logo-dark { display: block; }
       .nav-light .nav-center a { color: var(--color-texto-suave); }
       .nav-light .nav-center a:hover,
       .nav-light .nav-center a.active { color: var(--color-azul); }
@@ -183,7 +191,8 @@ const navLinks = [
         padding: 16px 60px;
         border-bottom: 0.5px solid var(--color-crema-oscuro);
       }
-      nav.scrolled .nav-logo { color: var(--color-azul); }
+      nav.scrolled .nav-logo-white { display: none; }
+      nav.scrolled .nav-logo-dark { display: block; }
       nav.scrolled .nav-center a { color: var(--color-texto-suave); }
       nav.scrolled .nav-center a:hover { color: var(--color-azul); }
       nav.scrolled .nav-cta { color: var(--color-azul); border-color: var(--color-azul); }
@@ -194,10 +203,12 @@ const navLinks = [
       nav.scrolled .lang-btn.active { background: var(--color-azul); color: var(--color-blanco); }
 
       .nav-logo {
-        font-family: var(--font-serif);
-        font-size: 22px; font-weight: 400;
-        letter-spacing: 0.14em; text-decoration: none;
-        text-transform: uppercase; transition: color 0.3s;
+        display: flex; align-items: center;
+        text-decoration: none;
+      }
+      .nav-logo img {
+        height: 28px; width: auto;
+        transition: opacity 0.3s;
       }
       .nav-center { display: flex; gap: 32px; list-style: none; }
       .nav-center a {
@@ -271,11 +282,14 @@ const navLinks = [
       }
       .footer-legal a:hover { color: rgba(255,255,255,0.5); }
       .footer-logo {
-        font-family: var(--font-serif);
-        font-size: 18px; font-weight: 300;
-        letter-spacing: 0.2em; text-transform: uppercase;
-        color: rgba(255,255,255,0.25); text-align: center;
+        text-align: center;
       }
+      .footer-logo img {
+        height: 22px; width: auto;
+        opacity: 0.25;
+        transition: opacity 0.3s;
+      }
+      .footer-logo:hover img { opacity: 0.4; }
       .footer-right {
         display: flex; justify-content: flex-end; gap: 20px;
       }

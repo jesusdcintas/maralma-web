@@ -15,10 +15,7 @@ export const prerender = true;
     <div class="hero-overlay"></div>
     <div class="hero-content">
       <p class="hero-eyebrow">{t("hero.eyebrow")}</p>
-      <h1 class="hero-logo-text">Mar<em>Alma</em></h1>
-      <svg class="hero-wave" width="90" height="18" viewBox="0 0 90 18" fill="none">
-        <path d="M5 13 C16 4, 28 4, 40 9 C52 14, 64 14, 76 5" stroke="#a8c4c8" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.7"/>
-      </svg>
+      <img src="/img/logo-blanco.png" alt="MarAlma" class="hero-logo-img" />
       <p class="hero-tagline">{t("hero.tagline")}</p>
       <div class="hero-btns">
         <a href="/contacto" class="btn-primary">{t("hero.cta_primary")}</a>
@@ -354,17 +351,10 @@ export const prerender = true;
   color: var(--color-azul-claro); margin-bottom: 28px;
   animation: fadeUp 1s ease 0.4s both;
 }
-.hero-logo-text {
-  font-family: var(--font-serif);
-  font-size: clamp(72px, 12vw, 140px);
-  font-weight: 300; line-height: 0.88;
-  color: var(--color-blanco); letter-spacing: 0.04em;
+.hero-logo-img {
+  width: clamp(180px, 30vw, 340px); height: auto;
+  margin-bottom: 32px;
   animation: fadeUp 1s ease 0.6s both;
-}
-.hero-logo-text em { font-style: italic; color: var(--color-azul-claro); display: block; }
-.hero-wave {
-  display: block; margin: 22px auto 28px;
-  animation: fadeUp 1s ease 0.8s both;
 }
 .hero-tagline {
   font-family: var(--font-serif); font-style: italic;
