@@ -1,0 +1,161 @@
+---
+import Layout from "../../layouts/Layout.astro";
+export const prerender = true;
+---
+
+<Layout title="Admin · Maralma">
+  <div class="admin-wrap">
+    <div class="admin-container">
+      <div class="admin-header">
+        <h1 class="admin-title">Área de administración</h1>
+        <p class="admin-sub">Inicia sesión para gestionar el contenido de la web.</p>
+      </div>
+
+      <form id="login-form" class="admin-form">
+        <div class="form-group">
+          <label for="admin-email">Email</label>
+          <input type="email" id="admin-email" required placeholder="admin@maralma.catering" />
+        </div>
+        <div class="form-group">
+          <label for="admin-password">Contraseña</label>
+          <input type="password" id="admin-password" required />
+        </div>
+        <button type="submit" class="btn-submit">Iniciar sesión</button>
+        <div id="login-message" class="login-msg hidden"></div>
+      </form>
+
+      <div id="admin-panel" class="admin-panel hidden">
+        <div class="panel-header">
+          <h2 class="panel-title">Panel de control</h2>
+          <button id="logout-btn" class="panel-logout">Cerrar sesión</button>
+        </div>
+        <div class="panel-links">
+          <a href="/admin/solicitudes" class="panel-link">
+            <h3>Solicitudes de contacto</h3>
+            <p>Gestiona las peticiones de presupuesto recibidas.</p>
+          </a>
+          <a href="/admin/galeria" class="panel-link">
+            <h3>Galería</h3>
+            <p>Sube, reordena y elimina imágenes de la galería.</p>
+          </a>
+          <a href="/admin/testimonios" class="panel-link">
+            <h3>Testimonios</h3>
+            <p>Modera y destaca los testimonios de los clientes.</p>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .admin-wrap { background: var(--color-blanco); padding: 140px 60px 100px; min-height: 80vh; }
+  .admin-container { max-width: 440px; margin: 0 auto; }
+  .admin-header { text-align: center; margin-bottom: 40px; }
+  .admin-title {
+    font-family: var(--font-serif); font-size: 28px; font-weight: 300;
+    color: var(--color-azul); margin-bottom: 8px;
+  }
+  .admin-sub { font-size: 13px; color: var(--color-texto-suave); font-weight: 300; }
+
+  .admin-form { display: flex; flex-direction: column; gap: 20px; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group label {
+    font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--color-texto-suave);
+  }
+  .form-group input {
+    background: var(--color-blanco); border: 0.5px solid var(--color-crema-oscuro);
+    color: var(--color-texto); font-family: var(--font-sans);
+    font-size: 13px; font-weight: 300; padding: 13px 16px;
+    outline: none; transition: border-color 0.2s;
+    -webkit-appearance: none; border-radius: 0;
+  }
+  .form-group input:focus { border-color: var(--color-azul-claro); background: var(--color-crema); }
+  .btn-submit {
+    font-family: var(--font-sans); font-size: 11px; font-weight: 500;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--color-blanco); background: var(--color-azul);
+    border: none; padding: 15px 40px; cursor: pointer;
+    transition: background 0.3s; width: 100%;
+  }
+  .btn-submit:hover { background: var(--color-azul-medio); }
+
+  .login-msg { text-align: center; font-size: 13px; padding: 12px; }
+  .login-msg.error { color: #b91c1c; background: #fef2f2; }
+  .hidden { display: none !important; }
+
+  .admin-panel { margin-top: 40px; }
+  .panel-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 24px; padding-bottom: 16px;
+    border-bottom: 0.5px solid var(--color-crema-oscuro);
+  }
+  .panel-title {
+    font-family: var(--font-serif); font-size: 24px; font-weight: 300;
+    color: var(--color-azul);
+  }
+  .panel-logout {
+    font-size: 12px; color: var(--color-texto-suave); background: none;
+    border: none; cursor: pointer; text-decoration: underline;
+  }
+  .panel-links { display: flex; flex-direction: column; gap: 8px; }
+  .panel-link {
+    display: block; padding: 24px; background: var(--color-crema);
+    text-decoration: none; transition: background 0.2s;
+  }
+  .panel-link:hover { background: var(--color-crema-oscuro); }
+  .panel-link h3 {
+    font-family: var(--font-serif); font-size: 16px; font-weight: 400;
+    color: var(--color-azul); margin-bottom: 4px;
+  }
+  .panel-link p {
+    font-size: 12px; color: var(--color-texto-suave); font-weight: 300;
+  }
+
+  @media (max-width: 768px) {
+    .admin-wrap { padding: 120px 24px 60px; }
+  }
+</style>
+
+<script>
+  import { createClient } from "@supabase/supabase-js";
+
+  const supabase = createClient(
+    import.meta.env.PUBLIC_SUPABASE_URL,
+    import.meta.env.PUBLIC_SUPABASE_ANON_KEY
+  );
+
+  const loginForm = document.getElementById("login-form") as HTMLFormElement;
+  const loginMessage = document.getElementById("login-message") as HTMLDivElement;
+  const adminPanel = document.getElementById("admin-panel") as HTMLDivElement;
+  const logoutBtn = document.getElementById("logout-btn") as HTMLButtonElement;
+
+  const { data: { session } } = await supabase.auth.getSession();
+  if (session) {
+    loginForm.classList.add("hidden");
+    adminPanel.classList.remove("hidden");
+  }
+
+  loginForm?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const email = (document.getElementById("admin-email") as HTMLInputElement).value;
+    const password = (document.getElementById("admin-password") as HTMLInputElement).value;
+
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+
+    if (error) {
+      loginMessage.textContent = "Credenciales incorrectas.";
+      loginMessage.className = "login-msg error";
+    } else {
+      loginForm.classList.add("hidden");
+      adminPanel.classList.remove("hidden");
+    }
+  });
+
+  logoutBtn?.addEventListener("click", async () => {
+    await supabase.auth.signOut();
+    loginForm.classList.remove("hidden");
+    adminPanel.classList.add("hidden");
+  });
+</script>

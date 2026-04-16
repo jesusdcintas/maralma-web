@@ -1,0 +1,868 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { t } from "i18next";
+export const prerender = true;
+---
+
+<Layout darkNav={true}>
+
+  <!-- ═══ HERO VIDEO ═══ -->
+  <section class="hero">
+    <div class="hero-video-fallback"></div>
+    <video class="hero-video" autoplay muted loop playsinline>
+      <source src="/video/hero.mp4" type="video/mp4" />
+    </video>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">{t("hero.eyebrow")}</p>
+      <h1 class="hero-logo-text">Mar<em>Alma</em></h1>
+      <svg class="hero-wave" width="90" height="18" viewBox="0 0 90 18" fill="none">
+        <path d="M5 13 C16 4, 28 4, 40 9 C52 14, 64 14, 76 5" stroke="#a8c4c8" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.7"/>
+      </svg>
+      <p class="hero-tagline">{t("hero.tagline")}</p>
+      <div class="hero-btns">
+        <a href="/contacto" class="btn-primary">{t("hero.cta_primary")}</a>
+        <a href="#servicios" class="btn-ghost">{t("hero.cta_secondary")}</a>
+      </div>
+    </div>
+    <button class="hero-mute" id="muteBtn">{t("hero.mute_pause")}</button>
+    <div class="hero-scroll">
+      <span>{t("hero.scroll")}</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ═══ CLAIM GRANDE ═══ -->
+  <section class="claim-full">
+    <p class="claim-full-text">
+      {t("claim.text_1")} <em>{t("claim.text_em_1")}</em><br/>
+      {t("claim.text_2")} <em>{t("claim.text_em_2")}</em>
+    </p>
+    <p class="claim-sub">{t("claim.subtitle")}</p>
+  </section>
+
+  <!-- ═══ SERVICIOS ═══ -->
+  <section class="servicios" id="servicios">
+    <div class="section-header reveal">
+      <h2 class="section-title">{t("services.title")}</h2>
+      <span class="section-eyebrow">{t("services.eyebrow")}</span>
+    </div>
+    <div class="servicios-grid">
+      <div class="srv-card reveal">
+        <div class="srv-photo"><div class="srv-photo-bg sp-bodas"></div></div>
+        <div class="srv-body">
+          <p class="srv-label">{t("services.label")}</p>
+          <h3 class="srv-title">{t("services.weddings.title")}</h3>
+          <p class="srv-desc">{t("services.weddings.desc")}</p>
+          <a href="/bodas" class="srv-link">{t("services.weddings.link")} →</a>
+        </div>
+      </div>
+      <div class="srv-card reveal reveal-1">
+        <div class="srv-photo"><div class="srv-photo-bg sp-corp"></div></div>
+        <div class="srv-body">
+          <p class="srv-label">{t("services.label")}</p>
+          <h3 class="srv-title">{t("services.corporate.title")}</h3>
+          <p class="srv-desc">{t("services.corporate.desc")}</p>
+          <a href="/eventos" class="srv-link">{t("services.corporate.link")} →</a>
+        </div>
+      </div>
+      <div class="srv-card reveal reveal-2">
+        <div class="srv-photo"><div class="srv-photo-bg sp-priv"></div></div>
+        <div class="srv-body">
+          <p class="srv-label">{t("services.label")}</p>
+          <h3 class="srv-title">{t("services.private.title")}</h3>
+          <p class="srv-desc">{t("services.private.desc")}</p>
+          <a href="/eventos" class="srv-link">{t("services.private.link")} →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FRASE 1 (dark) ═══ -->
+  <div class="frase dark">
+    <p class="frase-text"><em>{t("phrases.p1_1")}</em><br/>{t("phrases.p1_2")} <strong>{t("phrases.p1_strong")}</strong></p>
+  </div>
+
+  <!-- ═══ BODAS SPLIT ═══ -->
+  <section class="bodas-wrap" id="bodas">
+    <div class="bodas-header">
+      <div class="section-header reveal" style="border:none;margin:0;padding:0">
+        <h2 class="section-title" style="color:var(--color-blanco)">{t("weddings.title")}</h2>
+        <span class="section-eyebrow">{t("weddings.eyebrow")}</span>
+      </div>
+    </div>
+    <div class="bodas-split">
+      <div class="boda-card reveal">
+        <div class="boda-photo"><div class="boda-photo-bg bp-coctel"></div></div>
+        <div class="boda-body">
+          <span class="boda-tag">{t("weddings.cocktail.tag")}</span>
+          <h3 class="boda-title">{t("weddings.cocktail.title_1")}<br/>{t("weddings.cocktail.title_2")}</h3>
+          <p class="boda-sub">{t("weddings.cocktail.subtitle")}</p>
+          <a href="/bodas" class="boda-cta">{t("weddings.cocktail.cta")}</a>
+        </div>
+      </div>
+      <div class="boda-card reveal reveal-1">
+        <div class="boda-photo"><div class="boda-photo-bg bp-banquete"></div></div>
+        <div class="boda-body">
+          <span class="boda-tag">{t("weddings.banquet.tag")}</span>
+          <h3 class="boda-title">{t("weddings.banquet.title_1")}<br/>{t("weddings.banquet.title_2")}</h3>
+          <p class="boda-sub">{t("weddings.banquet.subtitle")}</p>
+          <a href="/bodas" class="boda-cta">{t("weddings.banquet.cta")}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FRASE 2 (crema) ═══ -->
+  <div class="frase crema">
+    <p class="frase-text">{t("phrases.p2_1")}<br/><em>{t("phrases.p2_2")}</em></p>
+  </div>
+
+  <!-- ═══ POR QUÉ MARALMA ═══ -->
+  <section class="porque">
+    <div class="section-header reveal">
+      <h2 class="section-title">{t("why.title")}</h2>
+      <span class="section-eyebrow">{t("why.eyebrow")}</span>
+    </div>
+    <div class="porque-grid">
+      <div class="pq-card reveal">
+        <div class="pq-number">01</div>
+        <h3 class="pq-title">{t("why.items.0.title")}</h3>
+        <p class="pq-desc">{t("why.items.0.desc")}</p>
+      </div>
+      <div class="pq-card reveal reveal-1">
+        <div class="pq-number">02</div>
+        <h3 class="pq-title">{t("why.items.1.title")}</h3>
+        <p class="pq-desc">{t("why.items.1.desc")}</p>
+      </div>
+      <div class="pq-card reveal reveal-2">
+        <div class="pq-number">03</div>
+        <h3 class="pq-title">{t("why.items.2.title")}</h3>
+        <p class="pq-desc">{t("why.items.2.desc")}</p>
+      </div>
+      <div class="pq-card reveal reveal-3">
+        <div class="pq-number">04</div>
+        <h3 class="pq-title">{t("why.items.3.title")}</h3>
+        <p class="pq-desc">{t("why.items.3.desc")}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ RESEÑAS (slider) ═══ -->
+  <section class="resenas">
+    <div class="resenas-header reveal">
+      <div>
+        <h2 class="section-title">{t("reviews.title")}</h2>
+        <p class="resenas-sub">{t("reviews.eyebrow")}</p>
+      </div>
+      <div class="resenas-nav">
+        <button class="resena-nav-btn" id="prevSlide">←</button>
+        <button class="resena-nav-btn" id="nextSlide">→</button>
+      </div>
+    </div>
+    <div class="resenas-track-wrap">
+      <div class="resenas-track" id="resenasTrack">
+        <div class="resena-card featured">
+          <div class="resena-stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+          <span class="resena-mark">"</span>
+          <p class="resena-text">{t("reviews.items.0.text")}</p>
+          <div class="resena-divider"></div>
+          <p class="resena-name">{t("reviews.items.0.name")}</p>
+          <p class="resena-event">{t("reviews.items.0.event")}</p>
+        </div>
+        <div class="resena-card">
+          <div class="resena-stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+          <span class="resena-mark">"</span>
+          <p class="resena-text">{t("reviews.items.1.text")}</p>
+          <div class="resena-divider"></div>
+          <p class="resena-name">{t("reviews.items.1.name")}</p>
+          <p class="resena-event">{t("reviews.items.1.event")}</p>
+        </div>
+        <div class="resena-card">
+          <div class="resena-stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+          <span class="resena-mark">"</span>
+          <p class="resena-text">{t("reviews.items.2.text")}</p>
+          <div class="resena-divider"></div>
+          <p class="resena-name">{t("reviews.items.2.name")}</p>
+          <p class="resena-event">{t("reviews.items.2.event")}</p>
+        </div>
+        <div class="resena-card">
+          <div class="resena-stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+          <span class="resena-mark">"</span>
+          <p class="resena-text">{t("reviews.items.3.text")}</p>
+          <div class="resena-divider"></div>
+          <p class="resena-name">{t("reviews.items.3.name")}</p>
+          <p class="resena-event">{t("reviews.items.3.event")}</p>
+        </div>
+        <div class="resena-card">
+          <div class="resena-stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+          <span class="resena-mark">"</span>
+          <p class="resena-text">{t("reviews.items.4.text")}</p>
+          <div class="resena-divider"></div>
+          <p class="resena-name">{t("reviews.items.4.name")}</p>
+          <p class="resena-event">{t("reviews.items.4.event")}</p>
+        </div>
+      </div>
+    </div>
+    <div class="resenas-dots" id="resenasDots">
+      <div class="resena-dot active"></div>
+      <div class="resena-dot"></div>
+      <div class="resena-dot"></div>
+    </div>
+  </section>
+
+  <!-- ═══ FRASE 3 (blanco) ═══ -->
+  <div class="frase">
+    <p class="frase-text"><em>"{t("phrases.p3_1")}<br/>{t("phrases.p3_2")}"</em></p>
+  </div>
+
+  <!-- ═══ QUIÉNES SOMOS ═══ -->
+  <section class="equipo" id="nosotros">
+    <div class="section-header reveal">
+      <h2 class="section-title">{t("team.title")}</h2>
+      <span class="section-eyebrow">{t("team.eyebrow")}</span>
+    </div>
+    <div class="equipo-grid">
+      <div class="equipo-card reveal">
+        <div class="equipo-photo">
+          <div class="ep-bg ep-juan"></div>
+          <div class="ep-initial">J</div>
+        </div>
+        <div class="equipo-info">
+          <p class="equipo-rol">{t("team.juan.role")}</p>
+          <h3 class="equipo-nombre">{t("team.juan.name")}</h3>
+          <p class="equipo-frase">"{t("team.juan.quote")}"</p>
+          <p class="equipo-bio">{t("team.juan.bio")}</p>
+        </div>
+      </div>
+      <div class="equipo-card reveal reveal-1">
+        <div class="equipo-photo">
+          <div class="ep-bg ep-miriam"></div>
+          <div class="ep-initial">M</div>
+        </div>
+        <div class="equipo-info">
+          <p class="equipo-rol">{t("team.miriam.role")}</p>
+          <h3 class="equipo-nombre">{t("team.miriam.name")}</h3>
+          <p class="equipo-frase">"{t("team.miriam.quote")}"</p>
+          <p class="equipo-bio">{t("team.miriam.bio")}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ GALERÍA ═══ -->
+  <section class="galeria" id="galeria">
+    <div class="galeria-header reveal">
+      <h2 class="galeria-title">{t("gallery.title")}</h2>
+      <div class="galeria-filters">
+        <button class="gal-filter active" data-cat="all">{t("gallery.filters.all")}</button>
+        <button class="gal-filter" data-cat="bodas">{t("gallery.filters.weddings")}</button>
+        <button class="gal-filter" data-cat="platos">{t("gallery.filters.dishes")}</button>
+        <button class="gal-filter" data-cat="eventos">{t("gallery.filters.events")}</button>
+      </div>
+    </div>
+    <div class="galeria-grid">
+      <div class="gal-item" data-cat="bodas">
+        <div class="gi-bg-img gi-c1"></div>
+        <div class="gi-hover"><div class="gi-icon"><svg width="16" height="16" fill="none" stroke="white" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div></div>
+        <span class="gi-caption">{t("gallery.captions.0")}</span>
+      </div>
+      <div class="gal-item" data-cat="platos">
+        <div class="gi-bg-img gi-c2"></div>
+        <div class="gi-hover"><div class="gi-icon"><svg width="16" height="16" fill="none" stroke="white" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div></div>
+        <span class="gi-caption">{t("gallery.captions.1")}</span>
+      </div>
+      <div class="gal-item" data-cat="platos">
+        <div class="gi-bg-img gi-c3"></div>
+        <div class="gi-hover"><div class="gi-icon"><svg width="16" height="16" fill="none" stroke="white" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div></div>
+        <span class="gi-caption">{t("gallery.captions.2")}</span>
+      </div>
+      <div class="gal-item" data-cat="eventos">
+        <div class="gi-bg-img gi-c4"></div>
+        <div class="gi-hover"><div class="gi-icon"><svg width="16" height="16" fill="none" stroke="white" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div></div>
+        <span class="gi-caption">{t("gallery.captions.3")}</span>
+      </div>
+      <div class="gal-item" data-cat="bodas">
+        <div class="gi-bg-img gi-c5"></div>
+        <div class="gi-hover"><div class="gi-icon"><svg width="16" height="16" fill="none" stroke="white" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div></div>
+        <span class="gi-caption">{t("gallery.captions.4")}</span>
+      </div>
+      <div class="gal-item" data-cat="eventos">
+        <div class="gi-bg-img gi-c6"></div>
+        <div class="gi-hover"><div class="gi-icon"><svg width="16" height="16" fill="none" stroke="white" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div></div>
+        <span class="gi-caption">{t("gallery.captions.5")}</span>
+      </div>
+    </div>
+    <div class="galeria-cta">
+      <p class="galeria-cta-text">{t("gallery.cta_phrase")}</p>
+      <a href="/galeria" class="galeria-ver">{t("gallery.cta")} →</a>
+    </div>
+  </section>
+
+  <!-- ═══ CTA FINAL ═══ -->
+  <section class="cta-final">
+    <p class="cta-eyebrow reveal">{t("cta.eyebrow")}</p>
+    <h2 class="cta-title reveal">{t("cta.title")}</h2>
+    <p class="cta-sub reveal">{t("cta.desc")}</p>
+    <div class="cta-btns reveal">
+      <a href="/contacto" class="cta-btn cta-btn-form">
+        <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        {t("cta.form")}
+      </a>
+      <a href="https://wa.me/34XXXXXXXXX" class="cta-btn cta-btn-wa" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/></svg>
+        {t("cta.whatsapp")}
+      </a>
+      <a href="tel:+34XXXXXXXXX" class="cta-btn cta-btn-call">
+        <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.5 2 2 0 0 1 3.6 1.32h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.96a16 16 0 0 0 6.13 6.13l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        {t("cta.call")}
+      </a>
+      <a href="https://instagram.com/maralma.catering" class="cta-btn cta-btn-ig" target="_blank" rel="noopener noreferrer">
+        <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/></svg>
+        Instagram
+      </a>
+    </div>
+  </section>
+
+</Layout>
+
+<style>
+/* ═══ HERO VIDEO ═══ */
+.hero {
+  position: relative; height: 100vh; min-height: 700px;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; background: var(--color-negro);
+}
+.hero-video {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; opacity: 0.55;
+}
+.hero-video-fallback {
+  position: absolute; inset: 0;
+  background: linear-gradient(160deg, #0a1820 0%, #1e3a4f 45%, #2d5169 100%);
+}
+.hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(0deg, rgba(10,24,32,0.7) 0%, rgba(10,24,32,0.1) 60%, rgba(10,24,32,0.3) 100%);
+}
+.hero-content {
+  position: relative; z-index: 2;
+  text-align: center; padding: 0 40px;
+}
+.hero-eyebrow {
+  font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--color-azul-claro); margin-bottom: 28px;
+  animation: fadeUp 1s ease 0.4s both;
+}
+.hero-logo-text {
+  font-family: var(--font-serif);
+  font-size: clamp(72px, 12vw, 140px);
+  font-weight: 300; line-height: 0.88;
+  color: var(--color-blanco); letter-spacing: 0.04em;
+  animation: fadeUp 1s ease 0.6s both;
+}
+.hero-logo-text em { font-style: italic; color: var(--color-azul-claro); display: block; }
+.hero-wave {
+  display: block; margin: 22px auto 28px;
+  animation: fadeUp 1s ease 0.8s both;
+}
+.hero-tagline {
+  font-family: var(--font-serif); font-style: italic;
+  font-size: clamp(15px, 2vw, 20px); font-weight: 300;
+  color: rgba(253,252,250,0.6); margin-bottom: 50px;
+  animation: fadeUp 1s ease 1s both;
+}
+.hero-btns {
+  display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;
+  animation: fadeUp 1s ease 1.2s both;
+}
+.btn-primary {
+  font-family: var(--font-sans);
+  font-size: 11px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--color-azul); background: var(--color-blanco);
+  padding: 14px 36px; text-decoration: none; transition: all 0.3s;
+}
+.btn-primary:hover { background: var(--color-crema); }
+.btn-ghost {
+  font-family: var(--font-sans);
+  font-size: 11px; font-weight: 400; letter-spacing: 0.18em; text-transform: uppercase;
+  color: rgba(255,255,255,0.7); padding: 14px 36px;
+  text-decoration: none; border: 0.5px solid rgba(255,255,255,0.25);
+  transition: all 0.3s;
+}
+.btn-ghost:hover { color: var(--color-blanco); border-color: rgba(255,255,255,0.6); }
+.hero-mute {
+  position: absolute; bottom: 40px; right: 60px; z-index: 3;
+  background: rgba(255,255,255,0.1); border: 0.5px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.6); padding: 8px 14px;
+  font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+  cursor: pointer; font-family: var(--font-sans); transition: all 0.2s;
+}
+.hero-mute:hover { background: rgba(255,255,255,0.2); color: var(--color-blanco); }
+.hero-scroll {
+  position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  animation: fadeUp 1s ease 1.6s both;
+}
+.hero-scroll span {
+  font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: rgba(168,196,200,0.5);
+}
+.scroll-line {
+  width: 0.5px; height: 40px;
+  background: rgba(168,196,200,0.3);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+
+/* ═══ CLAIM GRANDE ═══ */
+.claim-full {
+  background: var(--color-negro);
+  padding: 120px 60px;
+  text-align: center; position: relative; overflow: hidden;
+}
+.claim-full::before {
+  content: 'MARALMA';
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  font-family: var(--font-serif); font-size: clamp(80px, 18vw, 220px);
+  font-weight: 300; color: rgba(255,255,255,0.03);
+  white-space: nowrap; pointer-events: none; letter-spacing: 0.1em;
+}
+.claim-full-text {
+  font-family: var(--font-serif);
+  font-size: clamp(32px, 5vw, 68px);
+  font-weight: 300; color: var(--color-blanco);
+  line-height: 1.15; max-width: 900px; margin: 0 auto;
+  position: relative; z-index: 1;
+}
+.claim-full-text em { font-style: italic; color: var(--color-azul-claro); }
+.claim-sub {
+  font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: rgba(168,196,200,0.4); margin-top: 32px;
+  position: relative; z-index: 1;
+}
+
+/* ═══ SECTION HEADER (reusable) ═══ */
+.section-header {
+  display: flex; align-items: baseline; justify-content: space-between;
+  margin-bottom: 56px; border-bottom: 0.5px solid var(--color-crema-oscuro);
+  padding-bottom: 22px;
+}
+.section-title {
+  font-family: var(--font-serif);
+  font-size: clamp(30px, 4vw, 50px);
+  font-weight: 300; color: var(--color-azul); letter-spacing: -0.01em;
+}
+.section-eyebrow {
+  font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--color-texto-suave);
+}
+
+/* ═══ SERVICIOS GRID ═══ */
+.servicios { background: var(--color-crema); padding: 100px 60px; }
+.servicios-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; }
+.srv-card { background: var(--color-azul); overflow: hidden; cursor: pointer; }
+.srv-photo { aspect-ratio: 4/3; overflow: hidden; position: relative; }
+.srv-photo-bg { width: 100%; height: 100%; transition: transform 0.7s ease; }
+.srv-card:hover .srv-photo-bg { transform: scale(1.06); }
+.sp-bodas { background: linear-gradient(160deg, #1a3347 0%, #2d5169 100%); }
+.sp-corp { background: linear-gradient(160deg, #0f2030 0%, #1e3a4f 100%); }
+.sp-priv { background: linear-gradient(160deg, #1e3a4f 0%, #3a6070 100%); }
+.srv-body {
+  background: var(--color-crema); padding: 32px 28px 28px;
+  border-top: 2px solid var(--color-azul);
+}
+.srv-label {
+  font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--color-texto-suave); margin-bottom: 8px;
+}
+.srv-title {
+  font-family: var(--font-serif); font-size: 30px; font-weight: 300;
+  color: var(--color-azul); text-transform: uppercase; letter-spacing: 0.04em;
+  margin-bottom: 10px; line-height: 1;
+}
+.srv-desc {
+  font-size: 13px; font-weight: 300; color: var(--color-texto-suave);
+  line-height: 1.7; margin-bottom: 20px;
+}
+.srv-link {
+  font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--color-azul); text-decoration: none;
+  border-bottom: 0.5px solid var(--color-azul); padding-bottom: 3px;
+  transition: opacity 0.2s; display: inline-block;
+}
+.srv-link:hover { opacity: 0.6; }
+
+/* ═══ FRASES SEPARADORAS ═══ */
+.frase { padding: 80px 60px; text-align: center; background: var(--color-blanco); }
+.frase-text {
+  font-family: var(--font-serif);
+  font-size: clamp(26px, 4vw, 52px);
+  font-weight: 300; font-style: italic;
+  color: var(--color-azul); line-height: 1.3;
+  max-width: 800px; margin: 0 auto;
+}
+.frase-text strong { font-style: normal; font-weight: 400; }
+.frase.dark { background: var(--color-azul); }
+.frase.dark .frase-text { color: var(--color-blanco); }
+.frase.dark .frase-text em { color: var(--color-azul-claro); }
+.frase.crema { background: var(--color-crema); }
+
+/* ═══ BODAS SPLIT ═══ */
+.bodas-wrap { background: var(--color-negro); }
+.bodas-header {
+  padding: 80px 60px 52px;
+  border-bottom: 0.5px solid rgba(255,255,255,0.07);
+}
+.bodas-split { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+.boda-card {
+  position: relative; overflow: hidden; cursor: pointer;
+  background: var(--color-azul);
+}
+.boda-photo { aspect-ratio: 3/4; overflow: hidden; position: relative; margin: 40px 40px 0; }
+.boda-photo-bg { position: absolute; inset: 0; transition: transform 0.7s ease; }
+.boda-card:hover .boda-photo-bg { transform: scale(1.04); }
+.bp-coctel { background: linear-gradient(180deg, #1a3347 0%, #2d5169 100%); }
+.bp-banquete { background: linear-gradient(180deg, #0f2030 0%, #1e3a4f 100%); }
+.boda-body { padding: 36px 40px 40px; text-align: center; }
+.boda-tag {
+  font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--color-azul-claro); margin-bottom: 12px; display: block;
+}
+.boda-title {
+  font-family: var(--font-serif);
+  font-size: clamp(24px, 3vw, 40px);
+  font-weight: 300; color: var(--color-blanco);
+  text-transform: uppercase; letter-spacing: 0.06em;
+  margin-bottom: 8px; line-height: 1;
+}
+.boda-sub {
+  font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: rgba(168,196,200,0.6); margin-bottom: 28px;
+}
+.boda-cta {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--color-blanco); border: 0.5px solid rgba(255,255,255,0.3);
+  padding: 12px 28px; text-decoration: none; transition: all 0.3s;
+}
+.boda-cta:hover { background: var(--color-blanco); color: var(--color-azul); border-color: var(--color-blanco); }
+
+/* ═══ POR QUÉ MARALMA ═══ */
+.porque { background: var(--color-blanco); padding: 100px 60px; }
+.porque-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 2px; margin-top: 0; }
+.pq-card {
+  padding: 40px 32px;
+  border: 0.5px solid var(--color-crema-oscuro);
+  transition: border-color 0.3s, background 0.3s;
+}
+.pq-card:hover { border-color: var(--color-azul-claro); background: var(--color-crema); }
+.pq-number {
+  font-family: var(--font-serif); font-size: 56px; font-weight: 300;
+  color: var(--color-crema-oscuro); line-height: 1; margin-bottom: 16px;
+  transition: color 0.3s;
+}
+.pq-card:hover .pq-number { color: var(--color-azul-claro); }
+.pq-title {
+  font-family: var(--font-serif); font-size: 20px; font-weight: 400;
+  color: var(--color-azul); margin-bottom: 10px;
+}
+.pq-desc { font-size: 13px; font-weight: 300; color: var(--color-texto-suave); line-height: 1.8; }
+
+/* ═══ RESEÑAS ═══ */
+.resenas { background: var(--color-crema); padding: 100px 60px; overflow: hidden; }
+.resenas-header {
+  display: flex; align-items: baseline; justify-content: space-between;
+  margin-bottom: 56px; border-bottom: 0.5px solid var(--color-crema-oscuro);
+  padding-bottom: 22px;
+}
+.resenas-sub {
+  font-size: 13px; color: var(--color-texto-suave); margin-top: 6px; font-weight: 300;
+}
+.resenas-nav { display: flex; gap: 8px; }
+.resena-nav-btn {
+  width: 36px; height: 36px; border: 0.5px solid var(--color-crema-oscuro);
+  background: transparent; cursor: pointer; font-size: 16px;
+  color: var(--color-texto-suave); transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-sans);
+}
+.resena-nav-btn:hover { border-color: var(--color-azul); color: var(--color-azul); background: var(--color-blanco); }
+.resenas-track-wrap { overflow: hidden; }
+.resenas-track {
+  display: flex; gap: 20px;
+  transition: transform 0.5s ease;
+}
+.resena-card {
+  background: var(--color-blanco); padding: 44px 40px;
+  flex: 0 0 calc(33.333% - 14px);
+  min-width: calc(33.333% - 14px);
+  position: relative; border: 0.5px solid var(--color-crema-oscuro);
+  transition: border-color 0.3s;
+}
+.resena-card:hover { border-color: var(--color-azul-claro); }
+.resena-card.featured { background: var(--color-azul); border-color: var(--color-azul); }
+.resena-stars { display: flex; gap: 3px; margin-bottom: 20px; }
+.star {
+  width: 12px; height: 12px;
+  background: var(--color-azul-claro);
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+.resena-card.featured .star { background: rgba(168,196,200,0.7); }
+.resena-mark {
+  font-family: var(--font-serif); font-size: 52px; line-height: 0.8;
+  color: var(--color-azul-claro); opacity: 0.25; margin-bottom: 14px; display: block;
+}
+.resena-card.featured .resena-mark { color: var(--color-blanco); }
+.resena-text {
+  font-family: var(--font-serif); font-style: italic;
+  font-size: 16px; font-weight: 300; color: var(--color-texto);
+  line-height: 1.8; margin-bottom: 28px;
+}
+.resena-card.featured .resena-text { color: rgba(253,252,250,0.85); }
+.resena-divider { width: 28px; height: 0.5px; background: var(--color-azul-claro); margin-bottom: 14px; }
+.resena-card.featured .resena-divider { background: rgba(168,196,200,0.4); }
+.resena-name {
+  font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--color-texto-suave);
+}
+.resena-card.featured .resena-name { color: var(--color-azul-claro); }
+.resena-event { font-size: 11px; color: var(--color-texto-suave); font-style: italic; margin-top: 3px; }
+.resena-card.featured .resena-event { color: rgba(168,196,200,0.5); }
+.resenas-dots {
+  display: flex; gap: 6px; justify-content: center; margin-top: 32px;
+}
+.resena-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--color-crema-oscuro); cursor: pointer; transition: background 0.2s;
+}
+.resena-dot.active { background: var(--color-azul); }
+
+/* ═══ QUIÉNES SOMOS ═══ */
+.equipo { background: var(--color-blanco); padding: 100px 60px; }
+.equipo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 56px; }
+.equipo-card {
+  display: grid; grid-template-columns: 200px 1fr;
+  border: 0.5px solid var(--color-crema-oscuro); overflow: hidden;
+}
+.equipo-photo {
+  position: relative; min-height: 300px;
+  display: flex; align-items: flex-end;
+}
+.ep-bg { position: absolute; inset: 0; }
+.ep-juan { background: linear-gradient(180deg, #1a3347 0%, #2d5169 100%); }
+.ep-miriam { background: linear-gradient(180deg, #152a38 0%, #1e3a4f 100%); }
+.ep-initial {
+  position: relative; z-index: 1;
+  font-family: var(--font-serif); font-size: 90px; font-weight: 300;
+  color: rgba(168,196,200,0.2); line-height: 1;
+  padding: 16px 20px 12px; align-self: flex-end;
+}
+.equipo-info { padding: 32px 28px; display: flex; flex-direction: column; justify-content: center; }
+.equipo-rol {
+  font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--color-azul-claro); margin-bottom: 8px;
+  border-left: 2px solid var(--color-azul-claro); padding-left: 10px;
+}
+.equipo-nombre {
+  font-family: var(--font-serif); font-size: 28px; font-weight: 300;
+  color: var(--color-azul); margin-bottom: 6px;
+}
+.equipo-frase {
+  font-family: var(--font-serif); font-size: 13px; font-style: italic;
+  color: var(--color-texto-suave); margin-bottom: 14px;
+}
+.equipo-bio { font-size: 13px; font-weight: 300; color: var(--color-texto-suave); line-height: 1.8; }
+
+/* ═══ GALERÍA ═══ */
+.galeria { background: var(--color-negro); padding: 100px 0 0; }
+.galeria-header {
+  padding: 0 60px 52px;
+  display: flex; align-items: baseline; justify-content: space-between;
+  border-bottom: 0.5px solid rgba(255,255,255,0.07);
+}
+.galeria-title {
+  font-family: var(--font-serif); font-size: clamp(30px,4vw,50px);
+  font-weight: 300; color: var(--color-blanco);
+}
+.galeria-filters { display: flex; gap: 20px; }
+.gal-filter {
+  font-family: var(--font-sans);
+  font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: rgba(255,255,255,0.3); cursor: pointer; padding-bottom: 4px;
+  border-bottom: 0.5px solid transparent; transition: all 0.2s;
+  background: none; border-top: none; border-left: none; border-right: none;
+}
+.gal-filter.active, .gal-filter:hover {
+  color: var(--color-blanco); border-bottom-color: var(--color-azul-claro);
+}
+.galeria-grid {
+  display: grid; grid-template-columns: repeat(4,1fr);
+  gap: 2px; margin-top: 2px;
+}
+.gal-item {
+  position: relative; overflow: hidden; cursor: pointer;
+  background: var(--color-azul-medio); aspect-ratio: 1;
+}
+.gal-item:first-child { grid-column: span 2; grid-row: span 2; }
+.gal-item:last-child { grid-column: span 2; aspect-ratio: 2/1; }
+.gi-bg-img { position: absolute; inset: 0; transition: transform 0.6s ease; }
+.gal-item:hover .gi-bg-img { transform: scale(1.06); }
+.gi-c1 { background: linear-gradient(135deg,#1a2f40,#2d5169); }
+.gi-c2 { background: linear-gradient(135deg,#0f2030,#1e3a4f); }
+.gi-c3 { background: linear-gradient(135deg,#1e3a4f,#3a6070); }
+.gi-c4 { background: linear-gradient(135deg,#162330,#2d5169); }
+.gi-c5 { background: linear-gradient(135deg,#1a2f40,#0f2030); }
+.gi-c6 { background: linear-gradient(135deg,#0f2030,#2d5169); }
+.gi-caption {
+  position: absolute; bottom: 16px; left: 16px;
+  font-family: var(--font-serif); font-size: 12px; font-style: italic;
+  color: rgba(253,252,250,0.45);
+}
+.gi-hover {
+  position: absolute; inset: 0;
+  background: rgba(10,20,28,0.45);
+  opacity: 0; transition: opacity 0.3s;
+  display: flex; align-items: center; justify-content: center;
+}
+.gal-item:hover .gi-hover { opacity: 1; }
+.gi-icon {
+  width: 42px; height: 42px;
+  border: 0.5px solid rgba(255,255,255,0.4);
+  display: flex; align-items: center; justify-content: center;
+}
+.galeria-cta { padding: 52px 60px; text-align: center; }
+.galeria-cta-text {
+  font-family: var(--font-serif); font-style: italic;
+  font-size: clamp(16px,2vw,22px); font-weight: 300;
+  color: rgba(255,255,255,0.4); margin-bottom: 24px;
+}
+.galeria-ver {
+  font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(255,255,255,0.3); text-decoration: none;
+  border-bottom: 0.5px solid rgba(255,255,255,0.15); padding-bottom: 3px;
+  transition: color 0.2s, border-color 0.2s;
+}
+.galeria-ver:hover { color: rgba(255,255,255,0.7); border-color: rgba(255,255,255,0.4); }
+
+/* ═══ CTA FINAL ═══ */
+.cta-final { background: var(--color-azul); padding: 100px 60px; text-align: center; }
+.cta-eyebrow {
+  font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase;
+  color: var(--color-azul-claro); margin-bottom: 20px;
+}
+.cta-title {
+  font-family: var(--font-serif);
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 300; color: var(--color-blanco);
+  line-height: 1.1; margin-bottom: 16px;
+}
+.cta-sub {
+  font-size: 14px; font-weight: 300; color: rgba(253,252,250,0.5);
+  max-width: 440px; margin: 0 auto 52px; line-height: 1.9;
+}
+.cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.cta-btn {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--font-sans);
+  font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase;
+  padding: 14px 26px; text-decoration: none; transition: all 0.3s;
+  border: 0.5px solid;
+}
+.cta-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+.cta-btn-form { color: var(--color-azul); background: var(--color-blanco); border-color: var(--color-blanco); }
+.cta-btn-form:hover { background: var(--color-crema); }
+.cta-btn-wa { color: #25d366; border-color: rgba(37,211,102,0.3); }
+.cta-btn-wa:hover { background: rgba(37,211,102,0.1); border-color: #25d366; }
+.cta-btn-call { color: var(--color-azul-claro); border-color: rgba(168,196,200,0.3); }
+.cta-btn-call:hover { background: rgba(168,196,200,0.1); border-color: var(--color-azul-claro); }
+.cta-btn-ig { color: rgba(255,255,255,0.6); border-color: rgba(255,255,255,0.15); }
+.cta-btn-ig:hover { color: var(--color-blanco); border-color: rgba(255,255,255,0.4); }
+
+/* ═══ REVEAL ═══ */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+.reveal-1 { transition-delay: 0.1s; }
+.reveal-2 { transition-delay: 0.2s; }
+.reveal-3 { transition-delay: 0.3s; }
+
+/* ═══ RESPONSIVE ═══ */
+@media (max-width: 768px) {
+  .servicios-grid { grid-template-columns: 1fr; }
+  .bodas-split { grid-template-columns: 1fr; }
+  .porque-grid { grid-template-columns: 1fr 1fr; }
+  .resena-card { flex: 0 0 calc(100% - 14px); min-width: calc(100% - 14px); }
+  .equipo-grid { grid-template-columns: 1fr; }
+  .equipo-card { grid-template-columns: 1fr; }
+  .equipo-photo { min-height: 200px; }
+  .galeria-grid { grid-template-columns: repeat(2,1fr); }
+  .gal-item:first-child { grid-column: span 2; grid-row: span 1; aspect-ratio: 2/1; }
+  .gal-item:last-child { grid-column: span 2; }
+  .servicios, .porque, .resenas, .equipo, .galeria, .cta-final { padding: 60px 24px; }
+  .galeria-header { padding: 0 24px 40px; }
+  .galeria-cta { padding: 40px 24px; }
+  .claim-full { padding: 80px 24px; }
+  .frase { padding: 48px 24px; }
+  .bodas-header { padding: 60px 24px 40px; }
+  .boda-photo { margin: 20px 20px 0; }
+  .section-header { flex-direction: column; gap: 8px; }
+  .resenas-header { flex-direction: column; gap: 16px; }
+  .galeria-header { flex-direction: column; gap: 16px; }
+  .cta-btns { flex-direction: column; align-items: center; }
+  .hero-mute { bottom: 20px; right: 20px; }
+}
+</style>
+
+<script>
+  // Slider reseñas
+  let slideIndex = 0;
+  const track = document.getElementById("resenasTrack");
+  const dots = document.querySelectorAll(".resena-dot");
+  const prevBtn = document.getElementById("prevSlide");
+  const nextBtn = document.getElementById("nextSlide");
+
+  function updateSlider() {
+    if (!track) return;
+    const cards = track.querySelectorAll(".resena-card");
+    if (!cards.length) return;
+    const w = cards[0].offsetWidth + 20;
+    track.style.transform = `translateX(-${slideIndex * w}px)`;
+    dots.forEach((d, i) => d.classList.toggle("active", i === slideIndex));
+  }
+
+  function moveSlider(dir: number) {
+    const cards = track?.querySelectorAll(".resena-card");
+    if (!cards) return;
+    const max = Math.ceil(cards.length / 3) - 1;
+    slideIndex = Math.max(0, Math.min(slideIndex + dir, max));
+    updateSlider();
+  }
+
+  prevBtn?.addEventListener("click", () => moveSlider(-1));
+  nextBtn?.addEventListener("click", () => moveSlider(1));
+  dots.forEach((dot, i) => dot.addEventListener("click", () => { slideIndex = i; updateSlider(); }));
+
+  // Gallery filter
+  document.querySelectorAll(".gal-filter").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const cat = (btn as HTMLElement).dataset.cat;
+      document.querySelectorAll(".gal-filter").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      document.querySelectorAll(".gal-item").forEach(item => {
+        const el = item as HTMLElement;
+        el.style.opacity = (cat === "all" || el.dataset.cat === cat) ? "1" : "0.2";
+        el.style.transition = "opacity 0.4s";
+      });
+    });
+  });
+
+  // Hero mute toggle
+  const muteBtn = document.getElementById("muteBtn");
+  const heroVideo = document.querySelector(".hero-video") as HTMLVideoElement | null;
+  let paused = false;
+  muteBtn?.addEventListener("click", () => {
+    if (!heroVideo) return;
+    paused = !paused;
+    if (paused) { heroVideo.pause(); } else { heroVideo.play(); }
+  });
+</script>

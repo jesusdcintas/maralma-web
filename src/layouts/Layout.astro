@@ -1,0 +1,388 @@
+---
+import "../styles/global.css";
+import i18next, { t } from "i18next";
+
+interface Props {
+  title?: string;
+  description?: string;
+  darkNav?: boolean;
+}
+
+const {
+  title = t("meta.title"),
+  description = t("meta.description"),
+  darkNav = false,
+} = Astro.props;
+
+const currentPath = Astro.url.pathname;
+const currentLang = i18next.language;
+const altLang = currentLang === "es" ? "en" : "es";
+const altPath = currentLang === "es" ? `/en${currentPath}` : currentPath.replace(/^\/en/, "") || "/";
+
+const navLinks = [
+  { href: "/nosotros", label: t("nav.about") },
+  { href: "/bodas", label: t("nav.weddings") },
+  { href: "/eventos", label: t("nav.events") },
+  { href: "/galeria", label: t("nav.gallery") },
+];
+---
+
+<!doctype html>
+<html lang={currentLang}>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <!-- NAV -->
+    <nav id="navbar" class:list={[darkNav ? "nav-dark" : "nav-light"]}>
+      <a href="/" class="nav-logo">Maralma</a>
+
+      <ul class="nav-center">
+        {navLinks.map((link) => (
+          <li>
+            <a href={link.href} class:list={[currentPath.startsWith(link.href) ? "active" : ""]}>
+              {link.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+
+      <div class="nav-right">
+        <div class="lang-switcher">
+          <a href={currentLang === "es" ? "#" : altPath} class:list={["lang-btn", currentLang === "es" ? "active" : ""]}>ES</a>
+          <a href={currentLang === "en" ? "#" : altPath} class:list={["lang-btn", currentLang === "en" ? "active" : ""]}>EN</a>
+        </div>
+        <a href="/contacto" class="nav-cta">{t("nav.contact")}</a>
+      </div>
+
+      <button id="mobile-menu-btn" class="nav-mobile-btn" aria-label="Menu">
+        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+          <path d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </nav>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="mobile-menu">
+      <ul>
+        {navLinks.map((link) => (
+          <li>
+            <a href={link.href} class:list={[currentPath.startsWith(link.href) ? "active" : ""]}>
+              {link.label}
+            </a>
+          </li>
+        ))}
+        <li><a href="/contacto">{t("nav.contact")}</a></li>
+        <li><a href={altPath} class="mobile-lang">{t("nav.lang")}</a></li>
+      </ul>
+    </div>
+
+    <main>
+      <slot />
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div class="footer-left">
+        <span class="footer-copy">&copy; {new Date().getFullYear()} Maralma · {currentLang === "es" ? "Eventos gastronómicos" : "Gastronomic events"}</span>
+        <div class="footer-legal">
+          <a href="#">{t("footer.privacy")}</a>
+          <a href="#">{t("footer.legal")}</a>
+          <a href="#">{t("footer.cookies")}</a>
+        </div>
+      </div>
+      <div class="footer-logo">Maralma</div>
+      <div class="footer-right">
+        <a href="https://instagram.com/maralma.catering" target="_blank" rel="noopener noreferrer">Instagram</a>
+        <a href="https://threads.net/@maralma.catering" target="_blank" rel="noopener noreferrer">Threads</a>
+        <a href="/contacto">{t("nav.contact")}</a>
+      </div>
+    </footer>
+
+    <!-- FAB FLOTANTE -->
+    <div class="fab-group" id="fabGroup">
+      <div class="fab-actions" id="fabActions">
+        <a href="https://wa.me/34XXXXXXXXX" class="fab-action fab-wa" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/></svg>
+          {t("fab.whatsapp")}
+        </a>
+        <a href="tel:+34XXXXXXXXX" class="fab-action fab-call">
+          <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.5 2 2 0 0 1 3.6 1.32h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.96a16 16 0 0 0 6.13 6.13l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          {t("fab.call")}
+        </a>
+        <a href="https://instagram.com/maralma.catering" class="fab-action fab-ig" target="_blank" rel="noopener noreferrer">
+          <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/></svg>
+          Instagram
+        </a>
+      </div>
+      <button class="fab-main" id="fabBtn">
+        <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+          <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+        </svg>
+      </button>
+    </div>
+
+    <style>
+      /* ── NAV ── */
+      nav {
+        position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 28px 60px;
+        transition: background 0.4s, padding 0.4s, border-color 0.4s;
+      }
+
+      .nav-dark .nav-logo { color: var(--color-blanco); }
+      .nav-dark .nav-center a { color: rgba(255,255,255,0.75); }
+      .nav-dark .nav-center a:hover { color: var(--color-blanco); }
+      .nav-dark .nav-cta {
+        color: var(--color-blanco);
+        border: 0.5px solid rgba(255,255,255,0.35);
+      }
+      .nav-dark .nav-cta:hover { background: var(--color-blanco); color: var(--color-azul); }
+      .nav-dark .nav-mobile-btn { color: var(--color-blanco); }
+      .nav-dark .lang-switcher {
+        background: rgba(255,255,255,0.1);
+        border: 0.5px solid rgba(255,255,255,0.2);
+      }
+      .nav-dark .lang-btn { color: rgba(255,255,255,0.55); }
+      .nav-dark .lang-btn.active { background: var(--color-blanco); color: var(--color-azul); }
+
+      .nav-light {
+        background: rgba(253,252,250,0.97);
+        backdrop-filter: blur(14px);
+        padding: 16px 60px;
+        border-bottom: 0.5px solid var(--color-crema-oscuro);
+      }
+      .nav-light .nav-logo { color: var(--color-azul); }
+      .nav-light .nav-center a { color: var(--color-texto-suave); }
+      .nav-light .nav-center a:hover,
+      .nav-light .nav-center a.active { color: var(--color-azul); }
+      .nav-light .nav-cta {
+        color: var(--color-azul); border: 0.5px solid var(--color-azul);
+      }
+      .nav-light .nav-cta:hover { background: var(--color-azul); color: var(--color-blanco); }
+      .nav-light .nav-mobile-btn { color: var(--color-azul); }
+      .nav-light .lang-switcher {
+        background: var(--color-crema);
+        border: 0.5px solid var(--color-crema-oscuro);
+      }
+      .nav-light .lang-btn { color: var(--color-texto-suave); }
+      .nav-light .lang-btn.active { background: var(--color-azul); color: var(--color-blanco); }
+
+      nav.scrolled {
+        background: rgba(253,252,250,0.97);
+        backdrop-filter: blur(14px);
+        padding: 16px 60px;
+        border-bottom: 0.5px solid var(--color-crema-oscuro);
+      }
+      nav.scrolled .nav-logo { color: var(--color-azul); }
+      nav.scrolled .nav-center a { color: var(--color-texto-suave); }
+      nav.scrolled .nav-center a:hover { color: var(--color-azul); }
+      nav.scrolled .nav-cta { color: var(--color-azul); border-color: var(--color-azul); }
+      nav.scrolled .nav-cta:hover { background: var(--color-azul); color: var(--color-blanco); }
+      nav.scrolled .nav-mobile-btn { color: var(--color-azul); }
+      nav.scrolled .lang-switcher { background: var(--color-crema); border-color: var(--color-crema-oscuro); }
+      nav.scrolled .lang-btn { color: var(--color-texto-suave); }
+      nav.scrolled .lang-btn.active { background: var(--color-azul); color: var(--color-blanco); }
+
+      .nav-logo {
+        font-family: var(--font-serif);
+        font-size: 22px; font-weight: 400;
+        letter-spacing: 0.14em; text-decoration: none;
+        text-transform: uppercase; transition: color 0.3s;
+      }
+      .nav-center { display: flex; gap: 32px; list-style: none; }
+      .nav-center a {
+        font-family: var(--font-sans);
+        font-size: 11px; font-weight: 400;
+        letter-spacing: 0.16em; text-transform: uppercase;
+        text-decoration: none; transition: color 0.2s;
+      }
+
+      .nav-right { display: flex; align-items: center; gap: 20px; }
+      .lang-switcher {
+        display: flex; gap: 2px; padding: 4px;
+        transition: background 0.3s, border-color 0.3s;
+      }
+      .lang-btn {
+        font-family: var(--font-sans);
+        font-size: 10px; font-weight: 500; letter-spacing: 0.12em;
+        text-transform: uppercase; padding: 5px 10px;
+        text-decoration: none; transition: all 0.2s;
+      }
+      .nav-cta {
+        font-family: var(--font-sans);
+        font-size: 11px; font-weight: 500;
+        letter-spacing: 0.16em; text-transform: uppercase;
+        text-decoration: none; padding: 10px 22px;
+        transition: all 0.3s;
+      }
+      .nav-mobile-btn { display: none; background: none; border: none; cursor: pointer; }
+
+      /* ── Mobile menu ── */
+      .mobile-menu {
+        display: none;
+        position: fixed; inset: 0; z-index: 199;
+        background: rgba(253,252,250,0.98);
+        backdrop-filter: blur(12px);
+        padding-top: 100px;
+      }
+      .mobile-menu.open { display: flex; align-items: center; justify-content: center; }
+      .mobile-menu ul {
+        list-style: none; text-align: center;
+        display: flex; flex-direction: column; gap: 24px;
+      }
+      .mobile-menu a {
+        font-family: var(--font-serif);
+        font-size: 32px; font-weight: 300;
+        color: var(--color-azul); text-decoration: none;
+        transition: color 0.2s;
+      }
+      .mobile-menu a:hover { color: var(--color-azul-claro); }
+      .mobile-lang {
+        font-family: var(--font-sans) !important;
+        font-size: 12px !important; letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      /* ── FOOTER ── */
+      .site-footer {
+        background: var(--color-negro);
+        padding: 52px 60px;
+        display: grid; grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        border-top: 0.5px solid rgba(255,255,255,0.06);
+      }
+      .footer-left { display: flex; flex-direction: column; gap: 6px; }
+      .footer-copy { font-size: 11px; color: rgba(255,255,255,0.2); }
+      .footer-legal { display: flex; gap: 18px; }
+      .footer-legal a {
+        font-size: 10px; letter-spacing: 0.1em;
+        color: rgba(255,255,255,0.2); text-decoration: none;
+        transition: color 0.2s;
+      }
+      .footer-legal a:hover { color: rgba(255,255,255,0.5); }
+      .footer-logo {
+        font-family: var(--font-serif);
+        font-size: 18px; font-weight: 300;
+        letter-spacing: 0.2em; text-transform: uppercase;
+        color: rgba(255,255,255,0.25); text-align: center;
+      }
+      .footer-right {
+        display: flex; justify-content: flex-end; gap: 20px;
+      }
+      .footer-right a {
+        font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+        color: rgba(255,255,255,0.2); text-decoration: none;
+        transition: color 0.2s;
+      }
+      .footer-right a:hover { color: rgba(255,255,255,0.5); }
+
+      /* ── FAB FLOTANTE ── */
+      .fab-group {
+        position: fixed; bottom: 28px; right: 28px; z-index: 300;
+        display: flex; flex-direction: column; align-items: flex-end; gap: 10px;
+      }
+      .fab-main {
+        width: 54px; height: 54px; border-radius: 50%;
+        background: var(--color-azul); border: none; cursor: pointer;
+        display: flex; align-items: center; justify-content: center;
+        color: var(--color-blanco); transition: transform 0.3s, background 0.3s;
+        box-shadow: 0 4px 20px rgba(30,58,79,0.4);
+      }
+      .fab-main:hover { transform: scale(1.08); background: var(--color-azul-medio); }
+      .fab-main svg { width: 22px; height: 22px; transition: transform 0.3s; }
+      .fab-main.open svg { transform: rotate(45deg); }
+      .fab-actions {
+        display: flex; flex-direction: column; gap: 8px; align-items: flex-end;
+        overflow: hidden; max-height: 0;
+        transition: max-height 0.4s ease, opacity 0.3s;
+        opacity: 0;
+      }
+      .fab-actions.open { max-height: 260px; opacity: 1; }
+      .fab-action {
+        display: flex; align-items: center; gap: 10px;
+        text-decoration: none; padding: 10px 16px;
+        background: var(--color-blanco); border: 0.5px solid var(--color-crema-oscuro);
+        font-family: var(--font-sans);
+        font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+        color: var(--color-texto); transition: all 0.2s; white-space: nowrap;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      }
+      .fab-action:hover { border-color: var(--color-azul); color: var(--color-azul); }
+      .fab-action svg { width: 16px; height: 16px; flex-shrink: 0; }
+      .fab-wa { color: #25d366; }
+      .fab-wa:hover { border-color: #25d366; color: #25d366; background: #f0fff4; }
+      .fab-call:hover { border-color: var(--color-azul-claro); color: var(--color-azul); }
+      .fab-ig:hover { border-color: #c13584; color: #c13584; }
+
+      /* ── Responsive ── */
+      @media (max-width: 768px) {
+        nav { padding: 16px 24px; }
+        .nav-center, .nav-right { display: none; }
+        .nav-mobile-btn { display: block; }
+        .site-footer {
+          grid-template-columns: 1fr;
+          gap: 24px; padding: 40px 24px;
+          text-align: center;
+        }
+        .footer-left { align-items: center; }
+        .footer-legal { justify-content: center; }
+        .footer-right { justify-content: center; }
+        .fab-group { bottom: 20px; right: 20px; }
+      }
+    </style>
+
+    <script>
+      // Nav scroll
+      const navbar = document.getElementById("navbar");
+      if (navbar?.classList.contains("nav-dark")) {
+        window.addEventListener("scroll", () => {
+          navbar.classList.toggle("scrolled", window.scrollY > 80);
+        });
+      }
+
+      // Mobile menu
+      const mobileBtn = document.getElementById("mobile-menu-btn");
+      const mobileMenu = document.getElementById("mobile-menu");
+      mobileBtn?.addEventListener("click", () => {
+        mobileMenu?.classList.toggle("open");
+      });
+
+      // Reveal on scroll
+      const reveals = document.querySelectorAll(".reveal");
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) e.target.classList.add("visible");
+          });
+        },
+        { threshold: 0.1 }
+      );
+      reveals.forEach((el) => observer.observe(el));
+
+      // FAB toggle
+      const fabBtn = document.getElementById("fabBtn");
+      const fabActions = document.getElementById("fabActions");
+      fabBtn?.addEventListener("click", () => {
+        fabBtn.classList.toggle("open");
+        fabActions?.classList.toggle("open");
+      });
+      document.addEventListener("click", (e) => {
+        const fab = document.getElementById("fabGroup");
+        if (fab && !fab.contains(e.target as Node)) {
+          fabActions?.classList.remove("open");
+          fabBtn?.classList.remove("open");
+        }
+      });
+    </script>
+  </body>
+</html>

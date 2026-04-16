@@ -1,0 +1,240 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { t } from "i18next";
+export const prerender = true;
+---
+
+<Layout title={`${t("gallery.eyebrow")} · Maralma`} description="Descubre nuestros eventos, platos y montajes. Galería fotográfica de Maralma catering.">
+
+  <!-- PAGE HERO -->
+  <div class="page-hero">
+    <div class="page-hero-content">
+      <span class="page-eyebrow">Galería</span>
+      <h1 class="page-title">Momentos que<br/><em>hablan solos.</em></h1>
+      <p class="page-subtitle">Cada imagen es un recuerdo de un evento único. Nuestro trabajo, en acción.</p>
+    </div>
+  </div>
+
+  <!-- GALLERY -->
+  <section class="gallery">
+    <div class="section-header reveal">
+      <h2 class="section-title">Nuestro trabajo</h2>
+      <span class="section-eyebrow">Explora por categoría</span>
+    </div>
+
+    <div class="gallery-filters reveal">
+      <button class="gf-btn active" data-cat="all">Todos</button>
+      <button class="gf-btn" data-cat="bodas">Bodas</button>
+      <button class="gf-btn" data-cat="corporativo">Corporativo</button>
+      <button class="gf-btn" data-cat="privados">Privados</button>
+      <button class="gf-btn" data-cat="platos">Platos</button>
+    </div>
+
+    <div class="gallery-grid reveal">
+      <div class="gallery-item gi-tall" data-cat="bodas">
+        <div class="gi-bg" style="background:linear-gradient(160deg,#1a3347,#2d5169)"></div>
+        <div class="gi-overlay"><span class="gi-label">Boda — Sancti Petri</span></div>
+      </div>
+      <div class="gallery-item" data-cat="platos">
+        <div class="gi-bg" style="background:linear-gradient(160deg,#2d5169,#a8c4c8)"></div>
+        <div class="gi-overlay"><span class="gi-label">Tataki de atún rojo</span></div>
+      </div>
+      <div class="gallery-item" data-cat="corporativo">
+        <div class="gi-bg" style="background:linear-gradient(160deg,#152a38,#1e3a4f)"></div>
+        <div class="gi-overlay"><span class="gi-label">Gala corporativa</span></div>
+      </div>
+      <div class="gallery-item" data-cat="privados">
+        <div class="gi-bg" style="background:linear-gradient(160deg,#0f1f2c,#1a3347)"></div>
+        <div class="gi-overlay"><span class="gi-label">Cumpleaños privado</span></div>
+      </div>
+      <div class="gallery-item gi-tall" data-cat="platos">
+        <div class="gi-bg" style="background:linear-gradient(160deg,#1e3a4f,#2d5169)"></div>
+        <div class="gi-overlay"><span class="gi-label">Ceviche gaditano</span></div>
+      </div>
+      <div class="gallery-item" data-cat="bodas">
+        <div class="gi-bg" style="background:linear-gradient(160deg,#2d5169,#1a3347)"></div>
+        <div class="gi-overlay"><span class="gi-label">Boda — Palacio de Cádiz</span></div>
+      </div>
+      <div class="gallery-item" data-cat="corporativo">
+        <div class="gi-bg" style="background:linear-gradient(160deg,#1a3347,#0f1f2c)"></div>
+        <div class="gi-overlay"><span class="gi-label">Team building</span></div>
+      </div>
+      <div class="gallery-item gi-wide" data-cat="bodas">
+        <div class="gi-bg" style="background:linear-gradient(160deg,#152a38,#2d5169)"></div>
+        <div class="gi-overlay"><span class="gi-label">Montaje exterior</span></div>
+      </div>
+      <div class="gallery-item" data-cat="privados">
+        <div class="gi-bg" style="background:linear-gradient(160deg,#0f1f2c,#152a38)"></div>
+        <div class="gi-overlay"><span class="gi-label">Comunión</span></div>
+      </div>
+      <div class="gallery-item" data-cat="platos">
+        <div class="gi-bg" style="background:linear-gradient(160deg,#1e3a4f,#a8c4c8)"></div>
+        <div class="gi-overlay"><span class="gi-label">Postre de autor</span></div>
+      </div>
+      <div class="gallery-item" data-cat="corporativo">
+        <div class="gi-bg" style="background:linear-gradient(160deg,#152a38,#1a3347)"></div>
+        <div class="gi-overlay"><span class="gi-label">Coffee break ejecutivo</span></div>
+      </div>
+      <div class="gallery-item gi-tall" data-cat="bodas">
+        <div class="gi-bg" style="background:linear-gradient(160deg,#1a3347,#2d5169)"></div>
+        <div class="gi-overlay"><span class="gi-label">Mesa imperial</span></div>
+      </div>
+    </div>
+
+    <p class="gallery-note reveal">Las imágenes se cargarán desde Cloudinary una vez configuradas las variables de entorno.</p>
+  </section>
+
+  <!-- CTA -->
+  <section class="gallery-cta">
+    <p class="cta-eyebrow reveal">¿Te gusta lo que ves?</p>
+    <h2 class="cta-title reveal reveal-delay-1">Hagamos algo<br/>así de bonito<br/><em>para ti.</em></h2>
+    <a href="/contacto" class="btn-dark reveal reveal-delay-2">Ponerse en contacto →</a>
+  </section>
+
+</Layout>
+
+<style>
+  .page-hero {
+    background: var(--color-azul); padding: 160px 60px 80px;
+    position: relative; overflow: hidden;
+  }
+  .page-hero::after {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 80% at 80% 50%, rgba(168,196,200,0.07) 0%, transparent 60%);
+  }
+  .page-hero-content { position: relative; z-index: 1; max-width: 600px; }
+  .page-eyebrow {
+    font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase;
+    color: var(--color-azul-claro); margin-bottom: 20px; display: block;
+  }
+  .page-title {
+    font-family: var(--font-serif); font-size: clamp(44px, 6vw, 80px);
+    font-weight: 300; color: var(--color-blanco); line-height: 0.95;
+    letter-spacing: -0.01em; margin-bottom: 24px;
+  }
+  .page-title em { font-style: italic; color: var(--color-azul-claro); }
+  .page-subtitle {
+    font-family: var(--font-serif); font-style: italic; font-size: 18px;
+    font-weight: 300; color: rgba(253,252,250,0.55); line-height: 1.7;
+  }
+
+  /* GALLERY SECTION */
+  .gallery { background: var(--color-negro); padding: 100px 60px; }
+  .gallery .section-header {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin-bottom: 50px; border-bottom: 0.5px solid rgba(253,252,250,0.1); padding-bottom: 24px;
+  }
+  .gallery .section-title {
+    font-family: var(--font-serif); font-size: clamp(32px, 4vw, 52px);
+    font-weight: 300; color: var(--color-blanco); letter-spacing: -0.01em;
+  }
+  .gallery .section-eyebrow {
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: rgba(253,252,250,0.4);
+  }
+
+  .gallery-filters {
+    display: flex; gap: 6px; margin-bottom: 50px; flex-wrap: wrap;
+  }
+  .gf-btn {
+    font-family: var(--font-sans); font-size: 10px; font-weight: 500;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    background: transparent; border: 0.5px solid rgba(253,252,250,0.15);
+    color: rgba(253,252,250,0.5); padding: 10px 22px; cursor: pointer;
+    transition: all 0.3s;
+  }
+  .gf-btn:hover, .gf-btn.active {
+    background: var(--color-blanco); color: var(--color-negro);
+    border-color: var(--color-blanco);
+  }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 220px;
+    gap: 4px;
+  }
+  .gallery-item {
+    position: relative; overflow: hidden; cursor: pointer;
+  }
+  .gi-tall { grid-row: span 2; }
+  .gi-wide { grid-column: span 2; }
+  .gi-bg {
+    position: absolute; inset: 0;
+    transition: transform 0.6s ease;
+  }
+  .gallery-item:hover .gi-bg { transform: scale(1.08); }
+  .gi-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(0deg, rgba(10,20,28,0.7) 0%, transparent 50%);
+    display: flex; align-items: flex-end; padding: 20px;
+    opacity: 0; transition: opacity 0.35s;
+  }
+  .gallery-item:hover .gi-overlay { opacity: 1; }
+  .gi-label {
+    font-family: var(--font-serif); font-size: 14px; font-weight: 300;
+    color: var(--color-blanco);
+  }
+
+  .gallery-note {
+    text-align: center; font-size: 12px; font-weight: 300;
+    color: rgba(253,252,250,0.3); margin-top: 40px;
+  }
+
+  /* CTA */
+  .gallery-cta {
+    background: var(--color-crema); padding: 100px 60px; text-align: center;
+  }
+  .cta-eyebrow {
+    font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--color-texto-suave); margin-bottom: 20px;
+  }
+  .cta-title {
+    font-family: var(--font-serif); font-size: clamp(32px, 4vw, 52px);
+    font-weight: 300; color: var(--color-azul); margin-bottom: 40px; line-height: 1.1;
+  }
+  .cta-title em { font-style: italic; color: var(--color-azul-claro); }
+  .btn-dark {
+    display: inline-block; font-family: var(--font-sans);
+    font-size: 11px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--color-blanco); background: var(--color-azul);
+    padding: 14px 32px; text-decoration: none;
+    transition: background 0.3s;
+  }
+  .btn-dark:hover { background: var(--color-azul-medio); }
+
+  /* Gallery item hide/show for filter */
+  .gallery-item.hidden {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    .page-hero { padding: 120px 24px 60px; }
+    .gallery { padding: 60px 24px; }
+    .gallery-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 180px; }
+    .gi-tall { grid-row: span 2; }
+    .gi-wide { grid-column: span 1; }
+    .gallery-cta { padding: 60px 24px; }
+    .gallery .section-header { flex-direction: column; gap: 8px; }
+  }
+</style>
+
+<script>
+  const filterBtns = document.querySelectorAll('.gf-btn');
+  const items = document.querySelectorAll('.gallery-item');
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const cat = btn.getAttribute('data-cat');
+      items.forEach(item => {
+        if (cat === 'all' || item.getAttribute('data-cat') === cat) {
+          item.classList.remove('hidden');
+        } else {
+          item.classList.add('hidden');
+        }
+      });
+    });
+  });
+</script>

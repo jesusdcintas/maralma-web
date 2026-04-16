@@ -1,0 +1,272 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { t } from "i18next";
+export const prerender = true;
+---
+
+<Layout title={`${t("about.eyebrow")} · Maralma`} description="Conoce al equipo detrás de Maralma. Juan y Miriam, pasión por la gastronomía desde Cádiz.">
+
+  <!-- PAGE HERO -->
+  <div class="page-hero">
+    <div class="page-hero-content">
+      <span class="page-eyebrow">Quiénes somos</span>
+      <h1 class="page-title">Dos almas,<br/><em>un mismo sabor.</em></h1>
+      <p class="page-subtitle">Maralma nace de la unión de dos personas con la misma convicción: que cada celebración merece una experiencia gastronómica única.</p>
+    </div>
+  </div>
+
+  <!-- ABOUT SPLIT -->
+  <section class="about">
+    <div class="about-visual">
+      <div class="about-pattern"></div>
+      <div class="about-quote">
+        <span class="about-quote-mark">&ldquo;</span>
+        <p class="about-quote-text">Codo con codo, se acompañan y se completan. Así nace Maralma.</p>
+        <p class="about-quote-attr">Juan &amp; Miriam · Fundadores</p>
+      </div>
+    </div>
+    <div class="about-text-side">
+      <p class="section-eyebrow reveal">Nuestra historia</p>
+      <h2 class="section-title reveal reveal-delay-1">Creatividad y orden,<br/>fuego y mimo.</h2>
+      <p class="about-body reveal reveal-delay-2">Juan y Miriam se complementan a la perfección. Él vive en la cocina, donde cada plato cuenta algo más que una receta. Ella organiza, gestiona y cuida cada detalle para que todo fluya como si la magia se hubiese encargado sola.</p>
+      <div class="about-pills reveal reveal-delay-2">
+        <span class="pill">100% personalizado</span>
+        <span class="pill">1 boda por día</span>
+        <span class="pill">Alta cocina</span>
+        <span class="pill">Nivel nacional</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEAM -->
+  <section class="team">
+    <div class="section-header reveal">
+      <h2 class="section-title">El equipo</h2>
+      <span class="section-eyebrow">Actitud, atención y profesionalidad</span>
+    </div>
+    <div class="team-grid">
+      <div class="team-card reveal">
+        <div class="team-photo">
+          <div class="team-photo-bg tp-juan"></div>
+          <div class="team-photo-pattern"></div>
+          <div class="team-initial">J</div>
+        </div>
+        <div class="team-info">
+          <p class="team-role">Co-fundador · Chef</p>
+          <h3 class="team-name">Juan</h3>
+          <p class="team-tagline">&ldquo;Creatividad, sabor y fuego.&rdquo;</p>
+          <p class="team-bio">Es la persona que da rienda suelta a la cocina para que cada plato cuente algo más que una receta. Estudia cada idea y la lleva a cabo con sus manos.</p>
+        </div>
+      </div>
+      <div class="team-card reveal reveal-delay-1">
+        <div class="team-photo">
+          <div class="team-photo-bg tp-miriam"></div>
+          <div class="team-photo-pattern"></div>
+          <div class="team-initial">M</div>
+        </div>
+        <div class="team-info">
+          <p class="team-role">Co-fundadora · Sala &amp; Coordinación</p>
+          <h3 class="team-name">Miriam</h3>
+          <p class="team-tagline">&ldquo;Ella es orden, mimo y confianza.&rdquo;</p>
+          <p class="team-bio">Organiza, gestiona y abre camino con cada cliente. Cuida cada detalle asegurándose de que todo fluya como si la magia se hubiese encargado sola.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FILOSOFÍA -->
+  <section class="filosofia">
+    <div class="filosofia-wrap">
+      <div class="section-header reveal">
+        <h2 class="section-title">Nuestra filosofía</h2>
+        <span class="section-eyebrow">Lo que nos define</span>
+      </div>
+      <div class="filosofia-grid">
+        <div class="filosofia-card reveal">
+          <p class="fc-number">01</p>
+          <h3 class="fc-title">Producto local</h3>
+          <p class="fc-desc">Trabajamos con proveedores de Cádiz y alrededores. Producto fresco, de temporada y con denominación de origen.</p>
+        </div>
+        <div class="filosofia-card reveal reveal-delay-1">
+          <p class="fc-number">02</p>
+          <h3 class="fc-title">Un evento al día</h3>
+          <p class="fc-desc">No hacemos dos cosas a la vez. Tu evento es nuestra única prioridad ese día.</p>
+        </div>
+        <div class="filosofia-card reveal reveal-delay-2">
+          <p class="fc-number">03</p>
+          <h3 class="fc-title">100% personalizado</h3>
+          <p class="fc-desc">No tenemos carta fija. Cada menú se diseña desde cero contigo, según tus gustos y tu historia.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="contact-cta">
+    <p class="cta-eyebrow reveal">Hablemos</p>
+    <h2 class="cta-title reveal reveal-delay-1">¿Quieres conocernos<br/>en persona?</h2>
+    <p class="cta-body reveal reveal-delay-2">Nos encanta sentarnos a hablar de tu evento con un café. Cuéntanos qué tienes en mente.</p>
+    <a href="/contacto" class="btn-dark reveal reveal-delay-3">Ponerse en contacto →</a>
+  </section>
+
+</Layout>
+
+<style>
+  .page-hero {
+    background: var(--color-azul); padding: 160px 60px 80px;
+    position: relative; overflow: hidden;
+  }
+  .page-hero::after {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 80% at 80% 50%, rgba(168,196,200,0.07) 0%, transparent 60%);
+  }
+  .page-hero-content { position: relative; z-index: 1; max-width: 600px; }
+  .page-eyebrow {
+    font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase;
+    color: var(--color-azul-claro); margin-bottom: 20px; display: block;
+  }
+  .page-title {
+    font-family: var(--font-serif); font-size: clamp(44px, 6vw, 80px);
+    font-weight: 300; color: var(--color-blanco); line-height: 0.95;
+    letter-spacing: -0.01em; margin-bottom: 24px;
+  }
+  .page-title em { font-style: italic; color: var(--color-azul-claro); }
+  .page-subtitle {
+    font-family: var(--font-serif); font-style: italic; font-size: 18px;
+    font-weight: 300; color: rgba(253,252,250,0.55); line-height: 1.7;
+  }
+  .about { display: grid; grid-template-columns: 1fr 1fr; min-height: 500px; }
+  .about-visual {
+    background: var(--color-azul); position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center; min-height: 500px;
+  }
+  .about-pattern {
+    position: absolute; inset: 0;
+    background-image:
+      radial-gradient(circle at 30% 70%, rgba(168,196,200,0.12) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(45,81,105,0.8) 0%, transparent 50%);
+  }
+  .about-quote { position: relative; z-index: 1; padding: 60px; text-align: center; }
+  .about-quote-mark {
+    font-family: var(--font-serif); font-size: 120px; line-height: 0.6;
+    color: rgba(168,196,200,0.2); display: block; margin-bottom: 20px;
+  }
+  .about-quote-text {
+    font-family: var(--font-serif); font-size: clamp(20px, 2.5vw, 28px);
+    font-weight: 300; font-style: italic; color: var(--color-blanco); line-height: 1.5;
+  }
+  .about-quote-attr {
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--color-azul-claro); margin-top: 28px;
+  }
+  .about-text-side {
+    background: var(--color-crema); padding: 80px 70px;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .section-header {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin-bottom: 60px; border-bottom: 0.5px solid var(--color-crema-oscuro); padding-bottom: 24px;
+  }
+  .section-title {
+    font-family: var(--font-serif); font-size: clamp(32px, 4vw, 52px);
+    font-weight: 300; color: var(--color-azul); letter-spacing: -0.01em;
+  }
+  .section-eyebrow {
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--color-texto-suave);
+  }
+  .about-text-side .section-eyebrow { margin-bottom: 20px; }
+  .about-text-side .section-title { font-size: clamp(28px, 3vw, 42px); margin-bottom: 28px; }
+  .about-body {
+    font-size: 15px; font-weight: 300; color: var(--color-texto-suave);
+    line-height: 1.9; margin-bottom: 32px;
+  }
+  .about-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+  .pill {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--color-azul); border: 0.5px solid rgba(30,58,79,0.3); padding: 8px 14px;
+  }
+  .team { background: var(--color-blanco); padding: 100px 60px; }
+  .team-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 60px; }
+  .team-card {
+    display: grid; grid-template-columns: 220px 1fr; gap: 0;
+    overflow: hidden; border: 0.5px solid var(--color-crema-oscuro);
+  }
+  .team-photo {
+    background: var(--color-azul); position: relative; overflow: hidden;
+    min-height: 320px; display: flex; align-items: flex-end;
+  }
+  .team-photo-bg { position: absolute; inset: 0; }
+  .tp-juan { background: linear-gradient(180deg, #1a3347 0%, #2d5169 100%); }
+  .tp-miriam { background: linear-gradient(180deg, #152a38 0%, #1e3a4f 100%); }
+  .team-photo-pattern {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 30%, rgba(168,196,200,0.15) 0%, transparent 60%);
+  }
+  .team-initial {
+    position: relative; z-index: 1; font-family: var(--font-serif);
+    font-size: 100px; font-weight: 300; color: rgba(168,196,200,0.25);
+    line-height: 1; padding: 20px 24px 16px; align-self: flex-end;
+  }
+  .team-info { padding: 36px 32px; display: flex; flex-direction: column; justify-content: center; }
+  .team-role {
+    font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--color-azul-claro); margin-bottom: 10px;
+    border-left: 2px solid var(--color-azul-claro); padding-left: 10px;
+  }
+  .team-name {
+    font-family: var(--font-serif); font-size: 30px; font-weight: 300;
+    color: var(--color-azul); margin-bottom: 6px;
+  }
+  .team-tagline {
+    font-family: var(--font-serif); font-size: 14px; font-style: italic;
+    color: var(--color-texto-suave); margin-bottom: 18px;
+  }
+  .team-bio { font-size: 13px; font-weight: 300; color: var(--color-texto-suave); line-height: 1.8; }
+  .filosofia { background: var(--color-crema); padding: 100px 60px; }
+  .filosofia-wrap { max-width: 1200px; margin: 0 auto; }
+  .filosofia-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 60px; }
+  .filosofia-card { background: var(--color-blanco); padding: 48px 40px; }
+  .fc-number {
+    font-family: var(--font-serif); font-size: 11px; letter-spacing: 0.2em;
+    color: var(--color-azul-claro); margin-bottom: 16px;
+  }
+  .fc-title {
+    font-family: var(--font-serif); font-size: 24px; font-weight: 300;
+    color: var(--color-azul); margin-bottom: 14px;
+  }
+  .fc-desc { font-size: 13px; font-weight: 300; color: var(--color-texto-suave); line-height: 1.8; }
+  .contact-cta { background: var(--color-blanco); padding: 100px 60px; text-align: center; }
+  .cta-eyebrow {
+    font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--color-texto-suave); margin-bottom: 20px;
+  }
+  .cta-title {
+    font-family: var(--font-serif); font-size: clamp(32px, 4vw, 52px);
+    font-weight: 300; color: var(--color-azul); margin-bottom: 20px; line-height: 1.1;
+  }
+  .cta-body {
+    font-size: 14px; font-weight: 300; color: var(--color-texto-suave);
+    max-width: 440px; margin: 0 auto 40px; line-height: 1.9;
+  }
+  .btn-dark {
+    display: inline-block; font-family: var(--font-sans);
+    font-size: 11px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--color-blanco); background: var(--color-azul);
+    padding: 14px 32px; text-decoration: none; transition: background 0.3s;
+  }
+  .btn-dark:hover { background: var(--color-azul-medio); }
+  @media (max-width: 768px) {
+    .page-hero { padding: 120px 24px 60px; }
+    .about { grid-template-columns: 1fr; }
+    .about-text-side { padding: 48px 24px; }
+    .team { padding: 60px 24px; }
+    .team-grid { grid-template-columns: 1fr; }
+    .team-card { grid-template-columns: 1fr; }
+    .team-photo { min-height: 200px; }
+    .filosofia { padding: 60px 24px; }
+    .filosofia-grid { grid-template-columns: 1fr; }
+    .contact-cta { padding: 60px 24px; }
+    .section-header { flex-direction: column; gap: 8px; }
+  }
+</style>

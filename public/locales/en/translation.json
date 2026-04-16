@@ -1,0 +1,275 @@
+{
+  "meta": {
+    "title": "Maralma · Gastronomic Events",
+    "description": "We're not a catering company. We're a gastronomic experience. Weddings, corporate and private events in Cádiz and across Spain."
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "weddings": "Weddings",
+    "events": "Events",
+    "gallery": "Gallery",
+    "contact": "Contact",
+    "lang": "ES"
+  },
+  "hero": {
+    "eyebrow": "Cádiz · Gastronomic events · Nationwide",
+    "tagline": "The essence of sea and land, served with soul.",
+    "cta_primary": "Get in touch",
+    "cta_secondary": "Discover more",
+    "mute_pause": "⏸ Video",
+    "mute_play": "▶ Video",
+    "scroll": "scroll"
+  },
+  "claim": {
+    "text_1": "We are not",
+    "text_em_1": "a catering company.",
+    "text_2": "We are a",
+    "text_em_2": "gastronomic experience.",
+    "subtitle": "Fine dining · One event per day · 100% customised"
+  },
+  "services": {
+    "eyebrow": "Our services",
+    "title": "What are you celebrating?",
+    "label": "Events",
+    "weddings": {
+      "title": "Weddings",
+      "desc": "Cocktail or banquet. One wedding per day. Your story, your menu, your day.",
+      "link": "See weddings"
+    },
+    "corporate": {
+      "title": "Corporate",
+      "desc": "Presentations, openings, gala dinners and corporate events.",
+      "link": "Learn more"
+    },
+    "private": {
+      "title": "Private",
+      "desc": "Anniversaries, birthdays, baptisms, communions, family celebrations...",
+      "link": "Learn more"
+    }
+  },
+  "phrases": {
+    "p1_1": "Only one event per day.",
+    "p1_2": "So yours is",
+    "p1_strong": "perfect.",
+    "p2_1": "Menus designed from scratch.",
+    "p2_2": "Never the same menu twice.",
+    "p3_1": "We care for every texture,",
+    "p3_2": "every aroma, every moment."
+  },
+  "weddings": {
+    "eyebrow": "Choose your format",
+    "title": "Weddings",
+    "cocktail": {
+      "tag": "Our speciality",
+      "title_1": "Cocktail",
+      "title_2": "wedding",
+      "subtitle": "Freedom · Movement · Experience",
+      "cta": "See cocktail weddings",
+      "desc": "Gastronomic stations, live show cooking, and a free-flowing experience where your guests enjoy at their own pace.",
+      "items": ["Themed gastronomic stations", "Live show cooking", "Premium welcome cocktail", "Custom open bar and late-night snacks", "Free and dynamic format", "Allergy and diet adaptations"]
+    },
+    "banquet": {
+      "tag": "A classic we love",
+      "title_1": "Banquet",
+      "title_2": "wedding",
+      "subtitle": "Elegance · Table · Memory",
+      "cta": "See banquet weddings",
+      "desc": "Author's tasting menu, seasonal local produce, and impeccable table service to remember.",
+      "items": ["5 to 8-course tasting menu", "Seasonal local produce", "Wine pairing with local wineries", "Impeccable table service", "Author desserts and wedding cake", "Full service coordination"]
+    },
+    "page": {
+      "hero_subtitle": "We design signature menus that tell your story: from the welcome cocktail to the last toast.",
+      "phrase": "The wedding they'll remember isn't the most expensive — it's the one that tasted best.",
+      "why_title": "Why Maralma for your wedding?",
+      "why": [
+        { "title": "1 wedding per day", "desc": "We only do one wedding a day. Your event gets all our attention." },
+        { "title": "Custom menu", "desc": "We meet with you, you taste the menu, and we adjust it until it's perfect." },
+        { "title": "Chef on-site", "desc": "Juan cooks at your wedding. We don't subcontract, we don't delegate what matters." }
+      ],
+      "cta_title": "Tell us your story.",
+      "cta_body": "Every couple is different. We'd love to hear you and design something unique for you."
+    }
+  },
+  "why": {
+    "eyebrow": "What sets us apart",
+    "title": "Why Maralma?",
+    "items": [
+      {
+        "title": "One event per day",
+        "desc": "The whole team, all the attention, all the energy focused on you."
+      },
+      {
+        "title": "100% personalised",
+        "desc": "We like to meet you first. Your story inspires your menu."
+      },
+      {
+        "title": "Fine dining",
+        "desc": "Restaurant-level gastronomy brought to your celebration."
+      },
+      {
+        "title": "Nationwide",
+        "desc": "From Cádiz, we go wherever you need to celebrate."
+      }
+    ]
+  },
+  "reviews": {
+    "eyebrow": "What those who lived it say",
+    "title": "Why do they choose us?",
+    "items": [
+      {
+        "text": "The food was SPECTACULAR. Many guests told us it was the best wedding food they had ever tasted. From the very first moment we knew we were in good hands.",
+        "name": "Germán & Carmen",
+        "event": "Cocktail wedding · Cádiz 2025"
+      },
+      {
+        "text": "They adapted to all our changes with a smile. The team is incredibly professional. Every guest was impressed by the presentation and flavour of each dish.",
+        "name": "Laura & Marcos",
+        "event": "Banquet wedding · Jerez 2025"
+      },
+      {
+        "text": "We hired Maralma for my mother's 50th birthday. They designed a fully bespoke menu. Impeccable presentation and exceptional service. I recommend them without hesitation.",
+        "name": "Ana Reyes",
+        "event": "Private event · Sevilla 2024"
+      },
+      {
+        "text": "They catered our product launch. Absolutely everything was perfect. The gastronomy took the event to another level. We will definitely repeat.",
+        "name": "Pablo Moreno · CEO",
+        "event": "Corporate event · Madrid 2025"
+      },
+      {
+        "text": "Our daughter's baptism was magical thanks to them. Miriam coordinated every detail with a calmness that was contagious. And the food... unforgettable.",
+        "name": "Sofía & Javier",
+        "event": "Baptism · Cádiz 2024"
+      }
+    ]
+  },
+  "team": {
+    "eyebrow": "Who we are",
+    "title": "The team",
+    "juan": {
+      "name": "Juan",
+      "role": "Co-founder · Chef",
+      "quote": "Creativity, flavour and fire.",
+      "bio": "He gives free rein to the kitchen so every dish tells more than just a recipe. He studies each idea and brings it to life with his own hands."
+    },
+    "miriam": {
+      "name": "Miriam",
+      "role": "Co-founder · Front of house & Coordination",
+      "quote": "She is order, care and trust.",
+      "bio": "She organises, manages and paves the way for every client. She cares for every detail, making sure everything flows as if magic took care of it."
+    }
+  },
+  "gallery": {
+    "eyebrow": "Gallery",
+    "title": "Gallery",
+    "cta": "See full gallery",
+    "filters": {
+      "all": "All",
+      "weddings": "Weddings",
+      "dishes": "Dishes",
+      "events": "Events"
+    },
+    "captions": ["Wedding in Cádiz", "Scallop on fire", "Finger food", "Room setup", "Wedding detail", "Corporate event"],
+    "cta_phrase": "We care for every texture, every aroma, every moment."
+  },
+  "cta": {
+    "eyebrow": "Let's talk",
+    "title": "Tell us about your celebration.",
+    "desc": "Before any proposal, we love to get to know you. Your idea, your style, your story.",
+    "whatsapp": "WhatsApp",
+    "call": "Call us",
+    "instagram": "Instagram",
+    "form": "Contact form"
+  },
+  "fab": {
+    "whatsapp": "WhatsApp",
+    "call": "Call",
+    "instagram": "Instagram"
+  },
+  "contact": {
+    "eyebrow": "Let's talk",
+    "title": "Tell us about your event.",
+    "subtitle": "Before making any proposal, we like to get to know you. Your story, your tastes, your vision.",
+    "sidebar": {
+      "info": "Contact details",
+      "email": "Email",
+      "phone": "Phone",
+      "location": "Location",
+      "locationValue": "Cádiz · Events nationwide",
+      "social": "Social media",
+      "note": "We only do one event per day to guarantee the highest quality in every service."
+    },
+    "form": {
+      "title": "Contact form",
+      "subtitle": "Fill in the form and we'll get back to you within 24h.",
+      "yourData": "Your details",
+      "name": "Name",
+      "namePlaceholder": "Your full name",
+      "phone": "Phone",
+      "phonePlaceholder": "+34 000 000 000",
+      "email": "Email",
+      "emailPlaceholder": "you@email.com",
+      "yourEvent": "Your event",
+      "eventType": "Event type",
+      "eventTypeSelect": "Select",
+      "eventWedding": "Wedding",
+      "eventCorporate": "Corporate event",
+      "eventPrivate": "Private event",
+      "eventOther": "Other",
+      "eventDate": "Approximate date",
+      "guests": "Number of guests",
+      "guestsPlaceholder": "E.g. 80",
+      "area": "Celebration area",
+      "areaPlaceholder": "City or province",
+      "yourIdea": "Your idea",
+      "message": "Tell us",
+      "messagePlaceholder": "Tell us about your event, your food preferences, the venue you have in mind...",
+      "privacy": "By submitting you accept our",
+      "privacyLink": "privacy policy",
+      "submit": "Send message",
+      "successTitle": "Message sent",
+      "successText": "Thank you for contacting Maralma. We'll get back to you within 24 hours."
+    }
+  },
+  "about": {
+    "eyebrow": "About us",
+    "title": "The story behind the flavor.",
+    "subtitle": "Sea and Soul. Two words that sum up everything we do.",
+    "philosophy": {
+      "title": "Philosophy",
+      "items": [
+        { "title": "Produce", "desc": "From the land and sea of Cádiz to your table. Local suppliers, seasonal and traceable." },
+        { "title": "Customization", "desc": "Every menu is created from scratch. No fixed menu, just your event." },
+        { "title": "Experience", "desc": "We don't serve dishes, we create moments. Every detail matters." }
+      ]
+    }
+  },
+  "events": {
+    "eyebrow": "Events",
+    "title": "Your occasion, your way.",
+    "subtitle": "Corporate and private events with top-tier gastronomic proposals.",
+    "corporate": {
+      "title": "Corporate events",
+      "desc": "Conferences, incentives, product launches or gala dinners that leave a mark.",
+      "items": ["Executive coffee breaks and brunches", "Gala dinners with wine pairing", "Gastronomic team building", "Full service: setup, staff, coordination"]
+    },
+    "private": {
+      "title": "Private events",
+      "desc": "Birthdays, baptisms, communions, anniversaries. We bring the flavor, you bring the joy.",
+      "items": ["Menus adapted for all ages", "Flexible formats: buffet, plated, stations", "Custom desserts and cake", "Service at any venue"]
+    },
+    "cta": "Request a quote",
+    "page": {
+      "phrase": "The best deals are sealed around a great table.",
+      "cta_title": "Tell us what you have in mind.",
+      "cta_body": "Let's design a custom proposal for your event together."
+    }
+  },
+  "footer": {
+    "copy": "© {year} Maralma · Gastronomic events",
+    "privacy": "Privacy policy",
+    "legal": "Legal notice",
+    "cookies": "Cookies"
+  }
+}

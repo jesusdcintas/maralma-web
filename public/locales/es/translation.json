@@ -1,0 +1,275 @@
+{
+  "meta": {
+    "title": "Maralma · Eventos Gastronómicos",
+    "description": "No somos un catering. Somos una experiencia gastronómica. Bodas, eventos corporativos y privados en Cádiz y toda España."
+  },
+  "nav": {
+    "home": "Inicio",
+    "about": "Nosotros",
+    "weddings": "Bodas",
+    "events": "Eventos",
+    "gallery": "Galería",
+    "contact": "Contacto",
+    "lang": "EN"
+  },
+  "hero": {
+    "eyebrow": "Cádiz · Eventos gastronómicos · Nacional",
+    "tagline": "La esencia del mar y la tierra, servida con alma.",
+    "cta_primary": "Contactar",
+    "cta_secondary": "Descubrir más",
+    "mute_pause": "⏸ Vídeo",
+    "mute_play": "▶ Vídeo",
+    "scroll": "scroll"
+  },
+  "claim": {
+    "text_1": "No somos",
+    "text_em_1": "un catering.",
+    "text_2": "Somos una experiencia",
+    "text_em_2": "gastronómica.",
+    "subtitle": "Alta cocina · Solo un evento por día · 100% personalizado"
+  },
+  "services": {
+    "eyebrow": "Nuestros servicios",
+    "title": "¿Qué celebras?",
+    "label": "Eventos",
+    "weddings": {
+      "title": "Bodas",
+      "desc": "Cóctel o banquete. Un solo evento al día. Tu historia, tu menú, tu día.",
+      "link": "Ver bodas"
+    },
+    "corporate": {
+      "title": "Corporativos",
+      "desc": "Presentaciones, inauguraciones, banquetes de gala y eventos de empresa.",
+      "link": "Saber más"
+    },
+    "private": {
+      "title": "Privados",
+      "desc": "Aniversarios, cumpleaños, bautizos, comuniones, celebraciones familiares...",
+      "link": "Saber más"
+    }
+  },
+  "phrases": {
+    "p1_1": "Solo un evento al día.",
+    "p1_2": "Para que el tuyo sea",
+    "p1_strong": "perfecto.",
+    "p2_1": "Menús diseñados desde cero.",
+    "p2_2": "Nunca el mismo menú dos veces.",
+    "p3_1": "Cuidamos cada textura,",
+    "p3_2": "cada aroma, cada instante."
+  },
+  "weddings": {
+    "eyebrow": "Elige tu formato",
+    "title": "Bodas",
+    "cocktail": {
+      "tag": "Nuestra especialidad",
+      "title_1": "Boda tipo",
+      "title_2": "cóctel",
+      "subtitle": "Libertad · Movimiento · Experiencia",
+      "cta": "Ver bodas cóctel",
+      "desc": "Estaciones gastronómicas, show cooking en vivo y una experiencia libre donde tus invitados disfrutan a su ritmo.",
+      "items": ["Estaciones gastronómicas temáticas", "Show cooking en vivo", "Cóctel de bienvenida premium", "Barra libre y recena personalizadas", "Formato libre y dinámico", "Adaptaciones a intolerancias"]
+    },
+    "banquet": {
+      "tag": "Un clásico que nos encanta",
+      "title_1": "Boda tipo",
+      "title_2": "banquete",
+      "subtitle": "Elegancia · Mesa · Recuerdo",
+      "cta": "Ver bodas banquete",
+      "desc": "Menú degustación de autor, producto local de temporada y un servicio de mesa impecable para recordar.",
+      "items": ["Menú degustación de 5 a 8 pases", "Producto local de temporada", "Maridaje con bodegueros de la zona", "Servicio de mesa impecable", "Postres de autor y tarta nupcial", "Coordinación integral del servicio"]
+    },
+    "page": {
+      "hero_subtitle": "Diseñamos menús de autor que cuentan vuestra historia: desde el cóctel de bienvenida hasta el último brindis.",
+      "phrase": "La boda que recordarán no es la más cara, es la que mejor sabe.",
+      "why_title": "¿Por qué Maralma para tu boda?",
+      "why": [
+        { "title": "1 boda por día", "desc": "Solo hacemos una boda al día. Tu evento tiene toda nuestra atención." },
+        { "title": "Menú a medida", "desc": "Nos reunimos contigo, probáis el menú y lo ajustamos hasta que sea perfecto." },
+        { "title": "Chef in situ", "desc": "Juan cocina en tu boda. No subcontratamos, no delegamos lo importante." }
+      ],
+      "cta_title": "Cuéntanos vuestra historia.",
+      "cta_body": "Cada pareja es diferente. Nos encantará escucharos y diseñar algo único para vosotros."
+    }
+  },
+  "why": {
+    "eyebrow": "Nuestros diferenciales",
+    "title": "¿Por qué Maralma?",
+    "items": [
+      {
+        "title": "Un evento al día",
+        "desc": "Todo el equipo, toda la atención, toda la energía volcada en ti."
+      },
+      {
+        "title": "100% personalizado",
+        "desc": "Nos gusta conocerte antes. Tu historia inspira tu menú."
+      },
+      {
+        "title": "Alta cocina",
+        "desc": "Nivel gastronómico de restaurante llevado a tu celebración."
+      },
+      {
+        "title": "A nivel nacional",
+        "desc": "Desde Cádiz, llegamos a donde tú necesites celebrar."
+      }
+    ]
+  },
+  "reviews": {
+    "eyebrow": "Lo que dicen los que ya lo vivieron",
+    "title": "¿Por qué nos eligen?",
+    "items": [
+      {
+        "text": "La comida estuvo ESPECTACULAR. Mucha gente nos dijo que fue la boda en la que mejor habían comido en sus vidas. Desde el primer momento supimos que estábamos en buenas manos.",
+        "name": "Germán & Carmen",
+        "event": "Boda cóctel · Cádiz 2025"
+      },
+      {
+        "text": "Se adaptaron a todos nuestros cambios con una sonrisa. El equipo es increíblemente profesional. Cada invitado quedó impresionado con la presentación y el sabor de cada plato.",
+        "name": "Laura & Marcos",
+        "event": "Boda banquete · Jerez 2025"
+      },
+      {
+        "text": "Contratamos a Maralma para el 50 cumpleaños de mi madre. Diseñaron un menú completamente a medida. La presentación impecable y el trato excepcional. Lo recomiendo sin dudarlo.",
+        "name": "Ana Reyes",
+        "event": "Evento privado · Sevilla 2024"
+      },
+      {
+        "text": "Organizaron el catering de nuestra presentación de producto. Absolutamente todo fue perfecto. La gastronomía elevó el evento a otro nivel. Repetiremos sin duda.",
+        "name": "Pablo Moreno · CEO",
+        "event": "Evento corporativo · Madrid 2025"
+      },
+      {
+        "text": "El bautizo de nuestra hija fue mágico gracias a ellos. Miriam estuvo coordinando cada detalle con una tranquilidad que nos contagió. Y la comida… inolvidable.",
+        "name": "Sofía & Javier",
+        "event": "Bautizo · Cádiz 2024"
+      }
+    ]
+  },
+  "team": {
+    "eyebrow": "Quiénes somos",
+    "title": "El equipo",
+    "juan": {
+      "name": "Juan",
+      "role": "Co-fundador · Chef",
+      "quote": "Creatividad, sabor y fuego.",
+      "bio": "Es la persona que da rienda suelta a la cocina para que cada plato cuente algo más que una receta. Estudia cada idea y la lleva a cabo con sus manos."
+    },
+    "miriam": {
+      "name": "Miriam",
+      "role": "Co-fundadora · Sala & Coordinación",
+      "quote": "Ella es orden, mimo y confianza.",
+      "bio": "Organiza, gestiona y abre camino con cada cliente. Cuida cada detalle asegurándose de que todo fluya como si la magia se hubiese encargado sola."
+    }
+  },
+  "gallery": {
+    "eyebrow": "Galería",
+    "title": "Galería",
+    "cta": "Ver galería completa",
+    "filters": {
+      "all": "Todo",
+      "weddings": "Bodas",
+      "dishes": "Platos",
+      "events": "Eventos"
+    },
+    "captions": ["Boda en Cádiz", "Vieira al fuego", "Finger food", "Montaje de sala", "Detalle nupcial", "Evento corporativo"],
+    "cta_phrase": "Cuidamos cada textura, cada aroma, cada instante."
+  },
+  "cta": {
+    "eyebrow": "Hablemos",
+    "title": "Cuéntanos tu celebración.",
+    "desc": "Antes de cualquier propuesta, nos gusta conocerte. Tu idea, tu estilo, tu historia.",
+    "whatsapp": "WhatsApp",
+    "call": "Llamar",
+    "instagram": "Instagram",
+    "form": "Formulario"
+  },
+  "fab": {
+    "whatsapp": "WhatsApp",
+    "call": "Llamar",
+    "instagram": "Instagram"
+  },
+  "contact": {
+    "eyebrow": "Hablemos",
+    "title": "Cuéntanos tu evento.",
+    "subtitle": "Antes de hacer cualquier propuesta, nos gusta conocerte. Tu historia, tus gustos, tu idea.",
+    "sidebar": {
+      "info": "Datos de contacto",
+      "email": "Email",
+      "phone": "Teléfono",
+      "location": "Ubicación",
+      "locationValue": "Cádiz · Eventos a nivel nacional",
+      "social": "Redes sociales",
+      "note": "Solo realizamos un evento por día para garantizar la máxima calidad en cada servicio."
+    },
+    "form": {
+      "title": "Formulario de contacto",
+      "subtitle": "Rellena el formulario y nos pondremos en contacto contigo en menos de 24h.",
+      "yourData": "Tus datos",
+      "name": "Nombre",
+      "namePlaceholder": "Tu nombre completo",
+      "phone": "Teléfono",
+      "phonePlaceholder": "+34 000 000 000",
+      "email": "Email",
+      "emailPlaceholder": "tu@email.com",
+      "yourEvent": "Tu evento",
+      "eventType": "Tipo de evento",
+      "eventTypeSelect": "Seleccionar",
+      "eventWedding": "Boda",
+      "eventCorporate": "Evento corporativo",
+      "eventPrivate": "Evento privado",
+      "eventOther": "Otro",
+      "eventDate": "Fecha aproximada",
+      "guests": "Número de comensales",
+      "guestsPlaceholder": "Ej: 80",
+      "area": "Zona de celebración",
+      "areaPlaceholder": "Ciudad o provincia",
+      "yourIdea": "Tu idea",
+      "message": "Cuéntanos",
+      "messagePlaceholder": "Háblanos de tu evento, tus gustos gastronómicos, el espacio que tienes en mente...",
+      "privacy": "Al enviar aceptas nuestra",
+      "privacyLink": "política de privacidad",
+      "submit": "Enviar mensaje",
+      "successTitle": "Mensaje enviado",
+      "successText": "Gracias por contactar con Maralma. Nos pondremos en contacto contigo en menos de 24h."
+    }
+  },
+  "about": {
+    "eyebrow": "Nosotros",
+    "title": "La historia detrás del sabor.",
+    "subtitle": "Mar y Alma. Dos palabras que resumen todo lo que hacemos.",
+    "philosophy": {
+      "title": "Filosofía",
+      "items": [
+        { "title": "Producto", "desc": "De la tierra y el mar de Cádiz a tu mesa. Proveedores locales, temporada y trazabilidad." },
+        { "title": "Personalización", "desc": "Cada menú se crea desde cero. No hay carta fija, solo tu evento." },
+        { "title": "Experiencia", "desc": "No servimos platos, creamos momentos. Cada detalle cuenta." }
+      ]
+    }
+  },
+  "events": {
+    "eyebrow": "Eventos",
+    "title": "Tu ocasión, tu manera.",
+    "subtitle": "Corporativos y privados con propuesta gastronómica de nivel.",
+    "corporate": {
+      "title": "Eventos corporativos",
+      "desc": "Jornadas, incentivos, presentaciones de producto o cenas de gala que dejan huella.",
+      "items": ["Coffee breaks y brunchs ejecutivos", "Cenas de gala con maridaje", "Team building gastronómico", "Servicio integral: montaje, personal, coordinación"]
+    },
+    "private": {
+      "title": "Eventos privados",
+      "desc": "Cumpleaños, bautizos, comuniones, aniversarios. Nosotros ponemos el sabor, vosotros la alegría.",
+      "items": ["Menús adaptados a todas las edades", "Formatos flexibles: buffet, servido, estaciones", "Postres y tarta personalizados", "Servicio en cualquier ubicación"]
+    },
+    "cta": "Solicitar presupuesto",
+    "page": {
+      "phrase": "Los mejores acuerdos se cierran alrededor de una buena mesa.",
+      "cta_title": "Cuéntanos qué tienes en mente.",
+      "cta_body": "Diseñamos juntos una propuesta a medida para tu evento."
+    }
+  },
+  "footer": {
+    "copy": "© {year} Maralma · Eventos gastronómicos",
+    "privacy": "Política de privacidad",
+    "legal": "Aviso legal",
+    "cookies": "Cookies"
+  }
+}

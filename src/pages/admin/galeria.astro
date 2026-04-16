@@ -1,0 +1,748 @@
+---
+import Layout from "../../layouts/Layout.astro";
+export const prerender = true;
+---
+
+<Layout title="Galería · Admin · Maralma">
+  <div class="admin-wrap">
+    <div class="admin-container"
+         id="gallery-app"
+         data-cloud-name={import.meta.env.CLOUDINARY_CLOUD_NAME}
+         data-upload-preset={import.meta.env.PUBLIC_CLOUDINARY_UPLOAD_PRESET}>
+
+      <!-- AUTH GATE -->
+      <div id="auth-gate" class="auth-gate">
+        <p class="auth-msg">Verificando sesión…</p>
+      </div>
+
+      <!-- GALLERY PANEL (hidden until auth) -->
+      <div id="gallery-panel" class="hidden">
+
+        <!-- HEADER -->
+        <div class="gal-header">
+          <div>
+            <a href="/admin" class="back-link">← Panel</a>
+            <h1 class="gal-title">Galería de imágenes</h1>
+          </div>
+          <button id="logout-btn" class="panel-logout">Cerrar sesión</button>
+        </div>
+
+        <!-- CATEGORY TABS -->
+        <div class="cat-tabs" id="catTabs">
+          <button class="cat-tab active" data-folder="maralma">Todas</button>
+          <button class="cat-tab" data-folder="maralma/bodas">Bodas</button>
+          <button class="cat-tab" data-folder="maralma/corporativo">Corporativo</button>
+          <button class="cat-tab" data-folder="maralma/privados">Privados</button>
+          <button class="cat-tab" data-folder="maralma/platos">Platos</button>
+          <button class="cat-tab" data-folder="maralma/hero">Hero</button>
+          <button class="cat-tab" data-folder="maralma/equipo">Equipo</button>
+          <button class="cat-tab" data-folder="maralma/recursos">Recursos</button>
+        </div>
+
+        <!-- TOOLBAR -->
+        <div class="gal-toolbar" id="galToolbar">
+          <button class="toolbar-btn" id="selectModeBtn">Seleccionar</button>
+          <button class="toolbar-btn hidden" id="selectAllBtn">Seleccionar todas</button>
+        </div>
+
+        <!-- BULK ACTION BAR -->
+        <div class="bulk-bar hidden" id="bulkBar">
+          <span class="bulk-count" id="bulkCount">0 seleccionadas</span>
+          <div class="bulk-actions">
+            <button class="toolbar-btn" id="bulkCancelBtn">Cancelar</button>
+            <button class="toolbar-btn bulk-delete-btn" id="bulkDeleteBtn">Eliminar seleccionadas</button>
+          </div>
+        </div>
+
+        <!-- UPLOAD ZONE -->
+        <div class="upload-zone" id="uploadZone">
+          <div class="uz-icon">
+            <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.2" viewBox="0 0 24 24">
+              <path d="M12 16V4m0 0l-4 4m4-4l4 4"/>
+              <path d="M20 16v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2"/>
+            </svg>
+          </div>
+          <p class="uz-text">Arrastra imágenes aquí o <label for="fileInput" class="uz-link">selecciona archivos</label></p>
+          <p class="uz-sub">JPG, PNG, WebP · Se comprimen automaticamente antes de subir</p>
+          <input type="file" id="fileInput" multiple accept="image/*" class="hidden" />
+          <p class="uz-cat">Carpeta destino: <strong id="folderLabel">maralma</strong></p>
+        </div>
+
+        <!-- UPLOAD PROGRESS -->
+        <div id="uploadProgress" class="upload-progress hidden"></div>
+
+        <!-- IMAGE GRID -->
+        <div class="img-grid" id="imgGrid">
+          <p class="grid-loading" id="gridLoading">Cargando imágenes…</p>
+        </div>
+
+        <!-- EMPTY STATE -->
+        <p class="grid-empty hidden" id="gridEmpty">No hay imágenes en esta carpeta.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CUSTOM MODAL -->
+  <div class="modal-overlay hidden" id="modalOverlay">
+    <div class="modal-box">
+      <p class="modal-text" id="modalText"></p>
+      <div class="modal-actions" id="modalActions"></div>
+    </div>
+  </div>
+</Layout>
+
+<style is:global>
+  .admin-wrap { background: var(--color-blanco); padding: 120px 60px 100px; min-height: 100vh; }
+  .admin-container { max-width: 960px; margin: 0 auto; }
+  .hidden { display: none !important; }
+
+  /* AUTH */
+  .auth-gate { text-align: center; padding: 80px 0; }
+  .auth-msg { font-size: 13px; color: var(--color-texto-suave); }
+
+  /* HEADER */
+  .gal-header {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 32px; padding-bottom: 20px;
+    border-bottom: 0.5px solid var(--color-crema-oscuro);
+  }
+  .back-link {
+    font-size: 11px; color: var(--color-texto-suave); text-decoration: none;
+    letter-spacing: 0.08em; display: block; margin-bottom: 8px;
+  }
+  .back-link:hover { color: var(--color-azul); }
+  .gal-title {
+    font-family: var(--font-serif); font-size: 28px; font-weight: 300;
+    color: var(--color-azul);
+  }
+  .panel-logout {
+    font-size: 12px; color: var(--color-texto-suave); background: none;
+    border: none; cursor: pointer; text-decoration: underline;
+  }
+
+  /* CATEGORY TABS */
+  .cat-tabs {
+    display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 24px;
+  }
+  .cat-tab {
+    font-family: var(--font-sans); font-size: 10px; font-weight: 500;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--color-texto-suave); background: transparent;
+    border: 0.5px solid var(--color-crema-oscuro); padding: 9px 18px;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .cat-tab:hover { border-color: var(--color-azul); color: var(--color-azul); }
+  .cat-tab.active {
+    background: var(--color-azul); color: var(--color-blanco);
+    border-color: var(--color-azul);
+  }
+
+  /* UPLOAD ZONE */
+  .upload-zone {
+    border: 1.5px dashed var(--color-crema-oscuro);
+    padding: 40px; text-align: center; margin-bottom: 32px;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .upload-zone.dragover {
+    border-color: var(--color-azul-claro); background: rgba(168,196,200,0.06);
+  }
+  .uz-icon { color: var(--color-azul-claro); margin-bottom: 12px; }
+  .uz-text { font-size: 13px; color: var(--color-texto); font-weight: 300; margin-bottom: 6px; }
+  .uz-link {
+    color: var(--color-azul); text-decoration: underline; cursor: pointer;
+    font-weight: 400;
+  }
+  .uz-sub { font-size: 11px; color: var(--color-texto-suave); font-weight: 300; }
+  .uz-cat {
+    font-size: 10px; color: var(--color-texto-suave); margin-top: 12px;
+    letter-spacing: 0.06em;
+  }
+  .uz-cat strong { color: var(--color-azul); }
+
+  /* UPLOAD PROGRESS */
+  .upload-progress {
+    display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px;
+  }
+  .up-item {
+    display: flex; align-items: center; gap: 12px;
+    font-size: 12px; color: var(--color-texto-suave); padding: 10px 14px;
+    background: var(--color-crema);
+  }
+  .up-item .up-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .up-item .up-bar {
+    width: 80px; height: 3px; background: var(--color-crema-oscuro); position: relative;
+  }
+  .up-item .up-fill {
+    height: 100%; background: var(--color-azul-claro); transition: width 0.2s;
+  }
+  .up-item.done { opacity: 0.5; }
+  .up-item.error .up-name { color: #b91c1c; }
+
+  /* IMAGE GRID */
+  .img-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 12px;
+  }
+  .grid-loading { grid-column: 1 / -1; text-align: center; font-size: 13px; color: var(--color-texto-suave); padding: 40px 0; }
+  .grid-empty { text-align: center; font-size: 13px; color: var(--color-texto-suave); padding: 40px 0; }
+
+  .img-card {
+    position: relative; aspect-ratio: 1;
+    overflow: hidden; background: var(--color-crema);
+    border: 0.5px solid var(--color-crema-oscuro);
+  }
+  .img-card img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.3s;
+  }
+  .img-card:hover img { transform: scale(1.04); }
+  .img-card .ic-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 50%);
+    opacity: 1; display: flex;
+    align-items: flex-end; padding: 10px;
+  }
+  .ic-info {
+    flex: 1; font-size: 9px; color: rgba(255,255,255,0.8);
+    line-height: 1.4; overflow: hidden;
+    text-overflow: ellipsis; white-space: nowrap;
+  }
+  .ic-delete {
+    width: 28px; height: 28px; background: rgba(185,28,28,0.85);
+    border: none; color: white; cursor: pointer; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s;
+  }
+  .ic-delete:hover { background: rgba(185,28,28,1); }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 1000;
+    background: rgba(15,26,32,0.55); backdrop-filter: blur(4px);
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px;
+  }
+  .modal-box {
+    background: var(--color-blanco); max-width: 400px; width: 100%;
+    padding: 40px 36px 32px; text-align: center;
+    border: 0.5px solid var(--color-crema-oscuro);
+    animation: modalIn 0.25s ease;
+  }
+  @keyframes modalIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  .modal-text {
+    font-family: var(--font-sans); font-size: 14px; font-weight: 300;
+    color: var(--color-texto); line-height: 1.7; margin-bottom: 28px;
+  }
+  .modal-actions { display: flex; gap: 10px; justify-content: center; }
+  .modal-btn {
+    font-family: var(--font-sans); font-size: 10px; font-weight: 500;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    padding: 12px 28px; cursor: pointer; transition: all 0.2s;
+    border: 0.5px solid var(--color-crema-oscuro);
+    background: transparent; color: var(--color-texto-suave);
+  }
+  .modal-btn:hover { border-color: var(--color-azul); color: var(--color-azul); }
+  .modal-btn.primary {
+    background: var(--color-azul); color: var(--color-blanco);
+    border-color: var(--color-azul);
+  }
+  .modal-btn.primary:hover { background: var(--color-azul-medio); }
+  .modal-btn.danger {
+    background: #7f1d1d; color: var(--color-blanco);
+    border-color: #7f1d1d;
+  }
+  .modal-btn.danger:hover { background: #991b1b; }
+
+  /* TOOLBAR */
+  .gal-toolbar {
+    display: flex; gap: 8px; margin-bottom: 16px;
+  }
+  .toolbar-btn {
+    font-family: var(--font-sans); font-size: 10px; font-weight: 500;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--color-texto-suave); background: transparent;
+    border: 0.5px solid var(--color-crema-oscuro); padding: 8px 18px;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .toolbar-btn:hover { border-color: var(--color-azul); color: var(--color-azul); }
+  .toolbar-btn.active {
+    background: var(--color-azul); color: var(--color-blanco);
+    border-color: var(--color-azul);
+  }
+
+  /* BULK BAR */
+  .bulk-bar {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 500;
+    background: var(--color-azul); padding: 16px 40px;
+    display: flex; align-items: center; justify-content: space-between;
+    animation: slideUp 0.25s ease;
+  }
+  @keyframes slideUp { from { transform: translateY(100%); } to { transform: none; } }
+  .bulk-count {
+    font-family: var(--font-sans); font-size: 12px; font-weight: 400;
+    letter-spacing: 0.08em; color: var(--color-blanco);
+  }
+  .bulk-actions { display: flex; gap: 10px; }
+  .bulk-delete-btn {
+    background: #7f1d1d !important; color: var(--color-blanco) !important;
+    border-color: #7f1d1d !important;
+  }
+  .bulk-delete-btn:hover { background: #991b1b !important; }
+  .bulk-bar .toolbar-btn {
+    border-color: rgba(255,255,255,0.3); color: rgba(255,255,255,0.8);
+  }
+  .bulk-bar .toolbar-btn:hover {
+    border-color: var(--color-blanco); color: var(--color-blanco);
+  }
+
+  /* SELECTION MODE */
+  .img-card .ic-check {
+    position: absolute; top: 8px; left: 8px; z-index: 3;
+    width: 22px; height: 22px; border-radius: 50%;
+    border: 1.5px solid rgba(255,255,255,0.6); background: rgba(0,0,0,0.25);
+    display: none; align-items: center; justify-content: center;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .select-mode .img-card .ic-check { display: flex; }
+  .img-card.selected .ic-check {
+    background: var(--color-azul); border-color: var(--color-azul);
+  }
+  .img-card.selected .ic-check svg { opacity: 1; }
+  .img-card .ic-check svg { opacity: 0; transition: opacity 0.15s; }
+  .select-mode .img-card { cursor: pointer; }
+
+  @media (max-width: 768px) {
+    .admin-wrap { padding: 100px 16px 60px; }
+    .img-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+    .upload-zone { padding: 28px 16px; }
+  }
+</style>
+
+<script>
+  import { createClient } from "@supabase/supabase-js";
+  import { compressImage } from "../../utils/compressImage";
+
+  const supabase = createClient(
+    import.meta.env.PUBLIC_SUPABASE_URL,
+    import.meta.env.PUBLIC_SUPABASE_ANON_KEY,
+  );
+
+  // DOM refs
+  const app = document.getElementById("gallery-app") as HTMLDivElement;
+  const authGate = document.getElementById("auth-gate") as HTMLDivElement;
+  const panel = document.getElementById("gallery-panel") as HTMLDivElement;
+  const logoutBtn = document.getElementById("logout-btn") as HTMLButtonElement;
+  const catTabs = document.getElementById("catTabs") as HTMLDivElement;
+  const uploadZone = document.getElementById("uploadZone") as HTMLDivElement;
+  const fileInput = document.getElementById("fileInput") as HTMLInputElement;
+  const folderLabel = document.getElementById("folderLabel") as HTMLElement;
+  const uploadProgress = document.getElementById("uploadProgress") as HTMLDivElement;
+  const imgGrid = document.getElementById("imgGrid") as HTMLDivElement;
+  const gridLoading = document.getElementById("gridLoading") as HTMLParagraphElement;
+  const gridEmpty = document.getElementById("gridEmpty") as HTMLParagraphElement;
+
+  const cloudName = app.dataset.cloudName!;
+  const uploadPreset = app.dataset.uploadPreset!;
+
+  let currentFolder = "maralma";
+  let accessToken = "";
+
+  function formatSize(bytes: number): string {
+    if (bytes < 1024) return bytes + " B";
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(0) + " KB";
+    return (bytes / (1024 * 1024)).toFixed(1) + " MB";
+  }
+
+  // ─── AUTH ───
+  const { data: { session } } = await supabase.auth.getSession();
+  if (session) {
+    accessToken = session.access_token;
+    authGate.classList.add("hidden");
+    panel.classList.remove("hidden");
+    loadImages();
+  } else {
+    (authGate.querySelector(".auth-msg") as HTMLParagraphElement).textContent =
+      "No tienes sesión activa.";
+    const link = document.createElement("a");
+    link.href = "/admin";
+    link.textContent = "Ir al login →";
+    link.style.cssText = "display:block;margin-top:12px;font-size:13px;color:var(--color-azul);";
+    authGate.appendChild(link);
+  }
+
+  logoutBtn?.addEventListener("click", async () => {
+    await supabase.auth.signOut();
+    window.location.href = "/admin";
+  });
+
+  // ─── CATEGORY TABS ───
+  catTabs.addEventListener("click", (e) => {
+    const btn = (e.target as HTMLElement).closest(".cat-tab") as HTMLButtonElement | null;
+    if (!btn) return;
+    catTabs.querySelectorAll(".cat-tab").forEach((t) => t.classList.remove("active"));
+    btn.classList.add("active");
+    currentFolder = btn.dataset.folder!;
+    folderLabel.textContent = currentFolder;
+    loadImages();
+  });
+
+  // ─── DRAG & DROP ───
+  uploadZone.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    uploadZone.classList.add("dragover");
+  });
+  uploadZone.addEventListener("dragleave", () => uploadZone.classList.remove("dragover"));
+  uploadZone.addEventListener("drop", (e) => {
+    e.preventDefault();
+    uploadZone.classList.remove("dragover");
+    if (e.dataTransfer?.files.length) uploadFiles(e.dataTransfer.files);
+  });
+  fileInput.addEventListener("change", () => {
+    if (fileInput.files?.length) uploadFiles(fileInput.files);
+    fileInput.value = "";
+  });
+
+  // ─── UPLOAD (with compression) ───
+  async function uploadFiles(files: FileList) {
+    uploadProgress.classList.remove("hidden");
+    uploadProgress.innerHTML = "";
+
+    const folder = currentFolder === "maralma" ? "maralma" : currentFolder;
+
+    for (const file of Array.from(files)) {
+      if (!file.type.startsWith("image/")) continue;
+
+      const row = document.createElement("div");
+      row.className = "up-item";
+      const nameEl = document.createElement("span");
+      nameEl.className = "up-name";
+      nameEl.textContent = "Comprimiendo " + file.name + " (" + formatSize(file.size) + ")…";
+      row.appendChild(nameEl);
+      const barDiv = document.createElement("div");
+      barDiv.className = "up-bar";
+      barDiv.innerHTML = '<div class="up-fill" style="width:0%"></div>';
+      row.appendChild(barDiv);
+      uploadProgress.appendChild(row);
+
+      const fill = row.querySelector(".up-fill") as HTMLDivElement;
+
+      try {
+        // 1. Compress
+        const compressed = await compressImage(file);
+        nameEl.textContent = "Subiendo " + compressed.name + " (" + formatSize(compressed.size) + ")…";
+
+        // 2. Upload to Cloudinary
+        const fd = new FormData();
+        fd.append("file", compressed);
+        fd.append("upload_preset", uploadPreset);
+        fd.append("folder", folder);
+
+        const cloudResponse: { public_id: string; secure_url: string; width: number; height: number; bytes: number; format: string } =
+          await new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "https://api.cloudinary.com/v1_1/" + cloudName + "/image/upload");
+            xhr.upload.addEventListener("progress", (pe) => {
+              if (pe.lengthComputable) {
+                fill.style.width = Math.round((pe.loaded / pe.total) * 100) + "%";
+              }
+            });
+            xhr.onload = () => {
+              if (xhr.status >= 200 && xhr.status < 300) {
+                resolve(JSON.parse(xhr.responseText));
+              } else {
+                reject(new Error("Upload failed"));
+              }
+            };
+            xhr.onerror = () => reject(new Error("Network error"));
+            xhr.send(fd);
+          });
+
+        // 3. Save to Supabase gallery table
+        // Map Cloudinary folder to categoria (e.g. "maralma/bodas" → "bodas")
+        const categoria = folder === "maralma" ? "general" : folder.replace("maralma/", "");
+        await fetch("/api/gallery/save", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + accessToken,
+          },
+          body: JSON.stringify({
+            public_id: cloudResponse.public_id,
+            url: cloudResponse.secure_url,
+            categoria,
+          }),
+        });
+
+        // 4. Done
+        row.classList.add("done");
+        nameEl.textContent = compressed.name + " — Subida completada";
+      } catch {
+        row.classList.add("error");
+        nameEl.textContent = file.name + " — Error al subir";
+      }
+    }
+
+    loadImages();
+  }
+
+  // ─── LOAD IMAGES ───
+  async function loadImages() {
+    gridLoading.classList.remove("hidden");
+    gridEmpty.classList.add("hidden");
+    imgGrid.querySelectorAll(".img-card").forEach((c) => c.remove());
+
+    try {
+      const res = await fetch("/api/admin/images?folder=" + encodeURIComponent(currentFolder), {
+        headers: { Authorization: "Bearer " + accessToken },
+      });
+      if (!res.ok) throw new Error("Fetch failed");
+      const images: Array<{ public_id: string; secure_url: string; width: number; height: number; bytes: number; format: string }> = await res.json();
+
+      gridLoading.classList.add("hidden");
+
+      if (!images.length) {
+        gridEmpty.classList.remove("hidden");
+        return;
+      }
+
+      for (const img of images) {
+        const thumb = img.secure_url.replace("/upload/", "/upload/c_fill,w_360,h_360,q_auto,f_auto/");
+        const sizeKB = Math.round(img.bytes / 1024);
+        const shortId = img.public_id.split("/").pop() || img.public_id;
+
+        const card = document.createElement("div");
+        card.className = "img-card";
+        card.dataset.publicId = img.public_id;
+        card.innerHTML =
+          '<div class="ic-check">' +
+            '<svg width="12" height="12" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>' +
+          '</div>' +
+          '<img src="' + thumb + '" alt="' + escapeHtml(shortId) + '" loading="lazy"/>' +
+          '<div class="ic-overlay">' +
+            '<span class="ic-info">' + escapeHtml(shortId) + ' · ' + sizeKB + 'KB</span>' +
+            '<button class="ic-delete" data-id="' + escapeHtml(img.public_id) + '" title="Eliminar">' +
+              '<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">' +
+                '<path d="M18 6L6 18M6 6l12 12"/>' +
+              '</svg>' +
+            '</button>' +
+          '</div>';
+
+        imgGrid.appendChild(card);
+      }
+    } catch {
+      gridLoading.textContent = "Error al cargar imágenes.";
+    }
+  }
+
+  // ─── SELECTION MODE ───
+  const selectModeBtn = document.getElementById("selectModeBtn") as HTMLButtonElement;
+  const selectAllBtn = document.getElementById("selectAllBtn") as HTMLButtonElement;
+  const bulkBar = document.getElementById("bulkBar") as HTMLDivElement;
+  const bulkCount = document.getElementById("bulkCount") as HTMLSpanElement;
+  const bulkDeleteBtn = document.getElementById("bulkDeleteBtn") as HTMLButtonElement;
+  const bulkCancelBtn = document.getElementById("bulkCancelBtn") as HTMLButtonElement;
+
+  let selectMode = false;
+
+  function toggleSelectMode(on?: boolean) {
+    selectMode = on !== undefined ? on : !selectMode;
+    selectModeBtn.classList.toggle("active", selectMode);
+    selectModeBtn.textContent = selectMode ? "Cancelar seleccion" : "Seleccionar";
+    selectAllBtn.classList.toggle("hidden", !selectMode);
+    // Show/hide checkboxes directly
+    imgGrid.querySelectorAll(".ic-check").forEach((el) => {
+      (el as HTMLElement).style.display = selectMode ? "flex" : "none";
+    });
+    imgGrid.querySelectorAll(".img-card").forEach((el) => {
+      (el as HTMLElement).style.cursor = selectMode ? "pointer" : "";
+    });
+    if (!selectMode) {
+      imgGrid.querySelectorAll(".img-card.selected").forEach((c) => c.classList.remove("selected"));
+      bulkBar.classList.add("hidden");
+    }
+    updateBulkCount();
+  }
+
+  function updateBulkCount() {
+    const count = imgGrid.querySelectorAll(".img-card.selected").length;
+    bulkCount.textContent = count + (count === 1 ? " seleccionada" : " seleccionadas");
+    if (selectMode && count > 0) {
+      bulkBar.classList.remove("hidden");
+    } else {
+      bulkBar.classList.add("hidden");
+    }
+  }
+
+  selectModeBtn.addEventListener("click", () => toggleSelectMode());
+
+  selectAllBtn.addEventListener("click", () => {
+    const cards = imgGrid.querySelectorAll(".img-card");
+    const allSelected = imgGrid.querySelectorAll(".img-card.selected").length === cards.length;
+    cards.forEach((c) => {
+      c.classList.toggle("selected", !allSelected);
+      const check = c.querySelector(".ic-check") as HTMLElement;
+      const svg = check?.querySelector("svg") as SVGElement;
+      if (!allSelected) {
+        check.style.background = "var(--color-azul)";
+        check.style.borderColor = "var(--color-azul)";
+        if (svg) svg.style.opacity = "1";
+        (c as HTMLElement).style.outline = "2px solid var(--color-azul)";
+        (c as HTMLElement).style.outlineOffset = "-2px";
+      } else {
+        check.style.background = "rgba(0,0,0,0.25)";
+        check.style.borderColor = "rgba(255,255,255,0.6)";
+        if (svg) svg.style.opacity = "0";
+        (c as HTMLElement).style.outline = "none";
+      }
+    });
+    selectAllBtn.textContent = allSelected ? "Seleccionar todas" : "Deseleccionar todas";
+    updateBulkCount();
+  });
+
+  bulkCancelBtn.addEventListener("click", () => toggleSelectMode(false));
+
+  // ─── DELETE (Cloudinary + Supabase) ───
+  imgGrid.addEventListener("click", async (e) => {
+    const card = (e.target as HTMLElement).closest(".img-card") as HTMLDivElement | null;
+    if (!card) return;
+
+    // Selection mode: toggle selection on click
+    if (selectMode) {
+      card.classList.toggle("selected");
+      const check = card.querySelector(".ic-check") as HTMLElement;
+      const svg = check?.querySelector("svg") as SVGElement;
+      if (card.classList.contains("selected")) {
+        check.style.background = "var(--color-azul)";
+        check.style.borderColor = "var(--color-azul)";
+        if (svg) svg.style.opacity = "1";
+        card.style.outline = "2px solid var(--color-azul)";
+        card.style.outlineOffset = "-2px";
+      } else {
+        check.style.background = "rgba(0,0,0,0.25)";
+        check.style.borderColor = "rgba(255,255,255,0.6)";
+        if (svg) svg.style.opacity = "0";
+        card.style.outline = "none";
+      }
+      updateBulkCount();
+      return;
+    }
+
+    // Normal mode: single delete via button
+    const btn = (e.target as HTMLElement).closest(".ic-delete") as HTMLButtonElement | null;
+    if (!btn) return;
+
+    const publicId = btn.dataset.id;
+    if (!publicId) return;
+    const confirmed = await showConfirm("Se eliminara esta foto de forma permanente.");
+    if (!confirmed) return;
+
+    try {
+      const res = await fetch("/api/gallery/delete", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + accessToken,
+        },
+        body: JSON.stringify({ public_id: publicId }),
+      });
+      if (res.ok) {
+        btn.closest(".img-card")?.remove();
+        if (!imgGrid.querySelector(".img-card")) gridEmpty.classList.remove("hidden");
+      } else {
+        const data = await res.json();
+        showAlert(data.error || "No se pudo eliminar la imagen.");
+      }
+    } catch {
+      showAlert("Error al eliminar la imagen.");
+    }
+  });
+
+  // ─── BULK DELETE ───
+  bulkDeleteBtn.addEventListener("click", async () => {
+    const selected = imgGrid.querySelectorAll(".img-card.selected");
+    if (!selected.length) return;
+
+    const count = selected.length;
+    const confirmed = await showConfirm(
+      "Se eliminaran " + count + (count === 1 ? " foto" : " fotos") + " de forma permanente."
+    );
+    if (!confirmed) return;
+
+    let deleted = 0;
+    let failed = 0;
+
+    for (const card of Array.from(selected)) {
+      const publicId = (card as HTMLDivElement).dataset.publicId;
+      if (!publicId) { failed++; continue; }
+
+      try {
+        const res = await fetch("/api/gallery/delete", {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + accessToken,
+          },
+          body: JSON.stringify({ public_id: publicId }),
+        });
+        if (res.ok) {
+          card.remove();
+          deleted++;
+        } else {
+          failed++;
+        }
+      } catch {
+        failed++;
+      }
+    }
+
+    toggleSelectMode(false);
+
+    if (!imgGrid.querySelector(".img-card")) gridEmpty.classList.remove("hidden");
+
+    if (failed > 0) {
+      showAlert(deleted + " eliminadas, " + failed + " con error.");
+    }
+  });
+
+  // ─── CUSTOM MODAL ───
+  const modalOverlay = document.getElementById("modalOverlay") as HTMLDivElement;
+  const modalText = document.getElementById("modalText") as HTMLParagraphElement;
+  const modalActions = document.getElementById("modalActions") as HTMLDivElement;
+
+  function showModal(message: string, buttons: Array<{ label: string; className?: string; action: () => void }>) {
+    modalText.textContent = message;
+    modalActions.innerHTML = "";
+    for (const btn of buttons) {
+      const el = document.createElement("button");
+      el.className = "modal-btn" + (btn.className ? " " + btn.className : "");
+      el.textContent = btn.label;
+      el.addEventListener("click", () => {
+        modalOverlay.classList.add("hidden");
+        btn.action();
+      });
+      modalActions.appendChild(el);
+    }
+    modalOverlay.classList.remove("hidden");
+  }
+
+  function showAlert(message: string): void {
+    showModal(message, [{ label: "Aceptar", className: "primary", action: () => {} }]);
+  }
+
+  function showConfirm(message: string): Promise<boolean> {
+    return new Promise((resolve) => {
+      showModal(message, [
+        { label: "Cancelar", action: () => resolve(false) },
+        { label: "Eliminar", className: "danger", action: () => resolve(true) },
+      ]);
+    });
+  }
+
+  modalOverlay.addEventListener("click", (e) => {
+    if (e.target === modalOverlay) modalOverlay.classList.add("hidden");
+  });
+
+  function escapeHtml(str: string): string {
+    return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+</script>

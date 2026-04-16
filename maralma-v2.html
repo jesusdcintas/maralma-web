@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maralma · Eventos Gastronómicos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --azul: #1e3a4f;
+  --azul-medio: #2d5169;
+  --azul-claro: #a8c4c8;
+  --crema: #f5f0e8;
+  --crema-oscuro: #e8e0d0;
+  --blanco: #fdfcfa;
+  --negro: #0f1a20;
+  --texto: #2a3a42;
+  --texto-suave: #6b7f87;
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans: 'Jost', sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--sans); background: var(--blanco); color: var(--texto); overflow-x: hidden; }
+
+/* ─── NAV ─── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 28px 60px;
+  transition: background 0.4s, padding 0.4s, border-color 0.4s;
+}
+nav.scrolled {
+  background: rgba(253,252,250,0.97);
+  backdrop-filter: blur(14px);
+  padding: 16px 60px;
+  border-bottom: 0.5px solid var(--crema-oscuro);
+}
+.nav-logo {
+  font-family: var(--serif); font-size: 22px; font-weight: 400;
+  letter-spacing: 0.14em; color: var(--blanco);
+  text-decoration: none; text-transform: uppercase; transition: color 0.3s;
+}
+nav.scrolled .nav-logo { color: var(--azul); }
+.nav-center { display: flex; gap: 32px; list-style: none; }
+.nav-center a {
+  font-size: 11px; font-weight: 400; letter-spacing: 0.16em;
+  text-transform: uppercase; color: rgba(255,255,255,0.75);
+  text-decoration: none; transition: color 0.2s;
+}
+nav.scrolled .nav-center a { color: var(--texto-suave); }
+.nav-center a:hover { color: var(--blanco); }
+nav.scrolled .nav-center a:hover { color: var(--azul); }
+.nav-right { display: flex; align-items: center; gap: 20px; }
+.lang-switcher {
+  display: flex; gap: 2px;
+  background: rgba(255,255,255,0.1);
+  border: 0.5px solid rgba(255,255,255,0.2);
+  padding: 4px;
+  transition: background 0.3s, border-color 0.3s;
+}
+nav.scrolled .lang-switcher {
+  background: var(--crema);
+  border-color: var(--crema-oscuro);
+}
+.lang-btn {
+  font-size: 10px; font-weight: 500; letter-spacing: 0.12em;
+  text-transform: uppercase; padding: 5px 10px; cursor: pointer;
+  border: none; background: transparent; color: rgba(255,255,255,0.55);
+  transition: all 0.2s; font-family: var(--sans);
+}
+nav.scrolled .lang-btn { color: var(--texto-suave); }
+.lang-btn.active {
+  background: var(--blanco); color: var(--azul);
+}
+nav.scrolled .lang-btn.active { background: var(--azul); color: var(--blanco); }
+.nav-cta {
+  font-size: 11px; font-weight: 500; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--blanco);
+  text-decoration: none; border: 0.5px solid rgba(255,255,255,0.35);
+  padding: 10px 22px; transition: all 0.3s;
+}
+nav.scrolled .nav-cta { color: var(--azul); border-color: var(--azul); }
+.nav-cta:hover { background: var(--blanco); color: var(--azul); }
+nav.scrolled .nav-cta:hover { background: var(--azul); color: var(--blanco); }
+
+/* ─── HERO VIDEO ─── */
+.hero {
+  position: relative; height: 100vh; min-height: 700px;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; background: var(--negro);
+}
+.hero-video {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; opacity: 0.55;
+}
+.hero-video-fallback {
+  position: absolute; inset: 0;
+  background: linear-gradient(160deg, #0a1820 0%, #1e3a4f 45%, #2d5169 100%);
+}
+.hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(0deg, rgba(10,24,32,0.7) 0%, rgba(10,24,32,0.1) 60%, rgba(10,24,32,0.3) 100%);
+}
+.hero-content {
+  position: relative; z-index: 2;
+  text-align: center; padding: 0 40px;
+}
+.hero-eyebrow {
+  font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--azul-claro); margin-bottom: 28px;
+  animation: fadeUp 1s ease 0.4s both;
+}
+.hero-logo-text {
+  font-family: var(--serif);
+  font-size: clamp(72px, 12vw, 140px);
+  font-weight: 300; line-height: 0.88;
+  color: var(--blanco); letter-spacing: 0.04em;
+  animation: fadeUp 1s ease 0.6s both;
+}
+.hero-logo-text em { font-style: italic; color: var(--azul-claro); display: block; }
+.hero-wave {
+  display: block; margin: 22px auto 28px;
+  animation: fadeUp 1s ease 0.8s both;
+}
+.hero-tagline {
+  font-family: var(--serif); font-style: italic;
+  font-size: clamp(15px, 2vw, 20px); font-weight: 300;
+  color: rgba(253,252,250,0.6); margin-bottom: 50px;
+  animation: fadeUp 1s ease 1s both;
+}
+.hero-btns {
+  display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;
+  animation: fadeUp 1s ease 1.2s both;
+}
+.btn-primary {
+  font-size: 11px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--azul); background: var(--blanco);
+  padding: 14px 36px; text-decoration: none; transition: all 0.3s;
+}
+.btn-primary:hover { background: var(--crema); }
+.btn-ghost {
+  font-size: 11px; font-weight: 400; letter-spacing: 0.18em; text-transform: uppercase;
+  color: rgba(255,255,255,0.7); padding: 14px 36px;
+  text-decoration: none; border: 0.5px solid rgba(255,255,255,0.25);
+  transition: all 0.3s;
+}
+.btn-ghost:hover { color: var(--blanco); border-color: rgba(255,255,255,0.6); }
+.hero-mute {
+  position: absolute; bottom: 40px; right: 60px; z-index: 3;
+  background: rgba(255,255,255,0.1); border: 0.5px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.6); padding: 8px 14px;
+  font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+  cursor: pointer; font-family: var(--sans); transition: all 0.2s;
+}
+.hero-mute:hover { background: rgba(255,255,255,0.2); color: var(--blanco); }
+.hero-scroll {
+  position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  animation: fadeUp 1s ease 1.6s both;
+}
+.hero-scroll span { font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(168,196,200,0.5); }
+.scroll-line { width: 0.5px; height: 40px; background: rgba(168,196,200,0.3); animation: scrollPulse 2s ease-in-out infinite; }
+
+/* ─── CLAIM GRANDE ─── */
+.claim-full {
+  background: var(--negro);
+  padding: 120px 60px;
+  text-align: center; position: relative; overflow: hidden;
+}
+.claim-full::before {
+  content: 'MARALMA';
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  font-family: var(--serif); font-size: clamp(80px, 18vw, 220px);
+  font-weight: 300; color: rgba(255,255,255,0.03);
+  white-space: nowrap; pointer-events: none; letter-spacing: 0.1em;
+}
+.claim-full-text {
+  font-family: var(--serif);
+  font-size: clamp(32px, 5vw, 68px);
+  font-weight: 300; color: var(--blanco);
+  line-height: 1.15; max-width: 900px; margin: 0 auto;
+  position: relative; z-index: 1;
+}
+.claim-full-text em { font-style: italic; color: var(--azul-claro); }
+.claim-sub {
+  font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: rgba(168,196,200,0.4); margin-top: 32px;
+  position: relative; z-index: 1;
+}
+
+/* ─── SERVICIOS GRID ─── */
+.servicios {
+  background: var(--crema); padding: 100px 60px;
+}
+.section-header {
+  display: flex; align-items: baseline; justify-content: space-between;
+  margin-bottom: 56px; border-bottom: 0.5px solid var(--crema-oscuro);
+  padding-bottom: 22px;
+}
+.section-title {
+  font-family: var(--serif);
+  font-size: clamp(30px, 4vw, 50px);
+  font-weight: 300; color: var(--azul); letter-spacing: -0.01em;
+}
+.section-eyebrow { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--texto-suave); }
+.servicios-grid {
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 2px;
+}
+.srv-card {
+  background: var(--azul); overflow: hidden; cursor: pointer;
+}
+.srv-photo {
+  aspect-ratio: 4/3; overflow: hidden; position: relative;
+}
+.srv-photo-bg {
+  width: 100%; height: 100%;
+  transition: transform 0.7s ease;
+}
+.srv-card:hover .srv-photo-bg { transform: scale(1.06); }
+.sp-bodas { background: linear-gradient(160deg, #1a3347 0%, #2d5169 100%); }
+.sp-corp { background: linear-gradient(160deg, #0f2030 0%, #1e3a4f 100%); }
+.sp-priv { background: linear-gradient(160deg, #1e3a4f 0%, #3a6070 100%); }
+.srv-body {
+  background: var(--crema); padding: 32px 28px 28px;
+  border-top: 2px solid var(--azul);
+}
+.srv-label { font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--texto-suave); margin-bottom: 8px; }
+.srv-title {
+  font-family: var(--serif); font-size: 30px; font-weight: 300;
+  color: var(--azul); text-transform: uppercase; letter-spacing: 0.04em;
+  margin-bottom: 10px; line-height: 1;
+}
+.srv-desc { font-size: 13px; font-weight: 300; color: var(--texto-suave); line-height: 1.7; margin-bottom: 20px; }
+.srv-link {
+  font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--azul); text-decoration: none;
+  border-bottom: 0.5px solid var(--azul); padding-bottom: 3px;
+  transition: opacity 0.2s; display: inline-block;
+}
+.srv-link:hover { opacity: 0.6; }
+
+/* ─── FRASE SEPARADORA ─── */
+.frase {
+  padding: 80px 60px; text-align: center;
+}
+.frase-text {
+  font-family: var(--serif);
+  font-size: clamp(26px, 4vw, 52px);
+  font-weight: 300; font-style: italic;
+  color: var(--azul); line-height: 1.3;
+  max-width: 800px; margin: 0 auto;
+}
+.frase-text strong { font-style: normal; font-weight: 400; }
+.frase.dark { background: var(--azul); }
+.frase.dark .frase-text { color: var(--blanco); }
+.frase.dark .frase-text em { color: var(--azul-claro); }
+.frase.crema { background: var(--crema); }
+
+/* ─── BODAS SPLIT ─── */
+.bodas-split {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 2px;
+  background: var(--negro);
+}
+.boda-card {
+  position: relative; overflow: hidden; cursor: pointer;
+  background: var(--azul);
+}
+.boda-photo {
+  aspect-ratio: 3/4; overflow: hidden; position: relative;
+  margin: 40px 40px 0;
+}
+.boda-photo-bg {
+  position: absolute; inset: 0;
+  transition: transform 0.7s ease;
+}
+.boda-card:hover .boda-photo-bg { transform: scale(1.04); }
+.bp-coctel { background: linear-gradient(180deg, #1a3347 0%, #2d5169 100%); }
+.bp-banquete { background: linear-gradient(180deg, #0f2030 0%, #1e3a4f 100%); }
+.boda-body {
+  padding: 36px 40px 40px; text-align: center;
+}
+.boda-tag {
+  font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--azul-claro); margin-bottom: 12px; display: block;
+}
+.boda-title {
+  font-family: var(--serif);
+  font-size: clamp(24px, 3vw, 40px);
+  font-weight: 300; color: var(--blanco);
+  text-transform: uppercase; letter-spacing: 0.06em;
+  margin-bottom: 8px; line-height: 1;
+}
+.boda-sub {
+  font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: rgba(168,196,200,0.6); margin-bottom: 28px;
+}
+.boda-cta {
+  display: inline-block;
+  font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--blanco); border: 0.5px solid rgba(255,255,255,0.3);
+  padding: 12px 28px; text-decoration: none; transition: all 0.3s;
+}
+.boda-cta:hover { background: var(--blanco); color: var(--azul); border-color: var(--blanco); }
+
+/* ─── POR QUÉ MARALMA ─── */
+.porque {
+  background: var(--blanco); padding: 100px 60px;
+}
+.porque-grid {
+  display: grid; grid-template-columns: repeat(4,1fr); gap: 2px;
+  margin-top: 56px;
+}
+.pq-card {
+  padding: 40px 32px;
+  border: 0.5px solid var(--crema-oscuro);
+  transition: border-color 0.3s, background 0.3s;
+}
+.pq-card:hover { border-color: var(--azul-claro); background: var(--crema); }
+.pq-number {
+  font-family: var(--serif); font-size: 56px; font-weight: 300;
+  color: var(--crema-oscuro); line-height: 1; margin-bottom: 16px;
+  transition: color 0.3s;
+}
+.pq-card:hover .pq-number { color: var(--azul-claro); }
+.pq-title {
+  font-family: var(--serif); font-size: 20px; font-weight: 400;
+  color: var(--azul); margin-bottom: 10px;
+}
+.pq-desc { font-size: 13px; font-weight: 300; color: var(--texto-suave); line-height: 1.8; }
+
+/* ─── RESEÑAS ─── */
+.resenas {
+  background: var(--crema); padding: 100px 60px;
+  overflow: hidden;
+}
+.resenas-header {
+  display: flex; align-items: baseline; justify-content: space-between;
+  margin-bottom: 56px; border-bottom: 0.5px solid var(--crema-oscuro);
+  padding-bottom: 22px;
+}
+.resenas-nav { display: flex; gap: 8px; }
+.resena-nav-btn {
+  width: 36px; height: 36px; border: 0.5px solid var(--crema-oscuro);
+  background: transparent; cursor: pointer; font-size: 16px;
+  color: var(--texto-suave); transition: all 0.2s; display: flex;
+  align-items: center; justify-content: center;
+}
+.resena-nav-btn:hover { border-color: var(--azul); color: var(--azul); background: var(--blanco); }
+.resenas-track-wrap { overflow: hidden; }
+.resenas-track {
+  display: flex; gap: 20px;
+  transition: transform 0.5s ease;
+}
+.resena-card {
+  background: var(--blanco); padding: 44px 40px;
+  flex: 0 0 calc(33.333% - 14px);
+  min-width: calc(33.333% - 14px);
+  position: relative; border: 0.5px solid var(--crema-oscuro);
+  transition: border-color 0.3s;
+}
+.resena-card:hover { border-color: var(--azul-claro); }
+.resena-card.featured {
+  background: var(--azul); border-color: var(--azul);
+}
+.resena-stars {
+  display: flex; gap: 3px; margin-bottom: 20px;
+}
+.star {
+  width: 12px; height: 12px;
+  background: var(--azul-claro); clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+.resena-card.featured .star { background: rgba(168,196,200,0.7); }
+.resena-mark {
+  font-family: var(--serif); font-size: 52px; line-height: 0.8;
+  color: var(--azul-claro); opacity: 0.25; margin-bottom: 14px; display: block;
+}
+.resena-card.featured .resena-mark { color: var(--blanco); }
+.resena-text {
+  font-family: var(--serif); font-style: italic;
+  font-size: 16px; font-weight: 300; color: var(--texto);
+  line-height: 1.8; margin-bottom: 28px;
+}
+.resena-card.featured .resena-text { color: rgba(253,252,250,0.85); }
+.resena-divider { width: 28px; height: 0.5px; background: var(--azul-claro); margin-bottom: 14px; }
+.resena-card.featured .resena-divider { background: rgba(168,196,200,0.4); }
+.resena-name { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--texto-suave); }
+.resena-card.featured .resena-name { color: var(--azul-claro); }
+.resena-event { font-size: 11px; color: var(--texto-suave); font-style: italic; margin-top: 3px; }
+.resena-card.featured .resena-event { color: rgba(168,196,200,0.5); }
+.resenas-dots {
+  display: flex; gap: 6px; justify-content: center; margin-top: 32px;
+}
+.resena-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--crema-oscuro); cursor: pointer; transition: background 0.2s;
+}
+.resena-dot.active { background: var(--azul); }
+
+/* ─── QUIÉNES SOMOS ─── */
+.equipo {
+  background: var(--blanco); padding: 100px 60px;
+}
+.equipo-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 56px;
+}
+.equipo-card {
+  display: grid; grid-template-columns: 200px 1fr;
+  border: 0.5px solid var(--crema-oscuro); overflow: hidden;
+}
+.equipo-photo {
+  position: relative; min-height: 300px;
+  display: flex; align-items: flex-end;
+}
+.ep-bg { position: absolute; inset: 0; }
+.ep-juan { background: linear-gradient(180deg, #1a3347 0%, #2d5169 100%); }
+.ep-miriam { background: linear-gradient(180deg, #152a38 0%, #1e3a4f 100%); }
+.ep-initial {
+  position: relative; z-index: 1;
+  font-family: var(--serif); font-size: 90px; font-weight: 300;
+  color: rgba(168,196,200,0.2); line-height: 1;
+  padding: 16px 20px 12px; align-self: flex-end;
+}
+.equipo-info { padding: 32px 28px; display: flex; flex-direction: column; justify-content: center; }
+.equipo-rol {
+  font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--azul-claro); margin-bottom: 8px;
+  border-left: 2px solid var(--azul-claro); padding-left: 10px;
+}
+.equipo-nombre { font-family: var(--serif); font-size: 28px; font-weight: 300; color: var(--azul); margin-bottom: 6px; }
+.equipo-frase { font-family: var(--serif); font-size: 13px; font-style: italic; color: var(--texto-suave); margin-bottom: 14px; }
+.equipo-bio { font-size: 13px; font-weight: 300; color: var(--texto-suave); line-height: 1.8; }
+
+/* ─── GALERÍA ─── */
+.galeria {
+  background: var(--negro); padding: 100px 0 0;
+}
+.galeria-header {
+  padding: 0 60px 52px;
+  display: flex; align-items: baseline; justify-content: space-between;
+  border-bottom: 0.5px solid rgba(255,255,255,0.07);
+}
+.galeria-title { font-family: var(--serif); font-size: clamp(30px,4vw,50px); font-weight: 300; color: var(--blanco); }
+.galeria-filters { display: flex; gap: 20px; }
+.gal-filter {
+  font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: rgba(255,255,255,0.3); cursor: pointer; padding-bottom: 4px;
+  border-bottom: 0.5px solid transparent; transition: all 0.2s;
+  background: none; border-top: none; border-left: none; border-right: none;
+  font-family: var(--sans);
+}
+.gal-filter.active, .gal-filter:hover { color: var(--blanco); border-bottom-color: var(--azul-claro); }
+.galeria-grid {
+  display: grid; grid-template-columns: repeat(4,1fr);
+  gap: 2px; margin-top: 2px;
+}
+.gal-item {
+  position: relative; overflow: hidden; cursor: pointer;
+  background: var(--azul-medio);
+}
+.gal-item:nth-child(1) { grid-column: span 2; grid-row: span 2; aspect-ratio: 1; }
+.gal-item:nth-child(n+2):nth-child(-n+5) { aspect-ratio: 1; }
+.gal-item:nth-child(6) { grid-column: span 2; aspect-ratio: 2/1; }
+.gi-bg-img { position: absolute; inset: 0; transition: transform 0.6s ease; }
+.gal-item:hover .gi-bg-img { transform: scale(1.06); }
+.gi-c1 { background: linear-gradient(135deg,#1a2f40,#2d5169); }
+.gi-c2 { background: linear-gradient(135deg,#0f2030,#1e3a4f); }
+.gi-c3 { background: linear-gradient(135deg,#1e3a4f,#3a6070); }
+.gi-c4 { background: linear-gradient(135deg,#162330,#2d5169); }
+.gi-c5 { background: linear-gradient(135deg,#1a2f40,#0f2030); }
+.gi-c6 { background: linear-gradient(135deg,#0f2030,#2d5169); }
+.gi-caption {
+  position: absolute; bottom: 16px; left: 16px;
+  font-family: var(--serif); font-size: 12px; font-style: italic;
+  color: rgba(253,252,250,0.45);
+}
+.gi-hover {
+  position: absolute; inset: 0;
+  background: rgba(10,20,28,0.45);
+  opacity: 0; transition: opacity 0.3s;
+  display: flex; align-items: center; justify-content: center;
+}
+.gal-item:hover .gi-hover { opacity: 1; }
+.gi-icon { width: 42px; height: 42px; border: 0.5px solid rgba(255,255,255,0.4); display: flex; align-items: center; justify-content: center; }
+.galeria-cta { padding: 52px 60px; text-align: center; }
+.galeria-cta-text {
+  font-family: var(--serif); font-style: italic;
+  font-size: clamp(16px,2vw,22px); font-weight: 300;
+  color: rgba(255,255,255,0.4); margin-bottom: 24px;
+}
+.galeria-ver {
+  font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(255,255,255,0.3); text-decoration: none;
+  border-bottom: 0.5px solid rgba(255,255,255,0.15); padding-bottom: 3px;
+  transition: color 0.2s, border-color 0.2s;
+}
+.galeria-ver:hover { color: rgba(255,255,255,0.7); border-color: rgba(255,255,255,0.4); }
+
+/* ─── CTA FINAL ─── */
+.cta-final {
+  background: var(--azul); padding: 100px 60px; text-align: center;
+}
+.cta-eyebrow { font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--azul-claro); margin-bottom: 20px; }
+.cta-title {
+  font-family: var(--serif);
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 300; color: var(--blanco);
+  line-height: 1.1; margin-bottom: 16px;
+}
+.cta-sub { font-size: 14px; font-weight: 300; color: rgba(253,252,250,0.5); max-width: 440px; margin: 0 auto 52px; line-height: 1.9; }
+.cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.cta-btn {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase;
+  padding: 14px 26px; text-decoration: none; transition: all 0.3s; border: 0.5px solid;
+}
+.cta-btn-form { color: var(--azul); background: var(--blanco); border-color: var(--blanco); }
+.cta-btn-form:hover { background: var(--crema); }
+.cta-btn-wa { color: #25d366; border-color: rgba(37,211,102,0.3); }
+.cta-btn-wa:hover { background: rgba(37,211,102,0.1); border-color: #25d366; }
+.cta-btn-call { color: var(--azul-claro); border-color: rgba(168,196,200,0.3); }
+.cta-btn-call:hover { background: rgba(168,196,200,0.1); border-color: var(--azul-claro); }
+.cta-btn-ig { color: rgba(255,255,255,0.6); border-color: rgba(255,255,255,0.15); }
+.cta-btn-ig:hover { color: var(--blanco); border-color: rgba(255,255,255,0.4); }
+.cta-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+/* ─── FOOTER ─── */
+footer {
+  background: var(--negro); padding: 52px 60px;
+  display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+  border-top: 0.5px solid rgba(255,255,255,0.06);
+}
+.footer-left { display: flex; flex-direction: column; gap: 6px; }
+.footer-copy { font-size: 11px; color: rgba(255,255,255,0.2); }
+.footer-legal { display: flex; gap: 18px; }
+.footer-legal a { font-size: 10px; letter-spacing: 0.1em; color: rgba(255,255,255,0.2); text-decoration: none; transition: color 0.2s; }
+.footer-legal a:hover { color: rgba(255,255,255,0.5); }
+.footer-logo { font-family: var(--serif); font-size: 18px; font-weight: 300; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.25); text-align: center; }
+.footer-right { display: flex; justify-content: flex-end; gap: 20px; }
+.footer-right a { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.2); text-decoration: none; transition: color 0.2s; }
+.footer-right a:hover { color: rgba(255,255,255,0.5); }
+
+/* ─── FAB FLOTANTE ─── */
+.fab-group {
+  position: fixed; bottom: 28px; right: 28px; z-index: 300;
+  display: flex; flex-direction: column; align-items: flex-end; gap: 10px;
+}
+.fab-main {
+  width: 54px; height: 54px; border-radius: 50%;
+  background: var(--azul); border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--blanco); transition: transform 0.3s, background 0.3s;
+  box-shadow: 0 4px 20px rgba(30,58,79,0.4);
+}
+.fab-main:hover { transform: scale(1.08); background: var(--azul-medio); }
+.fab-main svg { width: 22px; height: 22px; transition: transform 0.3s; }
+.fab-main.open svg { transform: rotate(45deg); }
+.fab-actions {
+  display: flex; flex-direction: column; gap: 8px; align-items: flex-end;
+  overflow: hidden; max-height: 0;
+  transition: max-height 0.4s ease, opacity 0.3s;
+  opacity: 0;
+}
+.fab-actions.open { max-height: 260px; opacity: 1; }
+.fab-action {
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none; padding: 10px 16px;
+  background: var(--blanco); border: 0.5px solid var(--crema-oscuro);
+  font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--texto); transition: all 0.2s; white-space: nowrap;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+.fab-action:hover { border-color: var(--azul); color: var(--azul); }
+.fab-action svg { width: 16px; height: 16px; flex-shrink: 0; }
+.fab-wa { color: #25d366; }
+.fab-wa:hover { border-color: #25d366; color: #25d366; background: #f0fff4; }
+.fab-call:hover { border-color: var(--azul-claro); color: var(--azul); }
+.fab-ig:hover { border-color: #c13584; color: #c13584; }
+
+/* ─── REVEAL ─── */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+.reveal-1 { transition-delay: 0.1s; }
+.reveal-2 { transition-delay: 0.2s; }
+.reveal-3 { transition-delay: 0.3s; }
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:none; } }
+@keyframes scrollPulse { 0%,100%{opacity:.3;transform:scaleY(1)} 50%{opacity:.8;transform:scaleY(1.2)} }
+
+/* ─── i18n overlay (demo) ─── */
+[data-lang="en"] { display: none; }
+body.lang-en [data-lang="es"] { display: none; }
+body.lang-en [data-lang="en"] { display: revert; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">Maralma</a>
+  <ul class="nav-center">
+    <li><a href="#nosotros" data-lang="es">Nosotros</a><a href="#nosotros" data-lang="en">About</a></li>
+    <li><a href="#bodas" data-lang="es">Bodas</a><a href="#bodas" data-lang="en">Weddings</a></li>
+    <li><a href="#servicios" data-lang="es">Eventos</a><a href="#servicios" data-lang="en">Events</a></li>
+    <li><a href="#galeria" data-lang="es">Galería</a><a href="#galeria" data-lang="en">Gallery</a></li>
+  </ul>
+  <div class="nav-right">
+    <div class="lang-switcher">
+      <button class="lang-btn active" onclick="setLang('es')">ES</button>
+      <button class="lang-btn" onclick="setLang('en')">EN</button>
+    </div>
+    <a href="contacto.html" class="nav-cta" data-lang="es">Contacto</a>
+    <a href="contacto.html" class="nav-cta" data-lang="en">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO VIDEO -->
+<section class="hero">
+  <div class="hero-video-fallback"></div>
+  <!-- En producción: <video class="hero-video" autoplay muted loop playsinline poster="poster.jpg"><source src="hero.mp4" type="video/mp4"></video> -->
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow" data-lang="es">Cádiz · Eventos gastronómicos · Nacional</p>
+    <p class="hero-eyebrow" data-lang="en">Cádiz · Gastronomic events · Nationwide</p>
+    <h1 class="hero-logo-text">Mar<em>Alma</em></h1>
+    <svg class="hero-wave" width="90" height="18" viewBox="0 0 90 18" fill="none">
+      <path d="M5 13 C16 4, 28 4, 40 9 C52 14, 64 14, 76 5" stroke="#a8c4c8" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.7"/>
+    </svg>
+    <p class="hero-tagline" data-lang="es">La esencia del mar y la tierra, servida con alma.</p>
+    <p class="hero-tagline" data-lang="en">The essence of sea and land, served with soul.</p>
+    <div class="hero-btns">
+      <a href="contacto.html" class="btn-primary" data-lang="es">Contactar</a>
+      <a href="contacto.html" class="btn-primary" data-lang="en">Get in touch</a>
+      <a href="#servicios" class="btn-ghost" data-lang="es">Descubrir más</a>
+      <a href="#servicios" class="btn-ghost" data-lang="en">Discover more</a>
+    </div>
+  </div>
+  <button class="hero-mute" id="muteBtn" onclick="toggleMute()" data-lang="es">⏸ Vídeo</button>
+  <button class="hero-mute" id="muteBtnEn" onclick="toggleMute()" data-lang="en">⏸ Video</button>
+  <div class="hero-scroll">
+    <span>scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- CLAIM GRANDE -->
+<section class="claim-full">
+  <p class="claim-full-text" data-lang="es">
+    No somos <em>un catering.</em><br>Somos una experiencia <em>gastronómica.</em>
+  </p>
+  <p class="claim-full-text" data-lang="en">
+    We are not <em>a catering company.</em><br>We are a <em>gastronomic experience.</em>
+  </p>
+  <p class="claim-sub" data-lang="es">Alta cocina · Solo un evento por día · 100% personalizado</p>
+  <p class="claim-sub" data-lang="en">Fine dining · One event per day · 100% customised</p>
+</section>
+
+<!-- SERVICIOS -->
+<section class="servicios" id="servicios">
+  <div class="section-header reveal">
+    <h2 class="section-title" data-lang="es">¿Qué celebras?</h2>
+    <h2 class="section-title" data-lang="en">What are you celebrating?</h2>
+    <span class="section-eyebrow" data-lang="es">Nuestros servicios</span>
+    <span class="section-eyebrow" data-lang="en">Our services</span>
+  </div>
+  <div class="servicios-grid">
+
+    <div class="srv-card reveal">
+      <div class="srv-photo"><div class="srv-photo-bg sp-bodas"></div></div>
+      <div class="srv-body">
+        <p class="srv-label" data-lang="es">Eventos</p>
+        <p class="srv-label" data-lang="en">Events</p>
+        <h3 class="srv-title" data-lang="es">Bodas</h3>
+        <h3 class="srv-title" data-lang="en">Weddings</h3>
+        <p class="srv-desc" data-lang="es">Cóctel o banquete. Un solo evento al día. Tu historia, tu menú, tu día.</p>
+        <p class="srv-desc" data-lang="en">Cocktail or banquet. One wedding per day. Your story, your menu, your day.</p>
+        <a href="#bodas" class="srv-link" data-lang="es">Ver bodas →</a>
+        <a href="#bodas" class="srv-link" data-lang="en">See weddings →</a>
+      </div>
+    </div>
+
+    <div class="srv-card reveal reveal-1">
+      <div class="srv-photo"><div class="srv-photo-bg sp-corp"></div></div>
+      <div class="srv-body">
+        <p class="srv-label" data-lang="es">Eventos</p>
+        <p class="srv-label" data-lang="en">Events</p>
+        <h3 class="srv-title" data-lang="es">Corporativos</h3>
+        <h3 class="srv-title" data-lang="en">Corporate</h3>
+        <p class="srv-desc" data-lang="es">Presentaciones, inauguraciones, banquetes de gala y eventos de empresa.</p>
+        <p class="srv-desc" data-lang="en">Presentations, openings, gala dinners and corporate events.</p>
+        <a href="contacto.html" class="srv-link" data-lang="es">Saber más →</a>
+        <a href="contacto.html" class="srv-link" data-lang="en">Learn more →</a>
+      </div>
+    </div>
+
+    <div class="srv-card reveal reveal-2">
+      <div class="srv-photo"><div class="srv-photo-bg sp-priv"></div></div>
+      <div class="srv-body">
+        <p class="srv-label" data-lang="es">Eventos</p>
+        <p class="srv-label" data-lang="en">Events</p>
+        <h3 class="srv-title" data-lang="es">Privados</h3>
+        <h3 class="srv-title" data-lang="en">Private</h3>
+        <p class="srv-desc" data-lang="es">Aniversarios, cumpleaños, bautizos, comuniones, celebraciones familiares...</p>
+        <p class="srv-desc" data-lang="en">Anniversaries, birthdays, baptisms, communions, family celebrations...</p>
+        <a href="contacto.html" class="srv-link" data-lang="es">Saber más →</a>
+        <a href="contacto.html" class="srv-link" data-lang="en">Learn more →</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FRASE -->
+<div class="frase dark">
+  <p class="frase-text" data-lang="es"><em>Solo un evento al día.</em><br>Para que el tuyo sea <strong>perfecto.</strong></p>
+  <p class="frase-text" data-lang="en"><em>Only one event per day.</em><br>So yours is <strong>perfect.</strong></p>
+</div>
+
+<!-- BODAS SPLIT -->
+<section id="bodas" style="background:var(--negro)">
+  <div style="padding:80px 60px 52px; border-bottom:0.5px solid rgba(255,255,255,0.07)">
+    <div class="section-header" style="border:none;margin:0;padding:0">
+      <h2 class="section-title reveal" style="color:var(--blanco)" data-lang="es">Bodas</h2>
+      <h2 class="section-title reveal" style="color:var(--blanco)" data-lang="en">Weddings</h2>
+      <span class="section-eyebrow" data-lang="es">Elige tu formato</span>
+      <span class="section-eyebrow" data-lang="en">Choose your format</span>
+    </div>
+  </div>
+  <div class="bodas-split">
+    <div class="boda-card reveal">
+      <div class="boda-photo"><div class="boda-photo-bg bp-coctel"></div></div>
+      <div class="boda-body">
+        <span class="boda-tag" data-lang="es">Nuestra especialidad</span>
+        <span class="boda-tag" data-lang="en">Our speciality</span>
+        <h3 class="boda-title" data-lang="es">Boda tipo<br>cóctel</h3>
+        <h3 class="boda-title" data-lang="en">Cocktail<br>wedding</h3>
+        <p class="boda-sub" data-lang="es">Libertad · Movimiento · Experiencia</p>
+        <p class="boda-sub" data-lang="en">Freedom · Movement · Experience</p>
+        <a href="contacto.html" class="boda-cta" data-lang="es">Ver bodas cóctel</a>
+        <a href="contacto.html" class="boda-cta" data-lang="en">See cocktail weddings</a>
+      </div>
+    </div>
+    <div class="boda-card reveal reveal-1">
+      <div class="boda-photo"><div class="boda-photo-bg bp-banquete"></div></div>
+      <div class="boda-body">
+        <span class="boda-tag" data-lang="es">Un clásico que nos encanta</span>
+        <span class="boda-tag" data-lang="en">A classic we love</span>
+        <h3 class="boda-title" data-lang="es">Boda tipo<br>banquete</h3>
+        <h3 class="boda-title" data-lang="en">Banquet<br>wedding</h3>
+        <p class="boda-sub" data-lang="es">Elegancia · Mesa · Recuerdo</p>
+        <p class="boda-sub" data-lang="en">Elegance · Table · Memory</p>
+        <a href="contacto.html" class="boda-cta" data-lang="es">Ver bodas banquete</a>
+        <a href="contacto.html" class="boda-cta" data-lang="en">See banquet weddings</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FRASE -->
+<div class="frase crema">
+  <p class="frase-text" data-lang="es">Menús diseñados desde cero.<br><em>Nunca el mismo menú dos veces.</em></p>
+  <p class="frase-text" data-lang="en">Menus designed from scratch.<br><em>Never the same menu twice.</em></p>
+</div>
+
+<!-- POR QUÉ MARALMA -->
+<section class="porque">
+  <div class="section-header reveal">
+    <h2 class="section-title" data-lang="es">¿Por qué Maralma?</h2>
+    <h2 class="section-title" data-lang="en">Why Maralma?</h2>
+    <span class="section-eyebrow" data-lang="es">Nuestros diferenciales</span>
+    <span class="section-eyebrow" data-lang="en">What sets us apart</span>
+  </div>
+  <div class="porque-grid">
+    <div class="pq-card reveal">
+      <div class="pq-number">01</div>
+      <h3 class="pq-title" data-lang="es">Un evento al día</h3>
+      <h3 class="pq-title" data-lang="en">One event per day</h3>
+      <p class="pq-desc" data-lang="es">Todo el equipo, toda la atención, toda la energía volcada en ti.</p>
+      <p class="pq-desc" data-lang="en">The whole team, all the attention, all the energy focused on you.</p>
+    </div>
+    <div class="pq-card reveal reveal-1">
+      <div class="pq-number">02</div>
+      <h3 class="pq-title" data-lang="es">100% personalizado</h3>
+      <h3 class="pq-title" data-lang="en">100% personalised</h3>
+      <p class="pq-desc" data-lang="es">Nos gusta conocerte antes. Tu historia inspira tu menú.</p>
+      <p class="pq-desc" data-lang="en">We like to meet you first. Your story inspires your menu.</p>
+    </div>
+    <div class="pq-card reveal reveal-2">
+      <div class="pq-number">03</div>
+      <h3 class="pq-title" data-lang="es">Alta cocina</h3>
+      <h3 class="pq-title" data-lang="en">Fine dining</h3>
+      <p class="pq-desc" data-lang="es">Nivel gastronómico de restaurante llevado a tu celebración.</p>
+      <p class="pq-desc" data-lang="en">Restaurant-level gastronomy brought to your celebration.</p>
+    </div>
+    <div class="pq-card reveal reveal-3">
+      <div class="pq-number">04</div>
+      <h3 class="pq-title" data-lang="es">A nivel nacional</h3>
+      <h3 class="pq-title" data-lang="en">Nationwide</h3>
+      <p class="pq-desc" data-lang="es">Desde Cádiz, llegamos a donde tú necesites celebrar.</p>
+      <p class="pq-desc" data-lang="en">From Cádiz, we go wherever you need to celebrate.</p>
+    </div>
+  </div>
+</section>
+
+<!-- RESEÑAS -->
+<section class="resenas">
+  <div class="resenas-header reveal">
+    <div>
+      <h2 class="section-title" data-lang="es">¿Por qué nos eligen?</h2>
+      <h2 class="section-title" data-lang="en">Why do they choose us?</h2>
+      <p style="font-size:13px;color:var(--texto-suave);margin-top:6px;font-weight:300" data-lang="es">Lo que dicen los que ya lo vivieron</p>
+      <p style="font-size:13px;color:var(--texto-suave);margin-top:6px;font-weight:300" data-lang="en">What those who lived it say</p>
+    </div>
+    <div class="resenas-nav">
+      <button class="resena-nav-btn" onclick="moveSlider(-1)">←</button>
+      <button class="resena-nav-btn" onclick="moveSlider(1)">→</button>
+    </div>
+  </div>
+  <div class="resenas-track-wrap">
+    <div class="resenas-track" id="resenasTrack">
+
+      <div class="resena-card featured">
+        <div class="resena-stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+        <span class="resena-mark">"</span>
+        <p class="resena-text" data-lang="es">La comida estuvo ESPECTACULAR. Mucha gente nos dijo que fue la boda en la que mejor habían comido en sus vidas. Desde el primer momento supimos que estábamos en buenas manos.</p>
+        <p class="resena-text" data-lang="en">The food was SPECTACULAR. Many guests told us it was the best wedding food they had ever tasted. From the very first moment we knew we were in good hands.</p>
+        <div class="resena-divider"></div>
+        <p class="resena-name">Germán & Carmen</p>
+        <p class="resena-event" data-lang="es">Boda cóctel · Cádiz 2025</p>
+        <p class="resena-event" data-lang="en">Cocktail wedding · Cádiz 2025</p>
+      </div>
+
+      <div class="resena-card">
+        <div class="resena-stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+        <span class="resena-mark">"</span>
+        <p class="resena-text" data-lang="es">Se adaptaron a todos nuestros cambios con una sonrisa. El equipo es increíblemente profesional. Cada invitado quedó impresionado con la presentación y el sabor de cada plato.</p>
+        <p class="resena-text" data-lang="en">They adapted to all our changes with a smile. The team is incredibly professional. Every guest was impressed by the presentation and flavour of each dish.</p>
+        <div class="resena-divider"></div>
+        <p class="resena-name">Laura & Marcos</p>
+        <p class="resena-event" data-lang="es">Boda banquete · Jerez 2025</p>
+        <p class="resena-event" data-lang="en">Banquet wedding · Jerez 2025</p>
+      </div>
+
+      <div class="resena-card">
+        <div class="resena-stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+        <span class="resena-mark">"</span>
+        <p class="resena-text" data-lang="es">Contratamos a Maralma para el 50 cumpleaños de mi madre. Diseñaron un menú completamente a medida. La presentación impecable y el trato excepcional. Lo recomiendo sin dudarlo.</p>
+        <p class="resena-text" data-lang="en">We hired Maralma for my mother's 50th birthday. They designed a fully bespoke menu. Impeccable presentation and exceptional service. I recommend them without hesitation.</p>
+        <div class="resena-divider"></div>
+        <p class="resena-name">Ana Reyes</p>
+        <p class="resena-event" data-lang="es">Evento privado · Sevilla 2024</p>
+        <p class="resena-event" data-lang="en">Private event · Sevilla 2024</p>
+      </div>
+
+      <div class="resena-card">
+        <div class="resena-stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+        <span class="resena-mark">"</span>
+        <p class="resena-text" data-lang="es">Organizaron el catering de nuestra presentación de producto. Absolutamente todo fue perfecto. La gastronomía elevó el evento a otro nivel. Repetiremos sin duda.</p>
+        <p class="resena-text" data-lang="en">They catered our product launch. Absolutely everything was perfect. The gastronomy took the event to another level. We will definitely repeat.</p>
+        <div class="resena-divider"></div>
+        <p class="resena-name">Pablo Moreno · CEO</p>
+        <p class="resena-event" data-lang="es">Evento corporativo · Madrid 2025</p>
+        <p class="resena-event" data-lang="en">Corporate event · Madrid 2025</p>
+      </div>
+
+      <div class="resena-card">
+        <div class="resena-stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+        <span class="resena-mark">"</span>
+        <p class="resena-text" data-lang="es">El bautizo de nuestra hija fue mágico gracias a ellos. Miriam estuvo coordinando cada detalle con una tranquilidad que nos contagió. Y la comida… inolvidable.</p>
+        <p class="resena-text" data-lang="en">Our daughter's baptism was magical thanks to them. Miriam coordinated every detail with a calmness that was contagious. And the food... unforgettable.</p>
+        <div class="resena-divider"></div>
+        <p class="resena-name">Sofía & Javier</p>
+        <p class="resena-event" data-lang="es">Bautizo · Cádiz 2024</p>
+        <p class="resena-event" data-lang="en">Baptism · Cádiz 2024</p>
+      </div>
+
+    </div>
+  </div>
+  <div class="resenas-dots" id="resenasDots">
+    <div class="resena-dot active" onclick="goToSlide(0)"></div>
+    <div class="resena-dot" onclick="goToSlide(1)"></div>
+    <div class="resena-dot" onclick="goToSlide(2)"></div>
+  </div>
+</section>
+
+<!-- FRASE -->
+<div class="frase" style="background:var(--blanco)">
+  <p class="frase-text" data-lang="es"><em>"Cuidamos cada textura,<br>cada aroma, cada instante."</em></p>
+  <p class="frase-text" data-lang="en"><em>"We care for every texture,<br>every aroma, every moment."</em></p>
+</div>
+
+<!-- QUIÉNES SOMOS -->
+<section class="equipo" id="nosotros">
+  <div class="section-header reveal">
+    <h2 class="section-title" data-lang="es">El equipo</h2>
+    <h2 class="section-title" data-lang="en">The team</h2>
+    <span class="section-eyebrow" data-lang="es">Quiénes somos</span>
+    <span class="section-eyebrow" data-lang="en">Who we are</span>
+  </div>
+  <div class="equipo-grid">
+    <div class="equipo-card reveal">
+      <div class="equipo-photo">
+        <div class="ep-bg ep-juan"></div>
+        <div class="ep-initial">J</div>
+      </div>
+      <div class="equipo-info">
+        <p class="equipo-rol" data-lang="es">Co-fundador · Chef</p>
+        <p class="equipo-rol" data-lang="en">Co-founder · Chef</p>
+        <h3 class="equipo-nombre">Juan</h3>
+        <p class="equipo-frase" data-lang="es">"Creatividad, sabor y fuego."</p>
+        <p class="equipo-frase" data-lang="en">"Creativity, flavour and fire."</p>
+        <p class="equipo-bio" data-lang="es">Es la persona que da rienda suelta a la cocina para que cada plato cuente algo más que una receta. Estudia cada idea y la lleva a cabo con sus manos.</p>
+        <p class="equipo-bio" data-lang="en">He gives free rein to the kitchen so every dish tells more than just a recipe. He studies each idea and brings it to life with his own hands.</p>
+      </div>
+    </div>
+    <div class="equipo-card reveal reveal-1">
+      <div class="equipo-photo">
+        <div class="ep-bg ep-miriam"></div>
+        <div class="ep-initial">M</div>
+      </div>
+      <div class="equipo-info">
+        <p class="equipo-rol" data-lang="es">Co-fundadora · Sala & Coordinación</p>
+        <p class="equipo-rol" data-lang="en">Co-founder · Front of house & Coordination</p>
+        <h3 class="equipo-nombre">Miriam</h3>
+        <p class="equipo-frase" data-lang="es">"Ella es orden, mimo y confianza."</p>
+        <p class="equipo-frase" data-lang="en">"She is order, care and trust."</p>
+        <p class="equipo-bio" data-lang="es">Organiza, gestiona y abre camino con cada cliente. Cuida cada detalle asegurándose de que todo fluya como si la magia se hubiese encargado sola.</p>
+        <p class="equipo-bio" data-lang="en">She organises, manages and paves the way for every client. She cares for every detail, making sure everything flows as if magic took care of it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALERÍA -->
+<section class="galeria" id="galeria">
+  <div class="galeria-header reveal">
+    <h2 class="galeria-title" data-lang="es">Galería</h2>
+    <h2 class="galeria-title" data-lang="en">Gallery</h2>
+    <div class="galeria-filters">
+      <button class="gal-filter active" onclick="filterGal(this,'all')" data-lang="es">Todo</button>
+      <button class="gal-filter active" onclick="filterGal(this,'all')" data-lang="en">All</button>
+      <button class="gal-filter" onclick="filterGal(this,'bodas')" data-lang="es">Bodas</button>
+      <button class="gal-filter" onclick="filterGal(this,'bodas')" data-lang="en">Weddings</button>
+      <button class="gal-filter" onclick="filterGal(this,'platos')" data-lang="es">Platos</button>
+      <button class="gal-filter" onclick="filterGal(this,'platos')" data-lang="en">Dishes</button>
+      <button class="gal-filter" onclick="filterGal(this,'eventos')" data-lang="es">Eventos</button>
+      <button class="gal-filter" onclick="filterGal(this,'eventos')" data-lang="en">Events</button>
+    </div>
+  </div>
+  <div class="galeria-grid">
+    <div class="gal-item" data-cat="bodas"><div class="gi-bg-img gi-c1"></div><div class="gi-hover"><div class="gi-icon"><svg width="16" height="16" fill="none" stroke="white" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div></div><span class="gi-caption" data-lang="es">Boda en Cádiz</span><span class="gi-caption" data-lang="en">Wedding in Cádiz</span></div>
+    <div class="gal-item" data-cat="platos"><div class="gi-bg-img gi-c2"></div><div class="gi-hover"><div class="gi-icon"><svg width="16" height="16" fill="none" stroke="white" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div></div><span class="gi-caption" data-lang="es">Vieira al fuego</span><span class="gi-caption" data-lang="en">Scallop on fire</span></div>
+    <div class="gal-item" data-cat="platos"><div class="gi-bg-img gi-c3"></div><div class="gi-hover"><div class="gi-icon"><svg width="16" height="16" fill="none" stroke="white" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div></div><span class="gi-caption" data-lang="es">Finger food</span><span class="gi-caption" data-lang="en">Finger food</span></div>
+    <div class="gal-item" data-cat="eventos"><div class="gi-bg-img gi-c4"></div><div class="gi-hover"><div class="gi-icon"><svg width="16" height="16" fill="none" stroke="white" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div></div><span class="gi-caption" data-lang="es">Montaje de sala</span><span class="gi-caption" data-lang="en">Room setup</span></div>
+    <div class="gal-item" data-cat="bodas"><div class="gi-bg-img gi-c5"></div><div class="gi-hover"><div class="gi-icon"><svg width="16" height="16" fill="none" stroke="white" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div></div><span class="gi-caption" data-lang="es">Detalle nupcial</span><span class="gi-caption" data-lang="en">Wedding detail</span></div>
+    <div class="gal-item" data-cat="eventos"><div class="gi-bg-img gi-c6"></div><div class="gi-hover"><div class="gi-icon"><svg width="16" height="16" fill="none" stroke="white" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div></div><span class="gi-caption" data-lang="es">Evento corporativo</span><span class="gi-caption" data-lang="en">Corporate event</span></div>
+  </div>
+  <div class="galeria-cta">
+    <p class="galeria-cta-text" data-lang="es">Cuidamos cada textura, cada aroma, cada instante.</p>
+    <p class="galeria-cta-text" data-lang="en">We care for every texture, every aroma, every moment.</p>
+    <a href="#" class="galeria-ver" data-lang="es">Ver galería completa →</a>
+    <a href="#" class="galeria-ver" data-lang="en">See full gallery →</a>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-final">
+  <p class="cta-eyebrow reveal" data-lang="es">Hablemos</p>
+  <p class="cta-eyebrow reveal" data-lang="en">Let's talk</p>
+  <h2 class="cta-title reveal" data-lang="es">Cuéntanos<br>tu celebración.</h2>
+  <h2 class="cta-title reveal" data-lang="en">Tell us about<br>your celebration.</h2>
+  <p class="cta-sub reveal" data-lang="es">Antes de cualquier propuesta, nos gusta conocerte. Tu idea, tu estilo, tu historia.</p>
+  <p class="cta-sub reveal" data-lang="en">Before any proposal, we love to get to know you. Your idea, your style, your story.</p>
+  <div class="cta-btns reveal">
+    <a href="contacto.html" class="cta-btn cta-btn-form">
+      <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <span data-lang="es">Formulario</span><span data-lang="en">Contact form</span>
+    </a>
+    <a href="https://wa.me/34600000000" class="cta-btn cta-btn-wa" target="_blank">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/></svg>
+      WhatsApp
+    </a>
+    <a href="tel:+34600000000" class="cta-btn cta-btn-call">
+      <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.5 2 2 0 0 1 3.6 1.32h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.96a16 16 0 0 0 6.13 6.13l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      <span data-lang="es">Llamar</span><span data-lang="en">Call us</span>
+    </a>
+    <a href="https://instagram.com/maralma.catering" class="cta-btn cta-btn-ig" target="_blank">
+      <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/></svg>
+      Instagram
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-left">
+    <span class="footer-copy">© 2026 Maralma · Eventos gastronómicos</span>
+    <div class="footer-legal">
+      <a href="#" data-lang="es">Privacidad</a><a href="#" data-lang="en">Privacy</a>
+      <a href="#" data-lang="es">Aviso legal</a><a href="#" data-lang="en">Legal</a>
+      <a href="#" data-lang="es">Cookies</a><a href="#" data-lang="en">Cookies</a>
+    </div>
+  </div>
+  <div class="footer-logo">Maralma</div>
+  <div class="footer-right">
+    <a href="https://instagram.com/maralma.catering" target="_blank">Instagram</a>
+    <a href="https://threads.net/@maralma.catering" target="_blank">Threads</a>
+    <a href="contacto.html" data-lang="es">Contacto</a>
+    <a href="contacto.html" data-lang="en">Contact</a>
+  </div>
+</footer>
+
+<!-- FAB FLOTANTE -->
+<div class="fab-group" id="fabGroup">
+  <div class="fab-actions" id="fabActions">
+    <a href="https://wa.me/34600000000" class="fab-action fab-wa" target="_blank">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/></svg>
+      WhatsApp
+    </a>
+    <a href="tel:+34600000000" class="fab-action fab-call">
+      <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" width="16" height="16"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.5 2 2 0 0 1 3.6 1.32h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.96a16 16 0 0 0 6.13 6.13l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      <span data-lang="es">Llamar</span><span data-lang="en">Call</span>
+    </a>
+    <a href="https://instagram.com/maralma.catering" class="fab-action fab-ig" target="_blank">
+      <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" width="16" height="16"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/></svg>
+      Instagram
+    </a>
+  </div>
+  <button class="fab-main" id="fabBtn" onclick="toggleFab()">
+    <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+      <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+    </svg>
+  </button>
+</div>
+
+<script>
+// Nav scroll
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 80));
+
+// Reveal
+const reveals = document.querySelectorAll('.reveal');
+new IntersectionObserver(entries => entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }), { threshold: 0.1 }).observe ? (() => { const obs = new IntersectionObserver(entries => entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }), { threshold: 0.1 }); reveals.forEach(el => obs.observe(el)); })() : reveals.forEach(el => el.classList.add('visible'));
+
+// Lang switcher
+function setLang(lang) {
+  document.body.classList.toggle('lang-en', lang === 'en');
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.textContent === lang.toUpperCase()));
+}
+
+// Video mute (placeholder)
+let muted = true;
+function toggleMute() {
+  muted = !muted;
+  const btn = document.getElementById('muteBtn');
+  const btnEn = document.getElementById('muteBtnEn');
+  if(btn) btn.textContent = muted ? '⏸ Vídeo' : '▶ Vídeo';
+  if(btnEn) btnEn.textContent = muted ? '⏸ Video' : '▶ Video';
+}
+
+// Slider reseñas
+let slideIndex = 0;
+const track = document.getElementById('resenasTrack');
+const dots = document.querySelectorAll('.resena-dot');
+function updateSlider() {
+  const cards = track.querySelectorAll('.resena-card');
+  const w = cards[0].offsetWidth + 20;
+  track.style.transform = `translateX(-${slideIndex * w}px)`;
+  dots.forEach((d,i) => d.classList.toggle('active', i === slideIndex));
+}
+function moveSlider(dir) {
+  const cards = track.querySelectorAll('.resena-card');
+  const max = Math.ceil(cards.length / 3) - 1;
+  slideIndex = Math.max(0, Math.min(slideIndex + dir, max));
+  updateSlider();
+}
+function goToSlide(i) { slideIndex = i; updateSlider(); }
+
+// Gallery filter
+function filterGal(btn, cat) {
+  document.querySelectorAll('.gal-filter').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.gal-item').forEach(item => {
+    item.style.opacity = (cat === 'all' || item.dataset.cat === cat) ? '1' : '0.2';
+    item.style.transition = 'opacity 0.4s';
+  });
+}
+
+// FAB
+function toggleFab() {
+  const actions = document.getElementById('fabActions');
+  const btn = document.getElementById('fabBtn');
+  actions.classList.toggle('open');
+  btn.classList.toggle('open');
+}
+
+// Close FAB on outside click
+document.addEventListener('click', e => {
+  const fab = document.getElementById('fabGroup');
+  if(!fab.contains(e.target)) {
+    document.getElementById('fabActions').classList.remove('open');
+    document.getElementById('fabBtn').classList.remove('open');
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,424 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { t } from "i18next";
+export const prerender = true;
+---
+
+<Layout title={t("nav.contact") + " · Maralma"} darkNav={true}>
+
+  <!-- ═══ PAGE HERO ═══ -->
+  <section class="page-hero">
+    <div class="page-hero-bg"></div>
+    <div class="page-hero-overlay"></div>
+    <div class="page-hero-content">
+      <span class="page-eyebrow">{t("contact.eyebrow")}</span>
+      <h1 class="page-title">{t("contact.title").split(".")[0]}.<br/><em>{t("contact.title").split(".")[1]?.trim()}</em></h1>
+      <svg class="hero-wave" width="60" height="12" viewBox="0 0 60 12" fill="none">
+        <path d="M3 9 C11 3, 19 3, 27 6 C35 9, 43 9, 51 3" stroke="#a8c4c8" stroke-width="1" stroke-linecap="round" fill="none" opacity="0.6"/>
+      </svg>
+      <p class="page-subtitle">{t("contact.subtitle")}</p>
+    </div>
+  </section>
+
+  <!-- ═══ MAIN LAYOUT ═══ -->
+  <div class="contact-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="contact-sidebar">
+      <div class="sidebar-block reveal">
+        <p class="sidebar-label">{t("contact.sidebar.info")}</p>
+        <div class="sidebar-item">
+          <div class="si-dot"></div>
+          <div class="si-content">
+            <p class="si-title">{t("contact.sidebar.email")}</p>
+            <p class="si-value"><a href="mailto:hola@maralma.catering">hola@maralma.catering</a></p>
+          </div>
+        </div>
+        <div class="sidebar-item">
+          <div class="si-dot"></div>
+          <div class="si-content">
+            <p class="si-title">{t("contact.sidebar.phone")}</p>
+            <p class="si-value"><a href="tel:+34600000000">+34 600 000 000</a></p>
+          </div>
+        </div>
+        <div class="sidebar-item">
+          <div class="si-dot"></div>
+          <div class="si-content">
+            <p class="si-title">{t("contact.sidebar.location")}</p>
+            <p class="si-value">{t("contact.sidebar.locationValue")}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-block reveal reveal-1">
+        <p class="sidebar-label">{t("contact.sidebar.social")}</p>
+        <div class="social-links">
+          <a href="https://instagram.com/maralma.catering" class="social-link" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="2" y="2" width="20" height="20" rx="5"/>
+              <circle cx="12" cy="12" r="4"/>
+              <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/>
+            </svg>
+            @maralma.catering
+          </a>
+          <a href="https://wa.me/34600000000" class="social-link" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/>
+            </svg>
+            WhatsApp
+          </a>
+        </div>
+      </div>
+
+      <div class="sidebar-block reveal reveal-2">
+        <p class="sidebar-label">{t("contact.sidebar.note") ? "" : ""}</p>
+        <p class="sidebar-note">&ldquo;{t("contact.sidebar.note")}&rdquo;</p>
+      </div>
+    </aside>
+
+    <!-- FORM AREA -->
+    <div class="contact-form-wrap">
+      <div class="form-intro reveal">
+        <h2 class="form-intro-title">{t("contact.form.title")}</h2>
+        <p class="form-intro-sub">{t("contact.form.subtitle")}</p>
+      </div>
+
+      <form class="form reveal reveal-1" id="contactForm">
+
+        <p class="form-section-title">{t("contact.form.yourData")}</p>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="nombre">{t("contact.form.name")} *</label>
+            <input type="text" id="nombre" name="nombre" placeholder={t("contact.form.namePlaceholder")} required />
+          </div>
+          <div class="form-group">
+            <label for="telefono">{t("contact.sidebar.phone")} *</label>
+            <input type="tel" id="telefono" name="telefono" placeholder="+34 000 000 000" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="email">{t("contact.sidebar.email")} *</label>
+          <input type="email" id="email" name="email" placeholder="tu@email.com" required />
+        </div>
+
+        <p class="form-section-title">{t("contact.form.yourEvent")}</p>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="tipo_evento">{t("contact.form.eventType")} *</label>
+            <select id="tipo_evento" name="tipo_evento" required>
+              <option value="" disabled selected>{t("contact.form.eventTypePlaceholder")}</option>
+              <option value="boda">{t("contact.form.eventTypes.wedding")}</option>
+              <option value="corporativo">{t("contact.form.eventTypes.corporate")}</option>
+              <option value="privado">{t("contact.form.eventTypes.private")}</option>
+              <option value="otro">{t("contact.form.eventTypes.other")}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="fecha_evento">{t("contact.form.date")}</label>
+            <input type="date" id="fecha_evento" name="fecha_evento" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="comensales">{t("contact.form.guests")}</label>
+            <input type="number" id="comensales" name="comensales" placeholder={t("contact.form.guestsPlaceholder")} />
+          </div>
+          <div class="form-group">
+            <label for="zona">{t("contact.form.venue")}</label>
+            <input type="text" id="zona" name="zona" placeholder={t("contact.form.venuePlaceholder")} />
+          </div>
+        </div>
+
+        <p class="form-section-title">{t("contact.form.yourIdea")}</p>
+        <div class="form-group">
+          <label for="mensaje">{t("contact.form.message")}</label>
+          <textarea id="mensaje" name="mensaje" placeholder={t("contact.form.messagePlaceholder")}></textarea>
+        </div>
+
+        <div class="form-footer">
+          <p class="form-note">{t("contact.form.privacy")} <a href="#">{t("contact.form.privacyLink")}</a>.</p>
+          <button type="submit" class="btn-submit">
+            {t("contact.form.submit")}
+            <span class="arrow">→</span>
+          </button>
+        </div>
+      </form>
+
+      <div class="form-success" id="formSuccess">
+        <div class="success-icon">
+          <svg width="20" height="20" fill="none" stroke="#a8c4c8" stroke-width="1.5" viewBox="0 0 24 24">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </div>
+        <h3 class="success-title">{t("contact.form.successTitle")}</h3>
+        <p class="success-sub">{t("contact.form.successMessage")}</p>
+      </div>
+
+      <div class="form-error hidden" id="formError">
+        <p class="form-error-text">Ha ocurrido un error. Inténtalo de nuevo o escríbenos directamente.</p>
+      </div>
+    </div>
+
+  </div>
+</Layout>
+
+<style>
+/* ═══ PAGE HERO ═══ */
+.page-hero {
+  position: relative; min-height: 50vh;
+  display: flex; align-items: center;
+  overflow: hidden; background: var(--color-negro);
+}
+.page-hero-bg {
+  position: absolute; inset: 0;
+  background: linear-gradient(160deg, #0a1820 0%, #1e3a4f 45%, #2d5169 100%);
+}
+.page-hero-overlay {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 60% 80% at 80% 50%, rgba(168,196,200,0.07) 0%, transparent 60%);
+}
+.page-hero-content {
+  position: relative; z-index: 2;
+  padding: 160px 60px 80px; max-width: 680px;
+}
+.page-eyebrow {
+  font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase;
+  color: var(--color-azul-claro); margin-bottom: 24px; display: block;
+  animation: fadeUp 1s ease 0.3s both;
+}
+.page-title {
+  font-family: var(--font-serif);
+  font-size: clamp(48px, 7vw, 90px);
+  font-weight: 300; color: var(--color-blanco);
+  line-height: 0.92; letter-spacing: -0.01em; margin-bottom: 0;
+  animation: fadeUp 1s ease 0.5s both;
+}
+.page-title em { font-style: italic; color: var(--color-azul-claro); }
+.hero-wave {
+  display: block; margin: 22px 0 24px;
+  animation: fadeUp 1s ease 0.7s both;
+}
+.page-subtitle {
+  font-family: var(--font-serif); font-style: italic;
+  font-size: clamp(15px, 2vw, 19px); font-weight: 300;
+  color: rgba(253,252,250,0.5); line-height: 1.7;
+  animation: fadeUp 1s ease 0.9s both;
+}
+
+/* ═══ LAYOUT ═══ */
+.contact-layout {
+  display: grid; grid-template-columns: 340px 1fr;
+  min-height: calc(100vh - 300px);
+}
+
+/* ═══ SIDEBAR ═══ */
+.contact-sidebar {
+  background: var(--color-crema); padding: 64px 48px;
+  border-right: 0.5px solid var(--color-crema-oscuro);
+  display: flex; flex-direction: column; gap: 48px;
+}
+.sidebar-label {
+  font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--color-texto-suave); margin-bottom: 16px;
+  display: flex; align-items: center; gap: 10px;
+}
+.sidebar-label::after {
+  content: ''; flex: 1; height: 0.5px; background: var(--color-crema-oscuro);
+}
+.sidebar-item {
+  display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px;
+}
+.si-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--color-azul-claro); flex-shrink: 0; margin-top: 5px;
+}
+.si-title {
+  font-size: 11px; font-weight: 500; color: var(--color-azul);
+  letter-spacing: 0.05em; margin-bottom: 2px;
+}
+.si-value {
+  font-size: 13px; font-weight: 300; color: var(--color-texto-suave); line-height: 1.6;
+}
+.si-value a {
+  color: inherit; text-decoration: none; transition: color 0.2s;
+}
+.si-value a:hover { color: var(--color-azul); }
+
+.social-links { display: flex; flex-direction: column; gap: 10px; }
+.social-link {
+  display: flex; align-items: center; gap: 12px;
+  font-size: 12px; font-weight: 400; letter-spacing: 0.08em;
+  color: var(--color-texto-suave); text-decoration: none;
+  padding: 12px 16px; border: 0.5px solid var(--color-crema-oscuro);
+  transition: all 0.3s;
+}
+.social-link:hover {
+  border-color: var(--color-azul); color: var(--color-azul);
+  background: var(--color-blanco);
+}
+.social-link svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+.sidebar-note {
+  font-family: var(--font-serif); font-style: italic;
+  font-size: 15px; font-weight: 300;
+  color: var(--color-texto-suave); line-height: 1.8;
+  border-left: 2px solid var(--color-azul-claro); padding-left: 16px;
+}
+
+/* ═══ FORM ═══ */
+.contact-form-wrap { background: var(--color-blanco); padding: 64px 72px; }
+.form-intro {
+  margin-bottom: 40px; padding-bottom: 32px;
+  border-bottom: 0.5px solid var(--color-crema-oscuro);
+}
+.form-intro-title {
+  font-family: var(--font-serif); font-size: 28px; font-weight: 300;
+  color: var(--color-azul); margin-bottom: 10px;
+}
+.form-intro-sub {
+  font-size: 13px; font-weight: 300;
+  color: var(--color-texto-suave); line-height: 1.8;
+}
+
+.form { display: flex; flex-direction: column; gap: 0; }
+.form-section-title {
+  font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--color-texto-suave); margin: 28px 0 16px;
+  display: flex; align-items: center; gap: 10px;
+}
+.form-section-title::after {
+  content: ''; flex: 1; height: 0.5px; background: var(--color-crema-oscuro);
+}
+.form-row {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;
+}
+.form-group {
+  display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px;
+}
+.form-group:last-child { margin-bottom: 0; }
+.form-group label {
+  font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--color-texto-suave);
+}
+.form-group input,
+.form-group select,
+.form-group textarea {
+  background: var(--color-blanco);
+  border: 0.5px solid var(--color-crema-oscuro);
+  color: var(--color-texto);
+  font-family: var(--font-sans); font-size: 13px; font-weight: 300;
+  padding: 13px 16px; outline: none;
+  transition: border-color 0.2s, background 0.2s;
+  -webkit-appearance: none; border-radius: 0;
+}
+.form-group select {
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%236b7f87' stroke-width='1' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--color-azul-claro);
+  background: var(--color-crema);
+}
+.form-group input::placeholder,
+.form-group textarea::placeholder { color: var(--color-crema-oscuro); }
+.form-group textarea { resize: none; height: 120px; }
+
+.form-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 32px; padding-top: 24px;
+  border-top: 0.5px solid var(--color-crema-oscuro);
+}
+.form-note {
+  font-size: 11px; color: var(--color-texto-suave); font-weight: 300;
+}
+.form-note a { color: var(--color-texto-suave); text-decoration: underline; }
+.btn-submit {
+  font-family: var(--font-sans); font-size: 11px; font-weight: 500;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--color-blanco); background: var(--color-azul);
+  border: none; padding: 15px 40px; cursor: pointer;
+  transition: background 0.3s; display: flex; align-items: center; gap: 10px;
+}
+.btn-submit:hover { background: var(--color-azul-medio); }
+.btn-submit .arrow { transition: transform 0.2s; }
+.btn-submit:hover .arrow { transform: translateX(4px); }
+
+/* ═══ SUCCESS ═══ */
+.form-success {
+  display: none; text-align: center; padding: 60px 40px;
+}
+.form-success.show { display: block; }
+.form.hidden { display: none; }
+.success-icon {
+  width: 48px; height: 48px;
+  border: 0.5px solid var(--color-azul-claro); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 24px;
+}
+.success-title {
+  font-family: var(--font-serif); font-size: 28px; font-weight: 300;
+  color: var(--color-azul); margin-bottom: 12px;
+}
+.success-sub {
+  font-size: 14px; font-weight: 300;
+  color: var(--color-texto-suave); line-height: 1.8;
+}
+
+.form-error {
+  margin-top: 16px; padding: 14px 20px;
+  background: rgba(127,29,29,0.06); border: 0.5px solid rgba(127,29,29,0.2);
+}
+.form-error-text {
+  font-size: 13px; font-weight: 300; color: #7f1d1d; line-height: 1.6;
+}
+
+/* ═══ REVEAL ═══ */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+.reveal-1 { transition-delay: 0.1s; }
+.reveal-2 { transition-delay: 0.2s; }
+
+/* ═══ RESPONSIVE ═══ */
+@media (max-width: 768px) {
+  .page-hero-content { padding: 120px 24px 60px; }
+  .contact-layout { grid-template-columns: 1fr; }
+  .contact-sidebar { padding: 40px 24px; border-right: none; border-bottom: 0.5px solid var(--color-crema-oscuro); }
+  .contact-form-wrap { padding: 40px 24px; }
+  .form-row { grid-template-columns: 1fr; }
+  .form-footer { flex-direction: column; gap: 16px; align-items: stretch; }
+  .btn-submit { justify-content: center; }
+}
+</style>
+
+<script>
+  const form = document.getElementById("contactForm") as HTMLFormElement;
+
+  form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (res.ok) {
+        form.classList.add("hidden");
+        document.getElementById("formSuccess")?.classList.add("show");
+      } else {
+        throw new Error("Error");
+      }
+    } catch {
+      document.getElementById("formError")?.classList.remove("hidden");
+      setTimeout(() => document.getElementById("formError")?.classList.add("hidden"), 6000);
+    }
+  });
+</script>
