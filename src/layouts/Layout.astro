@@ -1,12 +1,16 @@
 ---
 import "../styles/global.css";
-import { t, currentLang } from "../utils/i18n";
+import { t as _t, type Lang } from "../utils/i18n";
 
 interface Props {
   title?: string;
   description?: string;
   darkNav?: boolean;
 }
+
+const lang = (Astro.currentLocale ?? "es") as Lang;
+const t = (key: string) => _t(key, lang);
+const localePath = (path: string) => lang === "en" ? `/en${path}` : path;
 
 const {
   title = t("meta.title"),
@@ -15,19 +19,21 @@ const {
 } = Astro.props;
 
 const currentPath = Astro.url.pathname;
-const altLang = currentLang === "es" ? "en" : "es";
-const altPath = currentLang === "es" ? `/en${currentPath}` : currentPath.replace(/^\/en/, "") || "/";
+const altLang = lang === "es" ? "en" : "es";
+const altPath = lang === "es"
+  ? `/en${currentPath}`
+  : currentPath.replace(/^\/en/, "") || "/";
 
 const navLinks = [
-  { href: "/nosotros", label: t("nav.about") },
-  { href: "/bodas", label: t("nav.weddings") },
-  { href: "/eventos", label: t("nav.events") },
-  { href: "/galeria", label: t("nav.gallery") },
+  { href: localePath("/nosotros"), label: t("nav.about") },
+  { href: localePath("/bodas"), label: t("nav.weddings") },
+  { href: localePath("/eventos"), label: t("nav.events") },
+  { href: localePath("/galeria"), label: t("nav.gallery") },
 ];
 ---
 
 <!doctype html>
-<html lang={currentLang}>
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
@@ -43,7 +49,7 @@ const navLinks = [
   <body>
     <!-- NAV -->
     <nav id="navbar" class:list={[darkNav ? "nav-dark" : "nav-light"]}>
-      <a href="/" class="nav-logo">
+      <a href={localePath("/")} class="nav-logo">
         <img src="/img/logo-blanco-h.png" alt="Maralma" class="nav-logo-white" />
         <img src="/img/logo-azul-h.png" alt="Maralma" class="nav-logo-dark" />
       </a>
@@ -63,10 +69,10 @@ const navLinks = [
           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
         </a>
         <div class="lang-switcher">
-          <a href={currentLang === "es" ? "#" : altPath} class:list={["lang-btn", currentLang === "es" ? "active" : ""]}>ES</a>
-          <a href={currentLang === "en" ? "#" : altPath} class:list={["lang-btn", currentLang === "en" ? "active" : ""]}>EN</a>
+          <a href={lang === "es" ? "#" : altPath} class:list={["lang-btn", lang === "es" ? "active" : ""]}>ES</a>
+          <a href={lang === "en" ? "#" : altPath} class:list={["lang-btn", lang === "en" ? "active" : ""]}>EN</a>
         </div>
-        <a href="/contacto" class="nav-cta">{t("nav.contact")}</a>
+        <a href={localePath("/contacto")} class="nav-cta">{t("nav.contact")}</a>
       </div>
 
       <button id="mobile-menu-btn" class="nav-mobile-btn" aria-label="Menu">
@@ -86,7 +92,7 @@ const navLinks = [
             </a>
           </li>
         ))}
-        <li><a href="/contacto">{t("nav.contact")}</a></li>
+        <li><a href={localePath("/contacto")}>{t("nav.contact")}</a></li>
         <li><a href={altPath} class="mobile-lang">{t("nav.lang")}</a></li>
       </ul>
     </div>
@@ -98,7 +104,7 @@ const navLinks = [
     <!-- FOOTER -->
     <footer class="site-footer">
       <div class="footer-left">
-        <span class="footer-copy">&copy; {new Date().getFullYear()} Maralma · {currentLang === "es" ? "Eventos gastronómicos" : "Gastronomic events"}</span>
+        <span class="footer-copy">&copy; {new Date().getFullYear()} Maralma · {lang === "es" ? "Eventos gastronómicos" : "Gastronomic events"}</span>
         <div class="footer-legal">
           <a href="#">{t("footer.privacy")}</a>
           <a href="#">{t("footer.legal")}</a>
@@ -111,7 +117,7 @@ const navLinks = [
       <div class="footer-right">
         <a href="https://instagram.com/maralma.catering" target="_blank" rel="noopener noreferrer">Instagram</a>
         <a href="https://threads.net/@maralma.catering" target="_blank" rel="noopener noreferrer">Threads</a>
-        <a href="/contacto">{t("nav.contact")}</a>
+        <a href={localePath("/contacto")}>{t("nav.contact")}</a>
       </div>
     </footer>
 

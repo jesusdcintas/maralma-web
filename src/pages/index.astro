@@ -1,10 +1,13 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { t } from "../utils/i18n";
+import { t as _t, type Lang } from "../utils/i18n";
 import { loadCms, c as _c, imgStyle as _imgStyle } from "../utils/cms";
 
+const lang = (Astro.currentLocale ?? "es") as Lang;
+const t = (key: string) => _t(key, lang);
+const localePath = (path: string) => lang === "en" ? `/en${path}` : path;
 const cms = await loadCms();
-const c = (key: string) => _c(cms, key);
+const c = (key: string) => _c(cms, key, lang);
 const img = (key: string) => _imgStyle(cms, key);
 ---
 
@@ -22,15 +25,11 @@ const img = (key: string) => _imgStyle(cms, key);
       <img src="/img/logo-blanco.png" alt="MarAlma" class="hero-logo-img" />
       <p class="hero-tagline" data-cms="hero.tagline">{c("hero.tagline")}</p>
       <div class="hero-btns">
-        <a href="/contacto" class="btn-primary">{t("hero.cta_primary")}</a>
+        <a href={localePath("/contacto")} class="btn-primary">{t("hero.cta_primary")}</a>
         <a href="#servicios" class="btn-ghost">{t("hero.cta_secondary")}</a>
       </div>
     </div>
     <button class="hero-mute" id="muteBtn">{t("hero.mute_pause")}</button>
-    <div class="hero-scroll">
-      <span>{t("hero.scroll")}</span>
-      <div class="scroll-line"></div>
-    </div>
   </section>
 
   <!-- ═══ CLAIM GRANDE ═══ -->
@@ -58,7 +57,7 @@ const img = (key: string) => _imgStyle(cms, key);
           <p class="srv-label">{t("services.label")}</p>
           <h3 class="srv-title" data-cms="services.weddings.title">{c("services.weddings.title")}</h3>
           <p class="srv-desc" data-cms="services.weddings.desc">{c("services.weddings.desc")}</p>
-          <a href="/bodas" class="srv-link">{t("services.weddings.link")} →</a>
+          <a href={localePath("/bodas")} class="srv-link">{t("services.weddings.link")} →</a>
         </div>
       </div>
       <div class="srv-card reveal reveal-1">
@@ -67,7 +66,7 @@ const img = (key: string) => _imgStyle(cms, key);
           <p class="srv-label">{t("services.label")}</p>
           <h3 class="srv-title" data-cms="services.corporate.title">{c("services.corporate.title")}</h3>
           <p class="srv-desc" data-cms="services.corporate.desc">{c("services.corporate.desc")}</p>
-          <a href="/eventos" class="srv-link">{t("services.corporate.link")} →</a>
+          <a href={localePath("/eventos")} class="srv-link">{t("services.corporate.link")} →</a>
         </div>
       </div>
       <div class="srv-card reveal reveal-2">
@@ -76,7 +75,7 @@ const img = (key: string) => _imgStyle(cms, key);
           <p class="srv-label">{t("services.label")}</p>
           <h3 class="srv-title" data-cms="services.private.title">{c("services.private.title")}</h3>
           <p class="srv-desc" data-cms="services.private.desc">{c("services.private.desc")}</p>
-          <a href="/eventos" class="srv-link">{t("services.private.link")} →</a>
+          <a href={localePath("/eventos")} class="srv-link">{t("services.private.link")} →</a>
         </div>
       </div>
     </div>
@@ -105,7 +104,7 @@ const img = (key: string) => _imgStyle(cms, key);
           <span class="boda-tag">{t("weddings.cocktail.tag")}</span>
           <h3 class="boda-title">{t("weddings.cocktail.title_1")}<br/>{t("weddings.cocktail.title_2")}</h3>
           <p class="boda-sub">{t("weddings.cocktail.subtitle")}</p>
-          <a href="/bodas" class="boda-cta">{t("weddings.cocktail.cta")}</a>
+          <a href={localePath("/bodas")} class="boda-cta">{t("weddings.cocktail.cta")}</a>
         </div>
       </div>
       <div class="boda-card reveal reveal-1">
@@ -114,7 +113,7 @@ const img = (key: string) => _imgStyle(cms, key);
           <span class="boda-tag">{t("weddings.banquet.tag")}</span>
           <h3 class="boda-title">{t("weddings.banquet.title_1")}<br/>{t("weddings.banquet.title_2")}</h3>
           <p class="boda-sub">{t("weddings.banquet.subtitle")}</p>
-          <a href="/bodas" class="boda-cta">{t("weddings.banquet.cta")}</a>
+          <a href={localePath("/bodas")} class="boda-cta">{t("weddings.banquet.cta")}</a>
         </div>
       </div>
     </div>
@@ -308,7 +307,7 @@ const img = (key: string) => _imgStyle(cms, key);
     </div>
     <div class="galeria-cta">
       <p class="galeria-cta-text">{t("gallery.cta_phrase")}</p>
-      <a href="/galeria" class="galeria-ver">{t("gallery.cta")} →</a>
+      <a href={localePath("/galeria")} class="galeria-ver">{t("gallery.cta")} →</a>
     </div>
   </section>
 
@@ -318,7 +317,7 @@ const img = (key: string) => _imgStyle(cms, key);
     <h2 class="cta-title reveal" data-cms="cta.title">{c("cta.title")}</h2>
     <p class="cta-sub reveal" data-cms="cta.desc">{c("cta.desc")}</p>
     <div class="cta-btns reveal">
-      <a href="/contacto" class="cta-btn cta-btn-form">
+      <a href={localePath("/contacto")} class="cta-btn cta-btn-form">
         <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
         {t("cta.form")}
       </a>
@@ -405,20 +404,6 @@ const img = (key: string) => _imgStyle(cms, key);
   cursor: pointer; font-family: var(--font-sans); transition: all 0.2s;
 }
 .hero-mute:hover { background: rgba(255,255,255,0.2); color: var(--color-blanco); }
-.hero-scroll {
-  position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
-  display: flex; flex-direction: column; align-items: center; gap: 10px;
-  animation: fadeUp 1s ease 1.6s both;
-}
-.hero-scroll span {
-  font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase;
-  color: rgba(168,196,200,0.5);
-}
-.scroll-line {
-  width: 0.5px; height: 40px;
-  background: rgba(168,196,200,0.3);
-  animation: scrollPulse 2s ease-in-out infinite;
-}
 
 /* ═══ CLAIM GRANDE ═══ */
 .claim-full {
@@ -829,7 +814,7 @@ const img = (key: string) => _imgStyle(cms, key);
 
   function updateSlider() {
     if (!track) return;
-    const cards = track.querySelectorAll(".resena-card");
+    const cards = track.querySelectorAll<HTMLElement>(".resena-card");
     if (!cards.length) return;
     const w = cards[0].offsetWidth + 20;
     track.style.transform = `translateX(-${slideIndex * w}px)`;

@@ -1,5 +1,5 @@
 import { supabaseAdmin } from "../lib/supabase-admin";
-import { t } from "./i18n";
+import { t, type Lang } from "./i18n";
 
 export interface CmsOverrides {
   text: Record<string, string>;
@@ -28,8 +28,8 @@ export async function loadCms(): Promise<CmsOverrides> {
 }
 
 /** Return CMS text override or fall back to i18n translation. */
-export function c(cms: CmsOverrides, key: string): string {
-  return cms.text[key] ?? t(key);
+export function c(cms: CmsOverrides, key: string, lang: Lang = "es"): string {
+  return cms.text[key] ?? t(key, lang);
 }
 
 /** Return inline background-image style if CMS image override exists. */

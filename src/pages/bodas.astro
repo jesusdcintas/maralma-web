@@ -1,10 +1,13 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { t } from "../utils/i18n";
+import { t as _t, type Lang } from "../utils/i18n";
 import { loadCms, c as _c, imgStyle as _imgStyle } from "../utils/cms";
 
+const lang = (Astro.currentLocale ?? "es") as Lang;
+const t = (key: string) => _t(key, lang);
+const localePath = (path: string) => lang === "en" ? `/en${path}` : path;
 const cms = await loadCms();
-const c = (key: string) => _c(cms, key);
+const c = (key: string) => _c(cms, key, lang);
 const img = (key: string) => _imgStyle(cms, key);
 ---
 
@@ -50,7 +53,7 @@ const img = (key: string) => _imgStyle(cms, key);
           <li>{t("weddings.cocktail.items.4")}</li>
           <li>{t("weddings.cocktail.items.5")}</li>
         </ul>
-        <a href="/contacto" class="detail-cta">{t("events.cta")} →</a>
+        <a href={localePath("/contacto")} class="detail-cta">{t("events.cta")} →</a>
       </div>
     </div>
   </section>
@@ -82,7 +85,7 @@ const img = (key: string) => _imgStyle(cms, key);
           <li>{t("weddings.banquet.items.4")}</li>
           <li>{t("weddings.banquet.items.5")}</li>
         </ul>
-        <a href="/contacto" class="detail-cta">{t("events.cta")} →</a>
+        <a href={localePath("/contacto")} class="detail-cta">{t("events.cta")} →</a>
       </div>
       <div class="detail-photo reveal reveal-1">
         <div class="detail-photo-bg dp-banquet" data-cms-img="weddings.banquet.photo" style={img("weddings.banquet.photo")}></div>
@@ -121,7 +124,7 @@ const img = (key: string) => _imgStyle(cms, key);
     <h2 class="cta-title reveal" data-cms="weddings.page.cta_title">{c("weddings.page.cta_title")}</h2>
     <p class="cta-sub reveal" data-cms="weddings.page.cta_body">{c("weddings.page.cta_body")}</p>
     <div class="cta-btns reveal">
-      <a href="/contacto" class="cta-btn cta-btn-form">
+      <a href={localePath("/contacto")} class="cta-btn cta-btn-form">
         <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
         {t("cta.form")}
       </a>

@@ -1,8 +1,11 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { t } from "../utils/i18n";
+import { t as _t, type Lang } from "../utils/i18n";
 import { loadCms } from "../utils/cms";
 
+const lang = (Astro.currentLocale ?? "es") as Lang;
+const t = (key: string) => _t(key, lang);
+const localePath = (path: string) => lang === "en" ? `/en${path}` : path;
 const cms = await loadCms();
 ---
 
@@ -41,7 +44,7 @@ const cms = await loadCms();
   <section class="gallery-cta">
     <p class="cta-eyebrow reveal" data-cms="gallery.cta_eyebrow">{cms.text["gallery.cta_eyebrow"] || "¿Te gusta lo que ves?"}</p>
     <h2 class="cta-title reveal reveal-delay-1" data-cms="gallery.cta_title">{cms.text["gallery.cta_title"] || "Hagamos algo"}<br/>{cms.text["gallery.cta_title"] ? "" : "así de bonito"}<br/><em>{cms.text["gallery.cta_title"] ? "" : "para ti."}</em></h2>
-    <a href="/contacto" class="btn-dark reveal reveal-delay-2">Ponerse en contacto →</a>
+    <a href={localePath("/contacto")} class="btn-dark reveal reveal-delay-2">Ponerse en contacto →</a>
   </section>
 
 </Layout>

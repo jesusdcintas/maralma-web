@@ -1,4 +1,12 @@
 import esTranslation from "../../public/locales/es/translation.json";
+import enTranslation from "../../public/locales/en/translation.json";
+
+export type Lang = "es" | "en";
+
+const translations: Record<Lang, Record<string, unknown>> = {
+  es: esTranslation as Record<string, unknown>,
+  en: enTranslation as Record<string, unknown>,
+};
 
 function getNestedValue(obj: Record<string, unknown>, path: string): string {
   const keys = path.split(".");
@@ -10,8 +18,6 @@ function getNestedValue(obj: Record<string, unknown>, path: string): string {
   return typeof current === "string" ? current : path;
 }
 
-export function t(key: string): string {
-  return getNestedValue(esTranslation as Record<string, unknown>, key);
+export function t(key: string, lang: Lang = "es"): string {
+  return getNestedValue(translations[lang], key);
 }
-
-export const currentLang = "es";

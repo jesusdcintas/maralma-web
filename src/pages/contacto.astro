@@ -1,10 +1,12 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { t } from "../utils/i18n";
+import { t as _t, type Lang } from "../utils/i18n";
 import { loadCms, c as _c } from "../utils/cms";
 
+const lang = (Astro.currentLocale ?? "es") as Lang;
+const t = (key: string) => _t(key, lang);
 const cms = await loadCms();
-const c = (key: string) => _c(cms, key);
+const c = (key: string) => _c(cms, key, lang);
 ---
 
 <Layout title={t("nav.contact") + " · Maralma"} darkNav={true}>

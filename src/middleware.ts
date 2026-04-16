@@ -5,8 +5,9 @@ export const onRequest = defineMiddleware(async ({ cookies, redirect, url }, nex
   const path = url.pathname;
 
   // Only protect /admin/* pages (not the login page itself, not API routes)
-  if (!path.startsWith("/admin")) return next();
-  if (path === "/admin" || path === "/admin/") return next();
+  const isAdmin = path.startsWith("/admin") || path.startsWith("/en/admin");
+  if (!isAdmin) return next();
+  if (path === "/admin" || path === "/admin/" || path === "/en/admin" || path === "/en/admin/") return next();
   if (path.startsWith("/api/")) return next();
 
   const token = cookies.get("sb-access-token")?.value;
