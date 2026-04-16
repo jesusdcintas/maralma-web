@@ -11,12 +11,12 @@ export const prerender = true;
     <div class="page-hero-bg"></div>
     <div class="page-hero-overlay"></div>
     <div class="page-hero-content">
-      <span class="page-eyebrow">{t("contact.eyebrow")}</span>
+      <span class="page-eyebrow" data-cms="contact.eyebrow">{t("contact.eyebrow")}</span>
       <h1 class="page-title">{t("contact.title").split(".")[0]}.<br/><em>{t("contact.title").split(".")[1]?.trim()}</em></h1>
       <svg class="hero-wave" width="60" height="12" viewBox="0 0 60 12" fill="none">
         <path d="M3 9 C11 3, 19 3, 27 6 C35 9, 43 9, 51 3" stroke="#a8c4c8" stroke-width="1" stroke-linecap="round" fill="none" opacity="0.6"/>
       </svg>
-      <p class="page-subtitle">{t("contact.subtitle")}</p>
+      <p class="page-subtitle" data-cms="contact.subtitle">{t("contact.subtitle")}</p>
     </div>
   </section>
 
@@ -79,8 +79,8 @@ export const prerender = true;
     <!-- FORM AREA -->
     <div class="contact-form-wrap">
       <div class="form-intro reveal">
-        <h2 class="form-intro-title">{t("contact.form.title")}</h2>
-        <p class="form-intro-sub">{t("contact.form.subtitle")}</p>
+        <h2 class="form-intro-title" data-cms="contact.form.title">{t("contact.form.title")}</h2>
+        <p class="form-intro-sub" data-cms="contact.form.subtitle">{t("contact.form.subtitle")}</p>
       </div>
 
       <form class="form reveal reveal-1" id="contactForm">
