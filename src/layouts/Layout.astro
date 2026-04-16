@@ -59,6 +59,9 @@ const navLinks = [
       </ul>
 
       <div class="nav-right">
+        <a href="/admin/panel" class="nav-admin-btn" id="navAdminBtn" title="Panel de administración" style="display:none">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+        </a>
         <div class="lang-switcher">
           <a href={currentLang === "es" ? "#" : altPath} class:list={["lang-btn", currentLang === "es" ? "active" : ""]}>ES</a>
           <a href={currentLang === "en" ? "#" : altPath} class:list={["lang-btn", currentLang === "en" ? "active" : ""]}>EN</a>
@@ -235,6 +238,18 @@ const navLinks = [
         text-decoration: none; padding: 10px 22px;
         transition: all 0.3s;
       }
+      .nav-admin-btn {
+        display: flex; align-items: center; justify-content: center;
+        width: 32px; height: 32px;
+        color: var(--color-texto-suave); opacity: 0.5;
+        transition: opacity 0.2s, color 0.2s;
+        text-decoration: none;
+      }
+      .nav-admin-btn:hover { opacity: 1; color: var(--color-azul); }
+      .nav-dark .nav-admin-btn { color: rgba(255,255,255,0.5); }
+      .nav-dark .nav-admin-btn:hover { color: var(--color-blanco); opacity: 1; }
+      nav.scrolled .nav-admin-btn { color: var(--color-texto-suave); }
+      nav.scrolled .nav-admin-btn:hover { color: var(--color-azul); opacity: 1; }
       .nav-mobile-btn { display: none; background: none; border: none; cursor: pointer; }
 
       /* ── Mobile menu ── */
@@ -399,6 +414,18 @@ const navLinks = [
     </script>
     <script>
       import "../scripts/cms-inline";
+    </script>
+    <script>
+      import { createClient } from "@supabase/supabase-js";
+      const supabase = createClient(
+        import.meta.env.PUBLIC_SUPABASE_URL,
+        import.meta.env.PUBLIC_SUPABASE_ANON_KEY,
+      );
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        const btn = document.getElementById("navAdminBtn");
+        if (btn) btn.style.display = "flex";
+      }
     </script>
   </body>
 </html>

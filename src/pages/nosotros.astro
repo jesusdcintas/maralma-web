@@ -1,7 +1,10 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { t } from "../utils/i18n";
-export const prerender = true;
+import { loadCms, imgStyle as _imgStyle } from "../utils/cms";
+
+const cms = await loadCms();
+const img = (key: string) => _imgStyle(cms, key);
 ---
 
 <Layout title={`${t("about.eyebrow")} · Maralma`} description="Conoce al equipo detrás de Maralma. Juan y Miriam, pasión por la gastronomía desde Cádiz.">
@@ -10,8 +13,8 @@ export const prerender = true;
   <div class="page-hero">
     <div class="page-hero-content">
       <span class="page-eyebrow">Quiénes somos</span>
-      <h1 class="page-title" data-cms="about.hero.title">Dos almas,<br/><em>un mismo sabor.</em></h1>
-      <p class="page-subtitle" data-cms="about.hero.subtitle">Maralma nace de la unión de dos personas con la misma convicción: que cada celebración merece una experiencia gastronómica única.</p>
+      <h1 class="page-title" data-cms="about.hero.title">{cms.text["about.hero.title"] || "Dos almas,"}<br/><em>{cms.text["about.hero.title"] ? "" : "un mismo sabor."}</em></h1>
+      <p class="page-subtitle" data-cms="about.hero.subtitle">{cms.text["about.hero.subtitle"] || "Maralma nace de la unión de dos personas con la misma convicción: que cada celebración merece una experiencia gastronómica única."}</p>
     </div>
   </div>
 
@@ -21,14 +24,14 @@ export const prerender = true;
       <div class="about-pattern"></div>
       <div class="about-quote">
         <span class="about-quote-mark">&ldquo;</span>
-        <p class="about-quote-text" data-cms="about.quote">Codo con codo, se acompañan y se completan. Así nace Maralma.</p>
+        <p class="about-quote-text" data-cms="about.quote">{cms.text["about.quote"] || "Codo con codo, se acompañan y se completan. Así nace Maralma."}</p>
         <p class="about-quote-attr">Juan &amp; Miriam · Fundadores</p>
       </div>
     </div>
     <div class="about-text-side">
       <p class="section-eyebrow reveal">Nuestra historia</p>
-      <h2 class="section-title reveal reveal-delay-1" data-cms="about.history.title">Creatividad y orden,<br/>fuego y mimo.</h2>
-      <p class="about-body reveal reveal-delay-2" data-cms="about.history.body">Juan y Miriam se complementan a la perfección. Él vive en la cocina, donde cada plato cuenta algo más que una receta. Ella organiza, gestiona y cuida cada detalle para que todo fluya como si la magia se hubiese encargado sola.</p>
+      <h2 class="section-title reveal reveal-delay-1" data-cms="about.history.title">{cms.text["about.history.title"] || "Creatividad y orden, fuego y mimo."}</h2>
+      <p class="about-body reveal reveal-delay-2" data-cms="about.history.body">{cms.text["about.history.body"] || "Juan y Miriam se complementan a la perfección. Él vive en la cocina, donde cada plato cuenta algo más que una receta. Ella organiza, gestiona y cuida cada detalle para que todo fluya como si la magia se hubiese encargado sola."}</p>
       <div class="about-pills reveal reveal-delay-2">
         <span class="pill">100% personalizado</span>
         <span class="pill">1 boda por día</span>
@@ -47,28 +50,28 @@ export const prerender = true;
     <div class="team-grid">
       <div class="team-card reveal">
         <div class="team-photo">
-          <div class="team-photo-bg tp-juan" data-cms-img="about.team.juan.photo"></div>
+          <div class="team-photo-bg tp-juan" data-cms-img="about.team.juan.photo" style={img("about.team.juan.photo")}></div>
           <div class="team-photo-pattern"></div>
           <div class="team-initial">J</div>
         </div>
         <div class="team-info">
-          <p class="team-role" data-cms="about.team.juan.role">Co-fundador · Chef</p>
-          <h3 class="team-name" data-cms="about.team.juan.name">Juan</h3>
-          <p class="team-tagline" data-cms="about.team.juan.tagline">&ldquo;Creatividad, sabor y fuego.&rdquo;</p>
-          <p class="team-bio" data-cms="about.team.juan.bio">Es la persona que da rienda suelta a la cocina para que cada plato cuente algo más que una receta. Estudia cada idea y la lleva a cabo con sus manos.</p>
+          <p class="team-role" data-cms="about.team.juan.role">{cms.text["about.team.juan.role"] || "Co-fundador · Chef"}</p>
+          <h3 class="team-name" data-cms="about.team.juan.name">{cms.text["about.team.juan.name"] || "Juan"}</h3>
+          <p class="team-tagline" data-cms="about.team.juan.tagline">{cms.text["about.team.juan.tagline"] || "\u201CCreatividad, sabor y fuego.\u201D"}</p>
+          <p class="team-bio" data-cms="about.team.juan.bio">{cms.text["about.team.juan.bio"] || "Es la persona que da rienda suelta a la cocina para que cada plato cuente algo más que una receta. Estudia cada idea y la lleva a cabo con sus manos."}</p>
         </div>
       </div>
       <div class="team-card reveal reveal-delay-1">
         <div class="team-photo">
-          <div class="team-photo-bg tp-miriam" data-cms-img="about.team.miriam.photo"></div>
+          <div class="team-photo-bg tp-miriam" data-cms-img="about.team.miriam.photo" style={img("about.team.miriam.photo")}></div>
           <div class="team-photo-pattern"></div>
           <div class="team-initial">M</div>
         </div>
         <div class="team-info">
-          <p class="team-role" data-cms="about.team.miriam.role">Co-fundadora · Sala &amp; Coordinación</p>
-          <h3 class="team-name" data-cms="about.team.miriam.name">Miriam</h3>
-          <p class="team-tagline" data-cms="about.team.miriam.tagline">&ldquo;Ella es orden, mimo y confianza.&rdquo;</p>
-          <p class="team-bio" data-cms="about.team.miriam.bio">Organiza, gestiona y abre camino con cada cliente. Cuida cada detalle asegurándose de que todo fluya como si la magia se hubiese encargado sola.</p>
+          <p class="team-role" data-cms="about.team.miriam.role">{cms.text["about.team.miriam.role"] || "Co-fundadora · Sala & Coordinación"}</p>
+          <h3 class="team-name" data-cms="about.team.miriam.name">{cms.text["about.team.miriam.name"] || "Miriam"}</h3>
+          <p class="team-tagline" data-cms="about.team.miriam.tagline">{cms.text["about.team.miriam.tagline"] || "\u201CElla es orden, mimo y confianza.\u201D"}</p>
+          <p class="team-bio" data-cms="about.team.miriam.bio">{cms.text["about.team.miriam.bio"] || "Organiza, gestiona y abre camino con cada cliente. Cuida cada detalle asegurándose de que todo fluya como si la magia se hubiese encargado sola."}</p>
         </div>
       </div>
     </div>
@@ -84,18 +87,18 @@ export const prerender = true;
       <div class="filosofia-grid">
         <div class="filosofia-card reveal">
           <p class="fc-number">01</p>
-          <h3 class="fc-title" data-cms="about.philosophy.0.title">Producto local</h3>
-          <p class="fc-desc" data-cms="about.philosophy.0.desc">Trabajamos con proveedores de Cádiz y alrededores. Producto fresco, de temporada y con denominación de origen.</p>
+          <h3 class="fc-title" data-cms="about.philosophy.0.title">{cms.text["about.philosophy.0.title"] || "Producto local"}</h3>
+          <p class="fc-desc" data-cms="about.philosophy.0.desc">{cms.text["about.philosophy.0.desc"] || "Trabajamos con proveedores de Cádiz y alrededores. Producto fresco, de temporada y con denominación de origen."}</p>
         </div>
         <div class="filosofia-card reveal reveal-delay-1">
           <p class="fc-number">02</p>
-          <h3 class="fc-title" data-cms="about.philosophy.1.title">Un evento al día</h3>
-          <p class="fc-desc" data-cms="about.philosophy.1.desc">No hacemos dos cosas a la vez. Tu evento es nuestra única prioridad ese día.</p>
+          <h3 class="fc-title" data-cms="about.philosophy.1.title">{cms.text["about.philosophy.1.title"] || "Un evento al día"}</h3>
+          <p class="fc-desc" data-cms="about.philosophy.1.desc">{cms.text["about.philosophy.1.desc"] || "No hacemos dos cosas a la vez. Tu evento es nuestra única prioridad ese día."}</p>
         </div>
         <div class="filosofia-card reveal reveal-delay-2">
           <p class="fc-number">03</p>
-          <h3 class="fc-title" data-cms="about.philosophy.2.title">100% personalizado</h3>
-          <p class="fc-desc" data-cms="about.philosophy.2.desc">No tenemos carta fija. Cada menú se diseña desde cero contigo, según tus gustos y tu historia.</p>
+          <h3 class="fc-title" data-cms="about.philosophy.2.title">{cms.text["about.philosophy.2.title"] || "100% personalizado"}</h3>
+          <p class="fc-desc" data-cms="about.philosophy.2.desc">{cms.text["about.philosophy.2.desc"] || "No tenemos carta fija. Cada menú se diseña desde cero contigo, según tus gustos y tu historia."}</p>
         </div>
       </div>
     </div>
@@ -104,8 +107,8 @@ export const prerender = true;
   <!-- CTA -->
   <section class="contact-cta">
     <p class="cta-eyebrow reveal">Hablemos</p>
-    <h2 class="cta-title reveal reveal-delay-1" data-cms="about.cta.title">¿Quieres conocernos<br/>en persona?</h2>
-    <p class="cta-body reveal reveal-delay-2" data-cms="about.cta.body">Nos encanta sentarnos a hablar de tu evento con un café. Cuéntanos qué tienes en mente.</p>
+    <h2 class="cta-title reveal reveal-delay-1" data-cms="about.cta.title">{cms.text["about.cta.title"] || "¿Quieres conocernos en persona?"}</h2>
+    <p class="cta-body reveal reveal-delay-2" data-cms="about.cta.body">{cms.text["about.cta.body"] || "Nos encanta sentarnos a hablar de tu evento con un café. Cuéntanos qué tienes en mente."}</p>
     <a href="/contacto" class="btn-dark reveal reveal-delay-3">Ponerse en contacto →</a>
   </section>
 

@@ -1,0 +1,908 @@
+---
+import AdminLayout from "../../../layouts/AdminLayout.astro";
+---
+
+<AdminLayout title="Eventos · Admin · Maralma" section="eventos">
+  <div id="events-app"
+       data-cloud-name={import.meta.env.CLOUDINARY_CLOUD_NAME}
+       data-upload-preset={import.meta.env.PUBLIC_CLOUDINARY_UPLOAD_PRESET}>
+
+    <!-- EVENTS PANEL -->
+    <div id="events-panel">
+      <div class="ev-header">
+        <div>
+          <h1 class="adm-page-title">Galería de Eventos</h1>
+          <p class="adm-page-subtitle">Crea y gestiona eventos con sus galerías de fotos.</p>
+        </div>
+        <button id="newEventBtn" class="btn-primary-sm">+ Nuevo evento</button>
+      </div>
+
+      <div class="ev-list" id="eventList">
+        <p class="ev-loading" id="evLoading">Cargando eventos…</p>
+      </div>
+      <p class="ev-empty hidden" id="evEmpty">No hay eventos creados.</p>
+    </div>
+
+    <!-- EVENT FORM (create/edit) -->
+    <div id="event-form-wrap" class="hidden">
+      <div class="ev-header">
+        <div>
+          <button class="back-link" id="backToList">← Volver a eventos</button>
+          <h1 class="adm-page-title" id="formTitle">Nuevo evento</h1>
+        </div>
+      </div>
+
+      <form id="eventForm" class="ev-form">
+        <input type="hidden" id="eventId" />
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Título *</label>
+            <input type="text" id="evTitulo" required placeholder="Boda Carmen & Luís" />
+          </div>
+          <div class="form-group">
+            <label>Subtítulo</label>
+            <input type="text" id="evSubtitulo" placeholder="Sancti Petri 2025" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Tipo *</label>
+            <select id="evTipo" required>
+              <option value="">Seleccionar…</option>
+              <option value="boda">Boda</option>
+              <option value="corporativo">Corporativo</option>
+              <option value="privado">Privado</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Fecha</label>
+            <input type="date" id="evFecha" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Ubicación</label>
+          <input type="text" id="evUbicacion" placeholder="Hotel Sancti Petri, Cádiz" />
+        </div>
+
+        <div class="form-group">
+          <label>Descripción</label>
+          <textarea id="evDescripcion" rows="3" placeholder="Breve descripción del evento…"></textarea>
+        </div>
+
+        <!-- Cover photo -->
+        <div class="form-group">
+          <label>Foto de portada</label>
+          <div class="cover-preview" id="coverPreview">
+            <p class="cover-placeholder" id="coverPlaceholder">Sin portada</p>
+            <img id="coverImg" class="cover-img hidden" alt="Portada" />
+          </div>
+          <button type="button" class="btn-secondary-sm" id="selectCoverBtn">Seleccionar imagen</button>
+          <input type="hidden" id="evCoverUrl" />
+          <input type="hidden" id="evCoverPublicId" />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Orden</label>
+            <input type="number" id="evOrden" value="0" min="0" />
+          </div>
+          <div class="form-group form-toggle">
+            <label>
+              <input type="checkbox" id="evPublicado" />
+              Publicado
+            </label>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-primary-sm" id="saveEventBtn">Guardar evento</button>
+          <button type="button" class="btn-secondary-sm" id="cancelEventBtn">Cancelar</button>
+        </div>
+      </form>
+
+      <!-- EVENT IMAGES -->
+      <div id="eventImagesSection" class="hidden">
+        <div class="ev-images-header">
+          <h2 class="ev-images-title">Fotos del evento</h2>
+          <button type="button" class="btn-secondary-sm" id="addEventImgBtn">+ Añadir fotos</button>
+        </div>
+        <div class="ev-images-grid" id="eventImagesGrid">
+          <p class="ev-loading" id="evImgLoading">Cargando fotos…</p>
+        </div>
+        <p class="ev-empty hidden" id="evImgEmpty">No hay fotos en este evento.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- MEDIA PICKER MODAL -->
+  <div class="media-modal-backdrop hidden" id="mediaBackdrop">
+    <div class="media-modal">
+      <div class="media-header">
+        <h3 class="media-title">Seleccionar imagen</h3>
+        <button class="media-close" id="mediaClose">&times;</button>
+      </div>
+      <div class="media-tabs" id="mediaTabs"></div>
+      <div class="media-upload-bar">
+        <label class="media-upload-btn">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+            <path d="M12 16V4m0 0l-4 4m4-4l4 4"/><path d="M20 16v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2"/>
+          </svg>
+          Subir nueva
+          <input type="file" accept="image/*" id="mediaFileInput" style="display:none" />
+        </label>
+        <span class="media-upload-status" id="mediaUploadStatus"></span>
+      </div>
+      <div class="media-grid" id="mediaGrid">
+        <p class="media-loading">Cargando…</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONFIRM MODAL -->
+  <div class="modal-overlay hidden" id="modalOverlay">
+    <div class="modal-box">
+      <p class="modal-text" id="modalText"></p>
+      <div class="modal-actions" id="modalActions"></div>
+    </div>
+  </div>
+</AdminLayout>
+
+<style is:global>
+  .ev-header {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 32px; padding-bottom: 20px;
+    border-bottom: 0.5px solid var(--color-crema-oscuro);
+  }
+  .back-link {
+    font-family: var(--font-sans); font-size: 11px; color: var(--color-texto-suave);
+    text-decoration: none; letter-spacing: 0.08em; display: block; margin-bottom: 8px;
+    cursor: pointer; background: none; border: none; padding: 0;
+  }
+  .back-link:hover { color: var(--color-azul); }
+
+  .btn-primary-sm {
+    font-family: var(--font-sans); font-size: 10px; font-weight: 500;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--color-blanco); background: var(--color-azul);
+    border: none; padding: 10px 22px; cursor: pointer; transition: all 0.2s;
+  }
+  .btn-primary-sm:hover { opacity: 0.85; }
+  .btn-secondary-sm {
+    font-family: var(--font-sans); font-size: 10px; font-weight: 500;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--color-azul); background: transparent;
+    border: 0.5px solid var(--color-crema-oscuro); padding: 10px 22px;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .btn-secondary-sm:hover { border-color: var(--color-azul); }
+
+  /* EVENT LIST */
+  .ev-list { display: grid; gap: 12px; }
+  .ev-loading, .ev-empty {
+    text-align: center; font-size: 13px; color: var(--color-texto-suave); padding: 40px 0;
+  }
+  .ev-card {
+    display: grid; grid-template-columns: 120px 1fr auto;
+    border: 0.5px solid var(--color-crema-oscuro); overflow: hidden;
+    transition: border-color 0.2s; background: var(--color-blanco);
+  }
+  .ev-card:hover { border-color: var(--color-azul-claro); }
+  .ev-card-cover {
+    width: 120px; height: 90px; object-fit: cover;
+    background: linear-gradient(135deg, #1e3a4f, #2d5169);
+  }
+  .ev-card-cover img { width: 100%; height: 100%; object-fit: cover; }
+  .ev-card-body { padding: 14px 18px; display: flex; flex-direction: column; justify-content: center; }
+  .ev-card-title {
+    font-family: var(--font-serif); font-size: 16px; font-weight: 400;
+    color: var(--color-azul); margin-bottom: 4px;
+  }
+  .ev-card-meta {
+    font-size: 11px; color: var(--color-texto-suave); display: flex; gap: 10px; flex-wrap: wrap;
+  }
+  .ev-card-badge {
+    font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 2px 8px; font-weight: 500;
+  }
+  .ev-card-badge.published { background: rgba(37,211,102,0.1); color: #25d366; }
+  .ev-card-badge.draft { background: rgba(255,107,107,0.1); color: #ff6b6b; }
+  .ev-card-actions {
+    display: flex; flex-direction: column; gap: 4px; padding: 10px;
+    justify-content: center;
+  }
+  .ev-card-btn {
+    font-family: var(--font-sans); font-size: 9px; font-weight: 500;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 6px 14px; cursor: pointer; transition: all 0.2s;
+    border: 0.5px solid var(--color-crema-oscuro); background: transparent;
+    color: var(--color-texto-suave);
+  }
+  .ev-card-btn:hover { border-color: var(--color-azul); color: var(--color-azul); }
+  .ev-card-btn.danger { color: #b91c1c; }
+  .ev-card-btn.danger:hover { border-color: #b91c1c; }
+
+  /* EVENT FORM */
+  .ev-form { display: flex; flex-direction: column; gap: 20px; margin-bottom: 40px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group label {
+    font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--color-texto-suave);
+  }
+  .form-group input, .form-group select, .form-group textarea {
+    background: var(--color-blanco); border: 0.5px solid var(--color-crema-oscuro);
+    color: var(--color-texto); font-family: var(--font-sans);
+    font-size: 13px; font-weight: 300; padding: 10px 14px;
+    outline: none; transition: border-color 0.2s;
+  }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    border-color: var(--color-azul-claro);
+  }
+  .form-group textarea { resize: vertical; }
+  .form-toggle label {
+    display: flex; align-items: center; gap: 8px; cursor: pointer;
+    font-size: 12px; color: var(--color-texto); font-weight: 400;
+    text-transform: none; letter-spacing: 0;
+  }
+  .form-toggle input[type="checkbox"] { width: 16px; height: 16px; }
+  .form-actions { display: flex; gap: 10px; }
+
+  .cover-preview {
+    width: 200px; height: 130px; background: var(--color-blanco);
+    border: 0.5px solid var(--color-crema-oscuro);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 8px; overflow: hidden;
+  }
+  .cover-placeholder { font-size: 12px; color: var(--color-texto-suave); }
+  .cover-img { width: 100%; height: 100%; object-fit: cover; }
+
+  /* EVENT IMAGES */
+  .ev-images-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 20px; padding-top: 32px;
+    border-top: 0.5px solid var(--color-crema-oscuro);
+  }
+  .ev-images-title {
+    font-family: var(--font-serif); font-size: 20px; font-weight: 300;
+    color: var(--color-azul);
+  }
+  .ev-images-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 10px;
+  }
+  .ev-img-card {
+    position: relative; aspect-ratio: 1; overflow: hidden;
+    background: var(--color-blanco); border: 0.5px solid var(--color-crema-oscuro);
+  }
+  .ev-img-card img { width: 100%; height: 100%; object-fit: cover; }
+  .ev-img-delete {
+    position: absolute; top: 6px; right: 6px;
+    width: 24px; height: 24px; background: rgba(185,28,28,0.85);
+    border: none; color: white; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity 0.2s;
+  }
+  .ev-img-card:hover .ev-img-delete { opacity: 1; }
+
+  /* MEDIA PICKER MODAL */
+  .media-modal-backdrop {
+    position: fixed; inset: 0; z-index: 10000;
+    background: rgba(15,26,32,0.6); display: flex;
+    align-items: center; justify-content: center;
+    backdrop-filter: blur(4px);
+  }
+  .media-modal {
+    background: var(--color-blanco); width: 90vw; max-width: 860px;
+    max-height: 85vh; display: flex; flex-direction: column; overflow: hidden;
+  }
+  .media-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 24px 16px; border-bottom: 0.5px solid var(--color-crema-oscuro);
+  }
+  .media-title {
+    font-family: var(--font-serif); font-size: 22px; font-weight: 300; color: var(--color-azul);
+  }
+  .media-close {
+    background: none; border: none; font-size: 24px; color: var(--color-azul);
+    cursor: pointer; opacity: 0.6; transition: opacity 0.2s;
+  }
+  .media-close:hover { opacity: 1; }
+  .media-tabs {
+    display: flex; gap: 4px; padding: 16px 24px 12px; flex-wrap: wrap;
+  }
+  .media-tab {
+    font-family: var(--font-sans); font-size: 10px; font-weight: 500;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: rgba(15,26,32,0.5); background: transparent;
+    border: 0.5px solid var(--color-crema-oscuro); padding: 7px 14px;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .media-tab:hover { border-color: var(--color-azul); color: var(--color-azul); }
+  .media-tab.active { background: var(--color-azul); color: var(--color-blanco); border-color: var(--color-azul); }
+  .media-upload-bar {
+    display: flex; align-items: center; gap: 12px; padding: 0 24px 12px;
+  }
+  .media-upload-btn {
+    display: flex; align-items: center; gap: 6px;
+    font-family: var(--font-sans); font-size: 10px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--color-azul);
+    border: 0.5px solid var(--color-azul); padding: 7px 16px;
+    cursor: pointer; transition: all 0.2s; background: transparent;
+  }
+  .media-upload-btn:hover { background: var(--color-azul); color: var(--color-blanco); }
+  .media-upload-status { font-size: 10px; letter-spacing: 0.1em; color: var(--color-azul-claro); }
+  .media-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 8px; padding: 16px 24px 24px; overflow-y: auto; flex: 1; min-height: 200px;
+  }
+  .media-item {
+    position: relative; aspect-ratio: 1; overflow: hidden; cursor: pointer;
+    border: 2px solid transparent; transition: border-color 0.2s, transform 0.2s;
+    background: var(--color-crema);
+  }
+  .media-item:hover { border-color: var(--color-azul-claro); transform: scale(1.02); }
+  .media-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .media-loading, .media-empty {
+    grid-column: 1/-1; text-align: center; font-size: 13px;
+    color: rgba(15,26,32,0.4); padding: 40px 0;
+  }
+
+  /* CONFIRM MODAL */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 11000;
+    background: rgba(15,26,32,0.55); backdrop-filter: blur(4px);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .modal-box {
+    background: var(--color-blanco); max-width: 400px; width: 100%;
+    padding: 40px 36px 32px; text-align: center;
+    border: 0.5px solid var(--color-crema-oscuro);
+  }
+  .modal-text {
+    font-family: var(--font-sans); font-size: 14px; font-weight: 300;
+    color: var(--color-texto); line-height: 1.7; margin-bottom: 28px;
+  }
+  .modal-actions { display: flex; gap: 10px; justify-content: center; }
+  .modal-btn {
+    font-family: var(--font-sans); font-size: 10px; font-weight: 500;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    padding: 12px 28px; cursor: pointer; transition: all 0.2s;
+    border: 0.5px solid var(--color-crema-oscuro);
+    background: transparent; color: var(--color-texto-suave);
+  }
+  .modal-btn:hover { border-color: var(--color-azul); color: var(--color-azul); }
+  .modal-btn.danger {
+    background: #7f1d1d; color: var(--color-blanco); border-color: #7f1d1d;
+  }
+  .modal-btn.danger:hover { background: #991b1b; }
+
+  @media (max-width: 768px) {
+    .ev-card { grid-template-columns: 80px 1fr; }
+    .ev-card-cover { width: 80px; height: 70px; }
+    .ev-card-actions { flex-direction: row; padding: 8px; }
+    .form-row { grid-template-columns: 1fr; }
+    .media-modal { width: 96vw; max-height: 92vh; }
+  }
+</style>
+
+<script>
+  import { createClient } from "@supabase/supabase-js";
+  import { compressImage } from "../../../utils/compressImage";
+
+  const supabase = createClient(
+    import.meta.env.PUBLIC_SUPABASE_URL,
+    import.meta.env.PUBLIC_SUPABASE_ANON_KEY,
+  );
+
+  const app = document.getElementById("events-app") as HTMLDivElement;
+  const cloudName = app.dataset.cloudName!;
+  const uploadPreset = app.dataset.uploadPreset!;
+
+  const eventsPanel = document.getElementById("events-panel") as HTMLDivElement;
+  const eventFormWrap = document.getElementById("event-form-wrap") as HTMLDivElement;
+  const eventList = document.getElementById("eventList") as HTMLDivElement;
+  const evLoading = document.getElementById("evLoading") as HTMLParagraphElement;
+  const evEmpty = document.getElementById("evEmpty") as HTMLParagraphElement;
+
+  let accessToken = "";
+  let folders: Array<{ name: string; cloudinary_path: string }> = [];
+  let mediaResolve: ((result: { url: string; publicId: string } | null) => void) | null = null;
+  let multiSelect = false;
+  let multiResults: Array<{ url: string; publicId: string }> = [];
+
+  function cloudinaryThumb(url: string, w = 200, h = 200): string {
+    return url.replace("/upload/", "/upload/c_fill,w_" + w + ",h_" + h + ",q_auto,f_auto/");
+  }
+
+  // ─── AUTH ───
+  const { data: { session } } = await supabase.auth.getSession();
+  if (session) {
+    accessToken = session.access_token;
+    document.cookie = "sb-access-token=" + accessToken + "; path=/; max-age=3600; SameSite=Strict; Secure";
+    await loadFolders();
+    loadEvents();
+  } else {
+    window.location.href = "/admin";
+  }
+
+  // ─── FOLDERS ───
+  async function loadFolders() {
+    try {
+      const res = await fetch("/api/admin/folders");
+      if (res.ok) folders = await res.json();
+    } catch { /* ignore */ }
+  }
+
+  // ─── LOAD EVENTS ───
+  async function loadEvents() {
+    evLoading.classList.remove("hidden");
+    evEmpty.classList.add("hidden");
+    eventList.querySelectorAll(".ev-card").forEach((c) => c.remove());
+
+    try {
+      const res = await fetch("/api/admin/events", {
+        headers: { Authorization: "Bearer " + accessToken },
+      });
+      if (!res.ok) throw new Error("Fetch failed");
+      const events: Array<any> = await res.json();
+      evLoading.classList.add("hidden");
+
+      if (!events.length) {
+        evEmpty.classList.remove("hidden");
+        return;
+      }
+
+      for (const ev of events) {
+        const card = document.createElement("div");
+        card.className = "ev-card";
+        const coverHtml = ev.cover_url
+          ? '<img src="' + cloudinaryThumb(ev.cover_url, 240, 180) + '" alt="" />'
+          : '';
+        const tipoLabel = ev.tipo === 'boda' ? 'Boda' : ev.tipo === 'corporativo' ? 'Corporativo' : 'Privado';
+        const fechaStr = ev.fecha ? new Date(ev.fecha).toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
+        card.innerHTML =
+          '<div class="ev-card-cover">' + coverHtml + '</div>' +
+          '<div class="ev-card-body">' +
+            '<h3 class="ev-card-title">' + escapeHtml(ev.titulo) + '</h3>' +
+            '<div class="ev-card-meta">' +
+              '<span>' + tipoLabel + '</span>' +
+              (fechaStr ? '<span>' + fechaStr + '</span>' : '') +
+              (ev.ubicacion ? '<span>' + escapeHtml(ev.ubicacion) + '</span>' : '') +
+              '<span class="ev-card-badge ' + (ev.publicado ? 'published' : 'draft') + '">' +
+                (ev.publicado ? 'Publicado' : 'Borrador') +
+              '</span>' +
+            '</div>' +
+          '</div>' +
+          '<div class="ev-card-actions">' +
+            '<button class="ev-card-btn ev-edit-btn" data-id="' + ev.id + '">Editar</button>' +
+            '<button class="ev-card-btn danger ev-delete-btn" data-id="' + ev.id + '">Eliminar</button>' +
+          '</div>';
+        eventList.appendChild(card);
+      }
+    } catch {
+      evLoading.textContent = "Error al cargar eventos.";
+    }
+  }
+
+  // ─── EVENT LIST ACTIONS ───
+  eventList.addEventListener("click", async (e) => {
+    const editBtn = (e.target as HTMLElement).closest(".ev-edit-btn") as HTMLButtonElement | null;
+    if (editBtn) {
+      await openEventForm(editBtn.dataset.id);
+      return;
+    }
+    const deleteBtn = (e.target as HTMLElement).closest(".ev-delete-btn") as HTMLButtonElement | null;
+    if (deleteBtn) {
+      const confirmed = await showConfirm("¿Eliminar este evento y todas sus fotos?");
+      if (!confirmed) return;
+      try {
+        await fetch("/api/admin/events", {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json", Authorization: "Bearer " + accessToken },
+          body: JSON.stringify({ id: deleteBtn.dataset.id }),
+        });
+        loadEvents();
+      } catch { /* ignore */ }
+    }
+  });
+
+  // ─── NEW EVENT ───
+  document.getElementById("newEventBtn")?.addEventListener("click", () => openEventForm());
+
+  // ─── OPEN EVENT FORM ───
+  async function openEventForm(eventId?: string) {
+    eventsPanel.classList.add("hidden");
+    eventFormWrap.classList.remove("hidden");
+
+    const formTitle = document.getElementById("formTitle") as HTMLElement;
+    const eventIdInput = document.getElementById("eventId") as HTMLInputElement;
+    const titulo = document.getElementById("evTitulo") as HTMLInputElement;
+    const subtitulo = document.getElementById("evSubtitulo") as HTMLInputElement;
+    const tipo = document.getElementById("evTipo") as HTMLSelectElement;
+    const fecha = document.getElementById("evFecha") as HTMLInputElement;
+    const ubicacion = document.getElementById("evUbicacion") as HTMLInputElement;
+    const descripcion = document.getElementById("evDescripcion") as HTMLTextAreaElement;
+    const coverUrl = document.getElementById("evCoverUrl") as HTMLInputElement;
+    const coverPublicId = document.getElementById("evCoverPublicId") as HTMLInputElement;
+    const coverImg = document.getElementById("coverImg") as HTMLImageElement;
+    const coverPlaceholder = document.getElementById("coverPlaceholder") as HTMLElement;
+    const publicado = document.getElementById("evPublicado") as HTMLInputElement;
+    const orden = document.getElementById("evOrden") as HTMLInputElement;
+    const imagesSection = document.getElementById("eventImagesSection") as HTMLDivElement;
+
+    (document.getElementById("eventForm") as HTMLFormElement).reset();
+    coverImg.classList.add("hidden");
+    coverPlaceholder.classList.remove("hidden");
+    coverUrl.value = "";
+    coverPublicId.value = "";
+    eventIdInput.value = "";
+    imagesSection.classList.add("hidden");
+
+    if (eventId) {
+      formTitle.textContent = "Editar evento";
+      try {
+        const allRes = await fetch("/api/admin/events", {
+          headers: { Authorization: "Bearer " + accessToken },
+        });
+        const allEvents: Array<any> = await allRes.json();
+        const ev = allEvents.find((e: any) => e.id === eventId);
+        if (!ev) return;
+
+        eventIdInput.value = ev.id;
+        titulo.value = ev.titulo;
+        subtitulo.value = ev.subtitulo || "";
+        tipo.value = ev.tipo;
+        fecha.value = ev.fecha || "";
+        ubicacion.value = ev.ubicacion || "";
+        descripcion.value = ev.descripcion || "";
+        publicado.checked = ev.publicado;
+        orden.value = (ev.orden || 0).toString();
+        coverUrl.value = ev.cover_url || "";
+        coverPublicId.value = ev.cover_public_id || "";
+
+        if (ev.cover_url) {
+          coverImg.src = cloudinaryThumb(ev.cover_url, 400, 260);
+          coverImg.classList.remove("hidden");
+          coverPlaceholder.classList.add("hidden");
+        }
+
+        imagesSection.classList.remove("hidden");
+        loadEventImages(ev.id);
+      } catch { /* ignore */ }
+    } else {
+      formTitle.textContent = "Nuevo evento";
+    }
+  }
+
+  // ─── BACK TO LIST ───
+  document.getElementById("backToList")?.addEventListener("click", () => {
+    eventFormWrap.classList.add("hidden");
+    eventsPanel.classList.remove("hidden");
+    loadEvents();
+  });
+  document.getElementById("cancelEventBtn")?.addEventListener("click", () => {
+    eventFormWrap.classList.add("hidden");
+    eventsPanel.classList.remove("hidden");
+  });
+
+  // ─── SELECT COVER ───
+  document.getElementById("selectCoverBtn")?.addEventListener("click", async () => {
+    multiSelect = false;
+    const result = await openMediaPicker();
+    if (!result) return;
+    const coverImg = document.getElementById("coverImg") as HTMLImageElement;
+    const coverPlaceholder = document.getElementById("coverPlaceholder") as HTMLElement;
+    (document.getElementById("evCoverUrl") as HTMLInputElement).value = result.url;
+    (document.getElementById("evCoverPublicId") as HTMLInputElement).value = result.publicId;
+    coverImg.src = cloudinaryThumb(result.url, 400, 260);
+    coverImg.classList.remove("hidden");
+    coverPlaceholder.classList.add("hidden");
+  });
+
+  // ─── SAVE EVENT ───
+  document.getElementById("eventForm")?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById("saveEventBtn") as HTMLButtonElement;
+    btn.textContent = "Guardando…";
+
+    const body: Record<string, any> = {
+      titulo: (document.getElementById("evTitulo") as HTMLInputElement).value,
+      subtitulo: (document.getElementById("evSubtitulo") as HTMLInputElement).value || null,
+      tipo: (document.getElementById("evTipo") as HTMLSelectElement).value,
+      fecha: (document.getElementById("evFecha") as HTMLInputElement).value || null,
+      ubicacion: (document.getElementById("evUbicacion") as HTMLInputElement).value || null,
+      descripcion: (document.getElementById("evDescripcion") as HTMLTextAreaElement).value || null,
+      cover_url: (document.getElementById("evCoverUrl") as HTMLInputElement).value || null,
+      cover_public_id: (document.getElementById("evCoverPublicId") as HTMLInputElement).value || null,
+      publicado: (document.getElementById("evPublicado") as HTMLInputElement).checked,
+      orden: parseInt((document.getElementById("evOrden") as HTMLInputElement).value) || 0,
+    };
+
+    const id = (document.getElementById("eventId") as HTMLInputElement).value;
+    if (id) body.id = id;
+
+    try {
+      const res = await fetch("/api/admin/events", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: "Bearer " + accessToken },
+        body: JSON.stringify(body),
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        showAlert(data.error || "Error al guardar");
+        return;
+      }
+      const saved = await res.json();
+
+      if (!id && saved.id) {
+        (document.getElementById("eventId") as HTMLInputElement).value = saved.id;
+        (document.getElementById("formTitle") as HTMLElement).textContent = "Editar evento";
+        document.getElementById("eventImagesSection")?.classList.remove("hidden");
+        loadEventImages(saved.id);
+      }
+
+      btn.textContent = "Guardado ✓";
+      setTimeout(() => { btn.textContent = "Guardar evento"; }, 2000);
+    } catch {
+      showAlert("Error al guardar evento");
+    } finally {
+      if (btn.textContent === "Guardando…") btn.textContent = "Guardar evento";
+    }
+  });
+
+  // ─── EVENT IMAGES ───
+  async function loadEventImages(eventId: string) {
+    const grid = document.getElementById("eventImagesGrid") as HTMLDivElement;
+    const loading = document.getElementById("evImgLoading") as HTMLParagraphElement;
+    const empty = document.getElementById("evImgEmpty") as HTMLParagraphElement;
+
+    loading.classList.remove("hidden");
+    empty.classList.add("hidden");
+    grid.querySelectorAll(".ev-img-card").forEach((c) => c.remove());
+
+    try {
+      const res = await fetch("/api/admin/event-images?event_id=" + eventId);
+      if (!res.ok) throw new Error("Fetch failed");
+      const images: Array<any> = await res.json();
+      loading.classList.add("hidden");
+
+      if (!images.length) {
+        empty.classList.remove("hidden");
+        return;
+      }
+
+      for (const img of images) {
+        const card = document.createElement("div");
+        card.className = "ev-img-card";
+        card.innerHTML =
+          '<img src="' + cloudinaryThumb(img.url) + '" alt="" loading="lazy" />' +
+          '<button class="ev-img-delete" data-id="' + img.id + '" data-event="' + eventId + '">' +
+            '<svg width="12" height="12" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>' +
+          '</button>';
+        grid.appendChild(card);
+      }
+    } catch {
+      loading.textContent = "Error al cargar fotos.";
+    }
+  }
+
+  document.getElementById("eventImagesGrid")?.addEventListener("click", async (e) => {
+    const btn = (e.target as HTMLElement).closest(".ev-img-delete") as HTMLButtonElement | null;
+    if (!btn) return;
+    const confirmed = await showConfirm("¿Eliminar esta foto del evento?");
+    if (!confirmed) return;
+    try {
+      await fetch("/api/admin/event-images", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json", Authorization: "Bearer " + accessToken },
+        body: JSON.stringify({ id: btn.dataset.id }),
+      });
+      loadEventImages(btn.dataset.event!);
+    } catch { /* ignore */ }
+  });
+
+  document.getElementById("addEventImgBtn")?.addEventListener("click", async () => {
+    multiSelect = true;
+    multiResults = [];
+    const result = await openMediaPicker();
+    const eventId = (document.getElementById("eventId") as HTMLInputElement).value;
+    if (!eventId) return;
+
+    const images = multiSelect && multiResults.length > 0
+      ? multiResults.map((r, i) => ({ event_id: eventId, url: r.url, public_id: r.publicId, orden: i }))
+      : result
+        ? [{ event_id: eventId, url: result.url, public_id: result.publicId, orden: 0 }]
+        : [];
+
+    if (!images.length) return;
+
+    try {
+      await fetch("/api/admin/event-images", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: "Bearer " + accessToken },
+        body: JSON.stringify({ images }),
+      });
+      loadEventImages(eventId);
+    } catch { /* ignore */ }
+  });
+
+  // ─── MEDIA PICKER ───
+  const mediaBackdrop = document.getElementById("mediaBackdrop") as HTMLDivElement;
+  const mediaTabs = document.getElementById("mediaTabs") as HTMLDivElement;
+  const mediaGrid = document.getElementById("mediaGrid") as HTMLDivElement;
+  const mediaFileInput = document.getElementById("mediaFileInput") as HTMLInputElement;
+  const mediaUploadStatus = document.getElementById("mediaUploadStatus") as HTMLElement;
+
+  function openMediaPicker(): Promise<{ url: string; publicId: string } | null> {
+    return new Promise((resolve) => {
+      mediaResolve = resolve;
+      multiResults = [];
+
+      mediaTabs.innerHTML = '';
+      const allTab = document.createElement("button");
+      allTab.className = "media-tab active";
+      allTab.textContent = "Todas";
+      allTab.dataset.folder = "maralma";
+      mediaTabs.appendChild(allTab);
+
+      for (const f of folders) {
+        const tab = document.createElement("button");
+        tab.className = "media-tab";
+        tab.textContent = f.name;
+        tab.dataset.folder = f.cloudinary_path;
+        mediaTabs.appendChild(tab);
+      }
+
+      mediaBackdrop.classList.remove("hidden");
+      loadMediaImages("maralma");
+    });
+  }
+
+  function closeMediaPicker(result: { url: string; publicId: string } | null = null) {
+    mediaBackdrop.classList.add("hidden");
+    if (mediaResolve) {
+      mediaResolve(result);
+      mediaResolve = null;
+    }
+  }
+
+  document.getElementById("mediaClose")?.addEventListener("click", () => closeMediaPicker());
+  mediaBackdrop.addEventListener("click", (e) => {
+    if (e.target === mediaBackdrop) closeMediaPicker();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && !mediaBackdrop.classList.contains("hidden")) closeMediaPicker();
+  });
+
+  mediaTabs.addEventListener("click", (e) => {
+    const tab = (e.target as HTMLElement).closest(".media-tab") as HTMLButtonElement | null;
+    if (!tab) return;
+    mediaTabs.querySelectorAll(".media-tab").forEach((t) => t.classList.remove("active"));
+    tab.classList.add("active");
+    loadMediaImages(tab.dataset.folder || "maralma");
+  });
+
+  async function loadMediaImages(folder: string) {
+    mediaGrid.innerHTML = '<p class="media-loading">Cargando…</p>';
+    try {
+      const res = await fetch("/api/admin/images?folder=" + encodeURIComponent(folder), {
+        headers: { Authorization: "Bearer " + accessToken },
+      });
+      if (!res.ok) throw new Error("Fetch failed");
+      const resources: Array<{ secure_url: string; public_id: string }> = await res.json();
+      mediaGrid.innerHTML = "";
+
+      if (!resources.length) {
+        mediaGrid.innerHTML = '<p class="media-empty">No hay imágenes en esta carpeta</p>';
+        return;
+      }
+
+      for (const r of resources) {
+        const item = document.createElement("div");
+        item.className = "media-item";
+        item.innerHTML = '<img src="' + cloudinaryThumb(r.secure_url) + '" alt="" loading="lazy" />';
+        item.addEventListener("click", () => {
+          if (multiSelect) {
+            const already = multiResults.findIndex((mr) => mr.publicId === r.public_id);
+            if (already >= 0) {
+              multiResults.splice(already, 1);
+              item.style.borderColor = "transparent";
+            } else {
+              multiResults.push({ url: r.secure_url, publicId: r.public_id });
+              item.style.borderColor = "var(--color-azul)";
+            }
+          } else {
+            closeMediaPicker({ url: r.secure_url, publicId: r.public_id });
+          }
+        });
+        mediaGrid.appendChild(item);
+      }
+
+      if (multiSelect) {
+        const confirmRow = document.createElement("div");
+        confirmRow.style.cssText = "grid-column:1/-1;text-align:center;padding:12px 0;";
+        const confirmBtn = document.createElement("button");
+        confirmBtn.className = "btn-primary-sm";
+        confirmBtn.textContent = "Confirmar selección";
+        confirmBtn.addEventListener("click", () => closeMediaPicker(multiResults[0] || null));
+        confirmRow.appendChild(confirmBtn);
+        mediaGrid.appendChild(confirmRow);
+      }
+    } catch {
+      mediaGrid.innerHTML = '<p class="media-empty">Error al cargar imágenes</p>';
+    }
+  }
+
+  mediaFileInput.addEventListener("change", async () => {
+    if (!mediaFileInput.files?.length) return;
+    const file = mediaFileInput.files[0];
+    mediaUploadStatus.textContent = "Comprimiendo…";
+    try {
+      const compressed = await compressImage(file);
+      mediaUploadStatus.textContent = "Subiendo…";
+      const activeTab = mediaTabs.querySelector(".media-tab.active") as HTMLElement;
+      const folder = activeTab?.dataset.folder || "maralma/cms";
+
+      const fd = new FormData();
+      fd.append("file", compressed);
+      fd.append("upload_preset", uploadPreset);
+      fd.append("folder", folder);
+      const res = await fetch("https://api.cloudinary.com/v1_1/" + cloudName + "/image/upload", {
+        method: "POST", body: fd,
+      });
+      const data = await res.json();
+      if (!data.secure_url) throw new Error("Upload failed");
+      mediaUploadStatus.textContent = "Subida ✓";
+      setTimeout(() => { mediaUploadStatus.textContent = ""; }, 2000);
+      loadMediaImages(folder);
+    } catch {
+      mediaUploadStatus.textContent = "Error al subir";
+    }
+    mediaFileInput.value = "";
+  });
+
+  // ─── MODAL HELPERS ───
+  const modalOverlay = document.getElementById("modalOverlay") as HTMLDivElement;
+  const modalText = document.getElementById("modalText") as HTMLParagraphElement;
+  const modalActions = document.getElementById("modalActions") as HTMLDivElement;
+
+  function showAlert(message: string): void {
+    modalText.textContent = message;
+    modalActions.innerHTML = "";
+    const btn = document.createElement("button");
+    btn.className = "modal-btn";
+    btn.textContent = "Aceptar";
+    btn.addEventListener("click", () => modalOverlay.classList.add("hidden"));
+    modalActions.appendChild(btn);
+    modalOverlay.classList.remove("hidden");
+  }
+
+  function showConfirm(message: string): Promise<boolean> {
+    return new Promise((resolve) => {
+      modalText.textContent = message;
+      modalActions.innerHTML = "";
+      const cancelBtn = document.createElement("button");
+      cancelBtn.className = "modal-btn";
+      cancelBtn.textContent = "Cancelar";
+      cancelBtn.addEventListener("click", () => { modalOverlay.classList.add("hidden"); resolve(false); });
+      const okBtn = document.createElement("button");
+      okBtn.className = "modal-btn danger";
+      okBtn.textContent = "Eliminar";
+      okBtn.addEventListener("click", () => { modalOverlay.classList.add("hidden"); resolve(true); });
+      modalActions.appendChild(cancelBtn);
+      modalActions.appendChild(okBtn);
+      modalOverlay.classList.remove("hidden");
+    });
+  }
+
+  modalOverlay.addEventListener("click", (e) => {
+    if (e.target === modalOverlay) modalOverlay.classList.add("hidden");
+  });
+
+  function escapeHtml(str: string): string {
+    return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+</script>

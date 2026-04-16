@@ -178,22 +178,32 @@ async function uploadToCloudinary(file: File, folder = "maralma/cms"): Promise<{
 interface MediaResult { url: string; publicId: string }
 type CloudinaryResource = { secure_url: string; public_id: string; format: string; width: number; height: number };
 
-const MEDIA_FOLDERS = [
-  { label: "Todas", folder: "maralma" },
-  { label: "Bodas", folder: "maralma/bodas" },
-  { label: "Corporativo", folder: "maralma/corporativo" },
-  { label: "Platos", folder: "maralma/platos" },
-  { label: "Equipo", folder: "maralma/equipo" },
-  { label: "Hero", folder: "maralma/hero" },
-  { label: "CMS", folder: "maralma/cms" },
-];
+let dynamicFolders: Array<{ label: string; folder: string }> | null = null;
+
+async function loadMediaFolders(): Promise<Array<{ label: string; folder: string }>> {
+  if (dynamicFolders) return dynamicFolders;
+  try {
+    const res = await fetch("/api/admin/folders");
+    if (res.ok) {
+      const data: Array<{ name: string; cloudinary_path: string }> = await res.json();
+      dynamicFolders = [
+        { label: "Todas", folder: "maralma" },
+        ...data.map((f) => ({ label: f.name, folder: f.cloudinary_path })),
+      ];
+    }
+  } catch { /* ignore */ }
+  if (!dynamicFolders || !dynamicFolders.length) {
+    dynamicFolders = [{ label: "Todas", folder: "maralma" }];
+  }
+  return dynamicFolders;
+}
 
 function cloudinaryThumb(url: string, size = 200): string {
   return url.replace("/upload/", "/upload/c_fill,w_" + size + ",h_" + size + ",q_auto,f_auto/");
 }
 
 function openMediaPicker(): Promise<MediaResult | null> {
-  return new Promise((resolve) => {
+  return new Promise(async (resolve) => {
     let resolved = false;
     function finish(result: MediaResult | null) {
       if (resolved) return;
@@ -201,6 +211,8 @@ function openMediaPicker(): Promise<MediaResult | null> {
       backdrop.remove();
       resolve(result);
     }
+
+    const mediaFolders = await loadMediaFolders();
 
     // Backdrop
     const backdrop = document.createElement("div");
@@ -222,7 +234,7 @@ function openMediaPicker(): Promise<MediaResult | null> {
     // Tabs
     const tabs = document.createElement("div");
     tabs.className = "cms-media-tabs";
-    MEDIA_FOLDERS.forEach((f, i) => {
+    mediaFolders.forEach((f, i) => {
       const btn = document.createElement("button");
       btn.className = "cms-media-tab" + (i === 0 ? " active" : "");
       btn.textContent = f.label;
@@ -258,7 +270,7 @@ function openMediaPicker(): Promise<MediaResult | null> {
         // Detect current folder from active tab
         const activeTab = tabs.querySelector(".cms-media-tab.active");
         const activeIdx = Array.from(tabs.children).indexOf(activeTab!);
-        const folder = MEDIA_FOLDERS[activeIdx]?.folder || "maralma/cms";
+        const folder = mediaFolders[activeIdx]?.folder || "maralma/cms";
 
         uploadStatus.textContent = "Subiendo\u2026";
         const result = await uploadToCloudinary(file, folder);

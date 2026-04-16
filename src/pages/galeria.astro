@@ -1,7 +1,9 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { t } from "../utils/i18n";
-export const prerender = true;
+import { loadCms } from "../utils/cms";
+
+const cms = await loadCms();
 ---
 
 <Layout title={`${t("gallery.eyebrow")} · Maralma`} description="Descubre nuestros eventos, platos y montajes. Galería fotográfica de Maralma catering.">
@@ -9,85 +11,36 @@ export const prerender = true;
   <!-- PAGE HERO -->
   <div class="page-hero">
     <div class="page-hero-content">
-      <span class="page-eyebrow">Galería</span>
-      <h1 class="page-title">Momentos que<br/><em>hablan solos.</em></h1>
-      <p class="page-subtitle">Cada imagen es un recuerdo de un evento único. Nuestro trabajo, en acción.</p>
+      <span class="page-eyebrow" data-cms="gallery.eyebrow">{cms.text["gallery.eyebrow"] || "Galería"}</span>
+      <h1 class="page-title" data-cms="gallery.title">{cms.text["gallery.title"] || "Momentos que"}<br/><em>{cms.text["gallery.title"] ? "" : "hablan solos."}</em></h1>
+      <p class="page-subtitle" data-cms="gallery.subtitle">{cms.text["gallery.subtitle"] || "Cada imagen es un recuerdo de un evento único. Nuestro trabajo, en acción."}</p>
     </div>
   </div>
 
-  <!-- GALLERY -->
+  <!-- EVENTS GALLERY -->
   <section class="gallery">
     <div class="section-header reveal">
-      <h2 class="section-title">Nuestro trabajo</h2>
+      <h2 class="section-title">Nuestros eventos</h2>
       <span class="section-eyebrow">Explora por categoría</span>
     </div>
 
     <div class="gallery-filters reveal">
-      <button class="gf-btn active" data-cat="all">Todos</button>
-      <button class="gf-btn" data-cat="bodas">Bodas</button>
-      <button class="gf-btn" data-cat="corporativo">Corporativo</button>
-      <button class="gf-btn" data-cat="privados">Privados</button>
-      <button class="gf-btn" data-cat="platos">Platos</button>
+      <button class="gf-btn active" data-tipo="all">Todos</button>
+      <button class="gf-btn" data-tipo="boda">Bodas</button>
+      <button class="gf-btn" data-tipo="corporativo">Corporativo</button>
+      <button class="gf-btn" data-tipo="privado">Privados</button>
     </div>
 
-    <div class="gallery-grid reveal">
-      <div class="gallery-item gi-tall" data-cat="bodas">
-        <div class="gi-bg" style="background:linear-gradient(160deg,#1a3347,#2d5169)"></div>
-        <div class="gi-overlay"><span class="gi-label">Boda — Sancti Petri</span></div>
-      </div>
-      <div class="gallery-item" data-cat="platos">
-        <div class="gi-bg" style="background:linear-gradient(160deg,#2d5169,#a8c4c8)"></div>
-        <div class="gi-overlay"><span class="gi-label">Tataki de atún rojo</span></div>
-      </div>
-      <div class="gallery-item" data-cat="corporativo">
-        <div class="gi-bg" style="background:linear-gradient(160deg,#152a38,#1e3a4f)"></div>
-        <div class="gi-overlay"><span class="gi-label">Gala corporativa</span></div>
-      </div>
-      <div class="gallery-item" data-cat="privados">
-        <div class="gi-bg" style="background:linear-gradient(160deg,#0f1f2c,#1a3347)"></div>
-        <div class="gi-overlay"><span class="gi-label">Cumpleaños privado</span></div>
-      </div>
-      <div class="gallery-item gi-tall" data-cat="platos">
-        <div class="gi-bg" style="background:linear-gradient(160deg,#1e3a4f,#2d5169)"></div>
-        <div class="gi-overlay"><span class="gi-label">Ceviche gaditano</span></div>
-      </div>
-      <div class="gallery-item" data-cat="bodas">
-        <div class="gi-bg" style="background:linear-gradient(160deg,#2d5169,#1a3347)"></div>
-        <div class="gi-overlay"><span class="gi-label">Boda — Palacio de Cádiz</span></div>
-      </div>
-      <div class="gallery-item" data-cat="corporativo">
-        <div class="gi-bg" style="background:linear-gradient(160deg,#1a3347,#0f1f2c)"></div>
-        <div class="gi-overlay"><span class="gi-label">Team building</span></div>
-      </div>
-      <div class="gallery-item gi-wide" data-cat="bodas">
-        <div class="gi-bg" style="background:linear-gradient(160deg,#152a38,#2d5169)"></div>
-        <div class="gi-overlay"><span class="gi-label">Montaje exterior</span></div>
-      </div>
-      <div class="gallery-item" data-cat="privados">
-        <div class="gi-bg" style="background:linear-gradient(160deg,#0f1f2c,#152a38)"></div>
-        <div class="gi-overlay"><span class="gi-label">Comunión</span></div>
-      </div>
-      <div class="gallery-item" data-cat="platos">
-        <div class="gi-bg" style="background:linear-gradient(160deg,#1e3a4f,#a8c4c8)"></div>
-        <div class="gi-overlay"><span class="gi-label">Postre de autor</span></div>
-      </div>
-      <div class="gallery-item" data-cat="corporativo">
-        <div class="gi-bg" style="background:linear-gradient(160deg,#152a38,#1a3347)"></div>
-        <div class="gi-overlay"><span class="gi-label">Coffee break ejecutivo</span></div>
-      </div>
-      <div class="gallery-item gi-tall" data-cat="bodas">
-        <div class="gi-bg" style="background:linear-gradient(160deg,#1a3347,#2d5169)"></div>
-        <div class="gi-overlay"><span class="gi-label">Mesa imperial</span></div>
-      </div>
+    <div class="events-grid reveal" id="eventsGrid">
+      <p class="events-loading" id="eventsLoading">Cargando eventos…</p>
     </div>
-
-    <p class="gallery-note reveal">Las imágenes se cargarán desde Cloudinary una vez configuradas las variables de entorno.</p>
+    <p class="events-empty hidden" id="eventsEmpty">Próximamente publicaremos nuestros eventos.</p>
   </section>
 
   <!-- CTA -->
   <section class="gallery-cta">
-    <p class="cta-eyebrow reveal">¿Te gusta lo que ves?</p>
-    <h2 class="cta-title reveal reveal-delay-1">Hagamos algo<br/>así de bonito<br/><em>para ti.</em></h2>
+    <p class="cta-eyebrow reveal" data-cms="gallery.cta_eyebrow">{cms.text["gallery.cta_eyebrow"] || "¿Te gusta lo que ves?"}</p>
+    <h2 class="cta-title reveal reveal-delay-1" data-cms="gallery.cta_title">{cms.text["gallery.cta_title"] || "Hagamos algo"}<br/>{cms.text["gallery.cta_title"] ? "" : "así de bonito"}<br/><em>{cms.text["gallery.cta_title"] ? "" : "para ti."}</em></h2>
     <a href="/contacto" class="btn-dark reveal reveal-delay-2">Ponerse en contacto →</a>
   </section>
 
@@ -148,37 +101,54 @@ export const prerender = true;
     border-color: var(--color-blanco);
   }
 
-  .gallery-grid {
+  /* EVENTS GRID */
+  .events-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-auto-rows: 220px;
-    gap: 4px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
   }
-  .gallery-item {
+  .events-loading, .events-empty {
+    grid-column: 1 / -1; text-align: center; font-size: 13px;
+    color: rgba(253,252,250,0.4); padding: 60px 0;
+  }
+  .hidden { display: none !important; }
+
+  .event-card {
     position: relative; overflow: hidden; cursor: pointer;
+    background: rgba(253,252,250,0.03);
+    border: 0.5px solid rgba(253,252,250,0.06);
+    transition: border-color 0.3s, transform 0.3s;
+    text-decoration: none; display: block;
   }
-  .gi-tall { grid-row: span 2; }
-  .gi-wide { grid-column: span 2; }
-  .gi-bg {
-    position: absolute; inset: 0;
+  .event-card:hover {
+    border-color: rgba(253,252,250,0.15);
+    transform: translateY(-4px);
+  }
+  .event-card-cover {
+    aspect-ratio: 3/2; overflow: hidden;
+    background: linear-gradient(135deg, #1e3a4f, #2d5169);
+  }
+  .event-card-cover img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
     transition: transform 0.6s ease;
   }
-  .gallery-item:hover .gi-bg { transform: scale(1.08); }
-  .gi-overlay {
-    position: absolute; inset: 0;
-    background: linear-gradient(0deg, rgba(10,20,28,0.7) 0%, transparent 50%);
-    display: flex; align-items: flex-end; padding: 20px;
-    opacity: 0; transition: opacity 0.35s;
+  .event-card:hover .event-card-cover img { transform: scale(1.06); }
+  .event-card-body { padding: 22px 20px; }
+  .event-card-tipo {
+    font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--color-azul-claro); margin-bottom: 8px; display: block;
   }
-  .gallery-item:hover .gi-overlay { opacity: 1; }
-  .gi-label {
-    font-family: var(--font-serif); font-size: 14px; font-weight: 300;
-    color: var(--color-blanco);
+  .event-card-title {
+    font-family: var(--font-serif); font-size: 22px; font-weight: 300;
+    color: var(--color-blanco); line-height: 1.2; margin-bottom: 4px;
   }
-
-  .gallery-note {
-    text-align: center; font-size: 12px; font-weight: 300;
-    color: rgba(253,252,250,0.3); margin-top: 40px;
+  .event-card-subtitle {
+    font-family: var(--font-serif); font-style: italic; font-size: 14px;
+    font-weight: 300; color: rgba(253,252,250,0.45); margin-bottom: 12px;
+  }
+  .event-card-meta {
+    font-size: 11px; color: rgba(253,252,250,0.35);
+    display: flex; gap: 12px; flex-wrap: wrap;
   }
 
   /* CTA */
@@ -203,38 +173,110 @@ export const prerender = true;
   }
   .btn-dark:hover { background: var(--color-azul-medio); }
 
-  /* Gallery item hide/show for filter */
-  .gallery-item.hidden {
-    display: none;
-  }
-
   @media (max-width: 768px) {
     .page-hero { padding: 120px 24px 60px; }
     .gallery { padding: 60px 24px; }
-    .gallery-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 180px; }
-    .gi-tall { grid-row: span 2; }
-    .gi-wide { grid-column: span 1; }
+    .events-grid { grid-template-columns: 1fr; }
     .gallery-cta { padding: 60px 24px; }
     .gallery .section-header { flex-direction: column; gap: 8px; }
+  }
+  @media (min-width: 769px) and (max-width: 1024px) {
+    .events-grid { grid-template-columns: repeat(2, 1fr); }
   }
 </style>
 
 <script>
-  const filterBtns = document.querySelectorAll('.gf-btn');
-  const items = document.querySelectorAll('.gallery-item');
+  interface EventData {
+    id: string;
+    titulo: string;
+    subtitulo: string | null;
+    tipo: string;
+    fecha: string | null;
+    ubicacion: string | null;
+    cover_url: string | null;
+    slug: string;
+  }
 
-  filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      filterBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const cat = btn.getAttribute('data-cat');
-      items.forEach(item => {
-        if (cat === 'all' || item.getAttribute('data-cat') === cat) {
-          item.classList.remove('hidden');
-        } else {
-          item.classList.add('hidden');
-        }
-      });
+  const grid = document.getElementById("eventsGrid") as HTMLDivElement;
+  const loading = document.getElementById("eventsLoading") as HTMLElement;
+  const empty = document.getElementById("eventsEmpty") as HTMLElement;
+  const filterBtns = document.querySelectorAll(".gf-btn");
+  let events: EventData[] = [];
+
+  function cloudinaryFill(url: string, w: number, h: number): string {
+    return url.replace("/upload/", `/upload/c_fill,w_${w},h_${h},q_auto,f_auto/`);
+  }
+
+  function tipoLabel(tipo: string): string {
+    if (tipo === "boda") return "Boda";
+    if (tipo === "corporativo") return "Corporativo";
+    return "Privado";
+  }
+
+  function renderEvents(filter: string) {
+    grid.querySelectorAll(".event-card").forEach((c) => c.remove());
+    const filtered = filter === "all" ? events : events.filter((e) => e.tipo === filter);
+
+    if (!filtered.length) {
+      empty.classList.remove("hidden");
+      return;
+    }
+    empty.classList.add("hidden");
+
+    for (const ev of filtered) {
+      const card = document.createElement("a");
+      card.className = "event-card";
+      card.href = "/galeria/" + ev.slug;
+
+      const coverHtml = ev.cover_url
+        ? `<img src="${cloudinaryFill(ev.cover_url, 640, 426)}" alt="${ev.titulo}" loading="lazy" />`
+        : "";
+
+      const fecha = ev.fecha
+        ? new Date(ev.fecha).toLocaleDateString("es-ES", { day: "numeric", month: "long", year: "numeric" })
+        : "";
+
+      card.innerHTML =
+        `<div class="event-card-cover">${coverHtml}</div>` +
+        `<div class="event-card-body">` +
+          `<span class="event-card-tipo">${tipoLabel(ev.tipo)}</span>` +
+          `<h3 class="event-card-title">${escapeHtml(ev.titulo)}</h3>` +
+          (ev.subtitulo ? `<p class="event-card-subtitle">${escapeHtml(ev.subtitulo)}</p>` : "") +
+          `<div class="event-card-meta">` +
+            (fecha ? `<span>${fecha}</span>` : "") +
+            (ev.ubicacion ? `<span>${escapeHtml(ev.ubicacion)}</span>` : "") +
+          `</div>` +
+        `</div>`;
+
+      grid.appendChild(card);
+    }
+  }
+
+  function escapeHtml(s: string): string {
+    return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+
+  // Load events
+  async function init() {
+    try {
+      const res = await fetch("/api/admin/events");
+      if (!res.ok) throw new Error("Fetch failed");
+      events = await res.json();
+      loading.classList.add("hidden");
+      renderEvents("all");
+    } catch {
+      loading.textContent = "Error al cargar eventos.";
+    }
+  }
+
+  // Filters
+  filterBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      filterBtns.forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+      renderEvents(btn.getAttribute("data-tipo") || "all");
     });
   });
+
+  init();
 </script>

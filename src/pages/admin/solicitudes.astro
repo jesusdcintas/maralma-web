@@ -1,0 +1,338 @@
+---
+import AdminLayout from "../../layouts/AdminLayout.astro";
+---
+
+<AdminLayout title="Solicitudes · Admin · Maralma" section="solicitudes">
+  <h1 class="adm-page-title">Solicitudes de contacto</h1>
+  <p class="adm-page-subtitle">Gestiona las solicitudes recibidas desde el formulario de contacto.</p>
+
+  <!-- FILTROS -->
+  <div class="sol-filters">
+    <button class="filter-btn active" data-estado="todos">Todas</button>
+    <button class="filter-btn" data-estado="pendiente">Pendientes</button>
+    <button class="filter-btn" data-estado="contactado">Contactados</button>
+    <button class="filter-btn" data-estado="cerrado">Cerrados</button>
+  </div>
+
+  <!-- TABLA -->
+  <div class="sol-table-wrap">
+    <table class="sol-table" id="quotesTable">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Email</th>
+          <th>Tipo evento</th>
+          <th>Fecha evento</th>
+          <th>Comensales</th>
+          <th>Zona</th>
+          <th>Recibida</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody id="quotesBody">
+        <tr><td colspan="8" class="sol-loading" id="quotesLoading">Cargando solicitudes…</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="sol-empty hidden" id="quotesEmpty">No hay solicitudes en esta categoría.</p>
+
+  <!-- DETALLE LATERAL -->
+  <div class="sol-overlay hidden" id="detailOverlay"></div>
+  <aside class="sol-detail hidden" id="detailPanel">
+    <button class="sol-detail-close" id="detailClose">&times;</button>
+    <h2 class="sol-detail-name" id="detailNombre"></h2>
+    <div class="sol-detail-grid" id="detailGrid"></div>
+    <div class="sol-detail-msg" id="detailMsg"></div>
+    <div class="sol-detail-estado">
+      <span class="sol-detail-label">Estado</span>
+      <div class="sol-estado-btns" id="estadoBtns"></div>
+    </div>
+  </aside>
+</AdminLayout>
+
+<style>
+  .sol-filters { display: flex; gap: 6px; margin-bottom: 20px; flex-wrap: wrap; }
+  .filter-btn {
+    font-family: var(--font-sans); font-size: 10px; font-weight: 500;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--color-texto-suave); background: transparent;
+    border: 0.5px solid var(--color-crema-oscuro); padding: 8px 18px;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .filter-btn:hover { border-color: var(--color-azul); color: var(--color-azul); }
+  .filter-btn.active {
+    background: var(--color-azul); color: var(--color-blanco);
+    border-color: var(--color-azul);
+  }
+
+  .sol-table-wrap { overflow-x: auto; }
+  .sol-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .sol-table th {
+    text-align: left; font-family: var(--font-sans); font-size: 9px;
+    font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--color-texto-suave); padding: 10px 12px;
+    border-bottom: 1px solid var(--color-crema-oscuro);
+    white-space: nowrap;
+  }
+  .sol-table td {
+    padding: 12px; font-family: var(--font-sans); font-weight: 300;
+    color: var(--color-texto); border-bottom: 0.5px solid var(--color-crema-oscuro);
+    vertical-align: top; white-space: nowrap;
+  }
+  .sol-table tbody tr { cursor: pointer; transition: background 0.15s; }
+  .sol-table tbody tr:hover { background: rgba(30,58,79,0.04); }
+  .sol-loading { text-align: center; color: var(--color-texto-suave); padding: 40px 0 !important; }
+  .sol-empty { text-align: center; font-size: 13px; color: var(--color-texto-suave); padding: 40px 0; }
+
+  .sol-badge {
+    display: inline-block; font-size: 10px; font-weight: 500;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 2px;
+  }
+  .sol-badge.pendiente { background: #fef3c7; color: #92400e; }
+  .sol-badge.contactado { background: #dbeafe; color: #1e40af; }
+  .sol-badge.cerrado { background: #d1fae5; color: #065f46; }
+
+  /* Detail panel */
+  .sol-overlay {
+    position: fixed; inset: 0; z-index: 900;
+    background: rgba(15,26,32,0.35); backdrop-filter: blur(2px);
+  }
+  .sol-detail {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: 440px; max-width: calc(100vw - 60px);
+    background: var(--color-blanco); z-index: 910;
+    padding: 40px 32px; overflow-y: auto;
+    box-shadow: -4px 0 24px rgba(0,0,0,0.1);
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+  }
+  .sol-detail.open { transform: translateX(0); }
+  .sol-detail-close {
+    position: absolute; top: 16px; right: 20px;
+    background: none; border: none; font-size: 28px;
+    color: var(--color-texto-suave); cursor: pointer;
+    line-height: 1;
+  }
+  .sol-detail-name {
+    font-family: var(--font-serif); font-size: 22px; font-weight: 400;
+    color: var(--color-azul); margin-bottom: 24px;
+  }
+  .sol-detail-grid {
+    display: grid; grid-template-columns: auto 1fr; gap: 8px 16px;
+    font-size: 13px; margin-bottom: 24px;
+  }
+  .sol-detail-grid .label {
+    font-weight: 500; color: var(--color-texto-suave); font-size: 10px;
+    letter-spacing: 0.1em; text-transform: uppercase; align-self: center;
+  }
+  .sol-detail-grid .value { font-weight: 300; color: var(--color-texto); }
+  .sol-detail-msg {
+    background: var(--color-crema); padding: 16px 18px; margin-bottom: 28px;
+    font-size: 13px; line-height: 1.7; font-weight: 300;
+    color: var(--color-texto); white-space: pre-wrap;
+  }
+  .sol-detail-label {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--color-texto-suave);
+    display: block; margin-bottom: 10px;
+  }
+  .sol-estado-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+  .estado-btn {
+    font-family: var(--font-sans); font-size: 10px; font-weight: 500;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 8px 18px; cursor: pointer; border: 0.5px solid var(--color-crema-oscuro);
+    background: transparent; color: var(--color-texto-suave);
+    transition: all 0.2s;
+  }
+  .estado-btn:hover { border-color: var(--color-azul); color: var(--color-azul); }
+  .estado-btn.active {
+    background: var(--color-azul); color: var(--color-blanco);
+    border-color: var(--color-azul); pointer-events: none;
+  }
+
+  .hidden { display: none !important; }
+
+  @media (max-width: 768px) {
+    .sol-table td, .sol-table th { font-size: 11px; padding: 8px; }
+    .sol-detail { width: 100%; max-width: 100%; }
+  }
+</style>
+
+<script>
+  import { createClient } from "@supabase/supabase-js";
+
+  const supabase = createClient(
+    import.meta.env.PUBLIC_SUPABASE_URL,
+    import.meta.env.PUBLIC_SUPABASE_ANON_KEY,
+  );
+
+  let accessToken = "";
+  let allQuotes: any[] = [];
+  let currentFilter = "todos";
+
+  const { data: { session } } = await supabase.auth.getSession();
+  if (session) {
+    accessToken = session.access_token;
+    document.cookie = "sb-access-token=" + accessToken + "; path=/; max-age=3600; SameSite=Strict; Secure";
+    loadQuotes();
+  } else {
+    window.location.href = "/admin";
+  }
+
+  const quotesBody = document.getElementById("quotesBody") as HTMLTableSectionElement;
+  const quotesLoading = document.getElementById("quotesLoading") as HTMLTableCellElement;
+  const quotesEmpty = document.getElementById("quotesEmpty") as HTMLParagraphElement;
+  const detailOverlay = document.getElementById("detailOverlay") as HTMLDivElement;
+  const detailPanel = document.getElementById("detailPanel") as HTMLElement;
+  const detailClose = document.getElementById("detailClose") as HTMLButtonElement;
+  const detailNombre = document.getElementById("detailNombre") as HTMLHeadingElement;
+  const detailGrid = document.getElementById("detailGrid") as HTMLDivElement;
+  const detailMsg = document.getElementById("detailMsg") as HTMLDivElement;
+  const estadoBtns = document.getElementById("estadoBtns") as HTMLDivElement;
+
+  async function loadQuotes() {
+    quotesLoading.parentElement!.classList.remove("hidden");
+    quotesEmpty.classList.add("hidden");
+
+    try {
+      const res = await fetch("/api/admin/quotes", {
+        headers: { Authorization: "Bearer " + accessToken },
+      });
+      if (!res.ok) throw new Error("Fetch failed");
+      allQuotes = await res.json();
+      renderTable();
+    } catch {
+      quotesLoading.textContent = "Error al cargar solicitudes.";
+    }
+  }
+
+  function renderTable() {
+    const filtered = currentFilter === "todos"
+      ? allQuotes
+      : allQuotes.filter((q: any) => q.estado === currentFilter);
+
+    quotesBody.innerHTML = "";
+
+    if (!filtered.length) {
+      quotesEmpty.classList.remove("hidden");
+      return;
+    }
+    quotesEmpty.classList.add("hidden");
+
+    for (const q of filtered) {
+      const tr = document.createElement("tr");
+      tr.dataset.id = q.id;
+      tr.innerHTML =
+        "<td>" + esc(q.nombre) + "</td>" +
+        "<td>" + esc(q.email) + "</td>" +
+        "<td>" + esc(q.tipo_evento || "—") + "</td>" +
+        "<td>" + (q.fecha_evento ? formatDate(q.fecha_evento) : "—") + "</td>" +
+        "<td>" + (q.comensales || "—") + "</td>" +
+        "<td>" + esc(q.zona || "—") + "</td>" +
+        "<td>" + formatDate(q.created_at) + "</td>" +
+        '<td><span class="sol-badge ' + q.estado + '">' + q.estado + "</span></td>";
+      quotesBody.appendChild(tr);
+    }
+  }
+
+  // Filter buttons
+  document.querySelectorAll(".filter-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      document.querySelector(".filter-btn.active")?.classList.remove("active");
+      btn.classList.add("active");
+      currentFilter = (btn as HTMLElement).dataset.estado || "todos";
+      renderTable();
+    });
+  });
+
+  // Row click → detail panel
+  quotesBody.addEventListener("click", (e) => {
+    const tr = (e.target as HTMLElement).closest("tr");
+    if (!tr || !tr.dataset.id) return;
+    const q = allQuotes.find((x: any) => x.id === tr.dataset.id);
+    if (!q) return;
+    openDetail(q);
+  });
+
+  function openDetail(q: any) {
+    detailNombre.textContent = q.nombre;
+
+    const fields = [
+      ["Email", q.email],
+      ["Teléfono", q.telefono || "—"],
+      ["Tipo evento", q.tipo_evento || "—"],
+      ["Fecha evento", q.fecha_evento ? formatDate(q.fecha_evento) : "—"],
+      ["Comensales", q.comensales || "—"],
+      ["Zona", q.zona || "—"],
+      ["Recibida", formatDateTime(q.created_at)],
+    ];
+
+    detailGrid.innerHTML = fields
+      .map(([l, v]) => '<span class="label">' + l + '</span><span class="value">' + esc(String(v)) + "</span>")
+      .join("");
+
+    detailMsg.textContent = q.mensaje || "(Sin mensaje)";
+    detailMsg.style.display = q.mensaje ? "block" : "none";
+
+    renderEstadoBtns(q);
+
+    detailOverlay.classList.remove("hidden");
+    detailPanel.classList.remove("hidden");
+    requestAnimationFrame(() => detailPanel.classList.add("open"));
+  }
+
+  function renderEstadoBtns(q: any) {
+    const estados = ["pendiente", "contactado", "cerrado"];
+    estadoBtns.innerHTML = "";
+    for (const e of estados) {
+      const btn = document.createElement("button");
+      btn.className = "estado-btn" + (q.estado === e ? " active" : "");
+      btn.textContent = e;
+      btn.addEventListener("click", async () => {
+        if (q.estado === e) return;
+        btn.textContent = "…";
+        try {
+          const res = await fetch("/api/admin/quotes", {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json", Authorization: "Bearer " + accessToken },
+            body: JSON.stringify({ id: q.id, estado: e }),
+          });
+          if (!res.ok) throw new Error();
+          q.estado = e;
+          renderEstadoBtns(q);
+          renderTable();
+        } catch {
+          btn.textContent = "Error";
+          setTimeout(() => { btn.textContent = e; }, 1500);
+        }
+      });
+      estadoBtns.appendChild(btn);
+    }
+  }
+
+  function closeDetail() {
+    detailPanel.classList.remove("open");
+    setTimeout(() => {
+      detailOverlay.classList.add("hidden");
+      detailPanel.classList.add("hidden");
+    }, 300);
+  }
+  detailClose.addEventListener("click", closeDetail);
+  detailOverlay.addEventListener("click", closeDetail);
+
+  function formatDate(d: string): string {
+    if (!d) return "—";
+    return new Date(d).toLocaleDateString("es-ES", { day: "2-digit", month: "short", year: "numeric" });
+  }
+  function formatDateTime(d: string): string {
+    if (!d) return "—";
+    return new Date(d).toLocaleString("es-ES", {
+      day: "2-digit", month: "short", year: "numeric",
+      hour: "2-digit", minute: "2-digit",
+    });
+  }
+  function esc(s: string): string {
+    return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+</script>

@@ -1,0 +1,299 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  section?: string;
+}
+
+const { title = "Admin · Maralma", section = "panel" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+    <title>{title}</title>
+  </head>
+  <body class="admin-body">
+    <!-- MOBILE HEADER -->
+    <header class="adm-mobile-header">
+      <button class="adm-hamburger" id="sidebarToggle" aria-label="Menú">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+          <path d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+      <span class="adm-mobile-title">Maralma Admin</span>
+    </header>
+
+    <!-- SIDEBAR -->
+    <aside class="adm-sidebar" id="sidebar" data-section={section}>
+      <div class="adm-sidebar-top">
+        <div class="adm-logo">
+          <img src="/img/logo-blanco-h.png" alt="Maralma" />
+        </div>
+
+        <nav class="adm-nav">
+          <p class="adm-nav-label">Contenido</p>
+          <a href="/admin/panel" class:list={["adm-nav-item", section === "panel" && "active"]}>
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+            Inicio
+          </a>
+
+          <div class="adm-nav-group">
+            <p class="adm-nav-sublabel">Galería</p>
+            <a href="/admin/galeria/imagenes" class:list={["adm-nav-item sub", section === "imagenes" && "active"]}>
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+              Imágenes
+            </a>
+            <a href="/admin/galeria/eventos" class:list={["adm-nav-item sub", section === "eventos" && "active"]}>
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+              Eventos
+            </a>
+            <a href="/admin/galeria/carpetas" class:list={["adm-nav-item sub", section === "carpetas" && "active"]}>
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+              Carpetas
+            </a>
+          </div>
+
+          <a href="/admin/solicitudes" class:list={["adm-nav-item", section === "solicitudes" && "active"]}>
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg>
+            Solicitudes
+            <span class="adm-badge hidden" id="quotesBadge">0</span>
+          </a>
+
+          <a href="/admin/testimonios" class:list={["adm-nav-item", section === "testimonios" && "active"]}>
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+            Testimonios
+            <span class="adm-badge hidden" id="testimoniosBadge">0</span>
+          </a>
+
+          <p class="adm-nav-label" style="margin-top:24px">Web</p>
+          <a href="/?cms=true" target="_blank" class="adm-nav-item">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            Editar web
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" style="margin-left:auto;opacity:0.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+          </a>
+          <a href="/" target="_blank" class="adm-nav-item">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            Ver web
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" style="margin-left:auto;opacity:0.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+          </a>
+        </nav>
+      </div>
+
+      <div class="adm-sidebar-bottom">
+        <button class="adm-nav-item adm-logout" id="adminLogout">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+          Cerrar sesión
+        </button>
+      </div>
+    </aside>
+
+    <!-- SIDEBAR OVERLAY (mobile) -->
+    <div class="adm-overlay" id="sidebarOverlay"></div>
+
+    <!-- MAIN CONTENT -->
+    <main class="adm-main">
+      <slot />
+    </main>
+
+    <style is:global>
+      /* ── ADMIN BASE ── */
+      .admin-body {
+        margin: 0; padding: 0; min-height: 100vh;
+        font-family: var(--font-sans); color: var(--color-texto);
+        background: var(--color-crema);
+      }
+
+      /* ── SIDEBAR ── */
+      .adm-sidebar {
+        position: fixed; top: 0; left: 0; bottom: 0;
+        width: 240px; background: var(--color-azul);
+        display: flex; flex-direction: column;
+        justify-content: space-between;
+        z-index: 300; overflow-y: auto;
+        transition: transform 0.3s ease;
+      }
+      .adm-sidebar-top { padding: 28px 20px 20px; }
+      .adm-sidebar-bottom { padding: 12px 20px 24px; border-top: 1px solid rgba(255,255,255,0.1); }
+
+      .adm-logo { margin-bottom: 32px; padding: 0 4px; }
+      .adm-logo img { height: 22px; opacity: 0.9; }
+
+      /* NAV */
+      .adm-nav { display: flex; flex-direction: column; gap: 2px; }
+      .adm-nav-label {
+        font-size: 9px; font-weight: 500; letter-spacing: 0.2em;
+        text-transform: uppercase; color: rgba(255,255,255,0.35);
+        padding: 0 12px; margin-bottom: 8px;
+      }
+      .adm-nav-group { margin-left: 0; }
+      .adm-nav-sublabel {
+        font-size: 9px; font-weight: 500; letter-spacing: 0.18em;
+        text-transform: uppercase; color: rgba(255,255,255,0.25);
+        padding: 10px 12px 4px 36px; margin: 0;
+      }
+      .adm-nav-item {
+        display: flex; align-items: center; gap: 10px;
+        padding: 10px 12px; font-size: 13px; font-weight: 300;
+        color: rgba(255,255,255,0.7); text-decoration: none;
+        transition: all 0.15s; border: none; background: none;
+        cursor: pointer; width: 100%; text-align: left;
+        font-family: var(--font-sans);
+      }
+      .adm-nav-item:hover {
+        color: var(--color-blanco); background: rgba(255,255,255,0.08);
+      }
+      .adm-nav-item.active {
+        color: var(--color-blanco); background: rgba(255,255,255,0.12);
+        font-weight: 400;
+      }
+      .adm-nav-item.sub { padding-left: 36px; font-size: 12px; }
+      .adm-nav-item svg { flex-shrink: 0; opacity: 0.7; }
+      .adm-nav-item.active svg { opacity: 1; }
+
+      .adm-badge {
+        font-size: 10px; font-weight: 500; line-height: 1;
+        background: #ef4444; color: white;
+        padding: 3px 7px; border-radius: 10px;
+        margin-left: auto;
+      }
+
+      .adm-logout { color: rgba(255,255,255,0.5); }
+      .adm-logout:hover { color: #fca5a5; background: rgba(239,68,68,0.1); }
+
+      /* ── MAIN CONTENT ── */
+      .adm-main {
+        margin-left: 240px; min-height: 100vh;
+        padding: 40px 48px 60px; background: var(--color-crema);
+      }
+
+      /* ── MOBILE HEADER ── */
+      .adm-mobile-header {
+        display: none; position: fixed; top: 0; left: 0; right: 0;
+        height: 56px; background: var(--color-azul); z-index: 250;
+        align-items: center; padding: 0 16px; gap: 12px;
+      }
+      .adm-hamburger {
+        background: none; border: none; color: var(--color-blanco);
+        cursor: pointer; padding: 4px;
+      }
+      .adm-mobile-title {
+        font-size: 14px; font-weight: 400; color: rgba(255,255,255,0.85);
+        letter-spacing: 0.06em;
+      }
+
+      /* ── OVERLAY ── */
+      .adm-overlay {
+        display: none; position: fixed; inset: 0; z-index: 290;
+        background: rgba(0,0,0,0.4);
+      }
+      .adm-overlay.visible { display: block; }
+
+      /* ── COMMON ADMIN UI ── */
+      .adm-page-title {
+        font-family: var(--font-serif); font-size: 26px; font-weight: 300;
+        color: var(--color-azul); margin-bottom: 6px;
+      }
+      .adm-page-subtitle {
+        font-size: 13px; color: var(--color-texto-suave); font-weight: 300;
+        margin-bottom: 32px;
+      }
+      .adm-card {
+        background: var(--color-blanco); border: 0.5px solid var(--color-crema-oscuro);
+        padding: 28px; margin-bottom: 24px;
+      }
+      .adm-section-title {
+        font-family: var(--font-serif); font-size: 18px; font-weight: 400;
+        color: var(--color-azul); margin-bottom: 16px;
+      }
+
+      /* ── Hidden utility ── */
+      .hidden { display: none !important; }
+
+      /* ── RESPONSIVE ── */
+      @media (max-width: 768px) {
+        .adm-mobile-header { display: flex; }
+        .adm-sidebar {
+          transform: translateX(-100%);
+          width: 260px;
+        }
+        .adm-sidebar.open { transform: translateX(0); }
+        .adm-main {
+          margin-left: 0; padding: 72px 16px 40px;
+        }
+      }
+    </style>
+
+    <script>
+      import { createClient } from "@supabase/supabase-js";
+
+      const supabase = createClient(
+        import.meta.env.PUBLIC_SUPABASE_URL,
+        import.meta.env.PUBLIC_SUPABASE_ANON_KEY,
+      );
+
+      // ─── SIDEBAR TOGGLE (mobile) ───
+      const sidebar = document.getElementById("sidebar")!;
+      const overlay = document.getElementById("sidebarOverlay")!;
+      const toggle = document.getElementById("sidebarToggle")!;
+
+      toggle.addEventListener("click", () => {
+        sidebar.classList.toggle("open");
+        overlay.classList.toggle("visible");
+      });
+      overlay.addEventListener("click", () => {
+        sidebar.classList.remove("open");
+        overlay.classList.remove("visible");
+      });
+
+      // ─── LOGOUT ───
+      document.getElementById("adminLogout")?.addEventListener("click", async () => {
+        await supabase.auth.signOut();
+        document.cookie = "sb-access-token=; path=/; max-age=0";
+        window.location.href = "/admin";
+      });
+
+      // ─── LOAD SIDEBAR BADGES ───
+      async function loadBadges() {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) return;
+
+        try {
+          const res = await fetch("/api/admin/quotes?count_only=true", {
+            headers: { Authorization: "Bearer " + session.access_token },
+          });
+          if (res.ok) {
+            const { pendientes } = await res.json();
+            if (pendientes > 0) {
+              const badge = document.getElementById("quotesBadge");
+              if (badge) { badge.textContent = String(pendientes); badge.classList.remove("hidden"); }
+            }
+          }
+        } catch { /* ignore */ }
+
+        try {
+          const res = await fetch("/api/admin/testimonios?count_only=true", {
+            headers: { Authorization: "Bearer " + session.access_token },
+          });
+          if (res.ok) {
+            const { pendientes } = await res.json();
+            if (pendientes > 0) {
+              const badge = document.getElementById("testimoniosBadge");
+              if (badge) { badge.textContent = String(pendientes); badge.classList.remove("hidden"); }
+            }
+          }
+        } catch { /* ignore */ }
+      }
+
+      loadBadges();
+    </script>
+  </body>
+</html>

@@ -1,68 +1,64 @@
 ---
-import Layout from "../../layouts/Layout.astro";
-export const prerender = true;
+import "../../styles/global.css";
 ---
 
-<Layout title="Admin · Maralma">
-  <div class="admin-wrap">
-    <div class="admin-container">
-      <div class="admin-header">
-        <h1 class="admin-title">Área de administración</h1>
-        <p class="admin-sub">Inicia sesión para gestionar el contenido de la web.</p>
-      </div>
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+    <title>Iniciar sesión · Maralma</title>
+  </head>
+  <body>
+    <div class="login-wrap">
+      <div class="login-container">
+        <div class="login-header">
+          <img src="/img/logo-azul-h.png" alt="Maralma" class="login-logo" />
+          <p class="login-sub">Inicia sesión para acceder al panel de administración.</p>
+        </div>
 
-      <form id="login-form" class="admin-form">
-        <div class="form-group">
-          <label for="admin-email">Email</label>
-          <input type="email" id="admin-email" required placeholder="admin@maralma.catering" />
-        </div>
-        <div class="form-group">
-          <label for="admin-password">Contraseña</label>
-          <input type="password" id="admin-password" required />
-        </div>
-        <button type="submit" class="btn-submit">Iniciar sesión</button>
-        <div id="login-message" class="login-msg hidden"></div>
-      </form>
-
-      <div id="admin-panel" class="admin-panel hidden">
-        <div class="panel-header">
-          <h2 class="panel-title">Panel de control</h2>
-          <button id="logout-btn" class="panel-logout">Cerrar sesión</button>
-        </div>
-        <div class="panel-links">
-          <a href="/admin/solicitudes" class="panel-link">
-            <h3>Solicitudes de contacto</h3>
-            <p>Gestiona las peticiones de presupuesto recibidas.</p>
-          </a>
-          <a href="/admin/galeria" class="panel-link">
-            <h3>Galería</h3>
-            <p>Sube, reordena y elimina imágenes de la galería.</p>
-          </a>
-          <a href="/admin/testimonios" class="panel-link">
-            <h3>Testimonios</h3>
-            <p>Modera y destaca los testimonios de los clientes.</p>
-          </a>
-        </div>
+        <form id="login-form" class="login-form">
+          <div class="form-group">
+            <label for="admin-email">Email</label>
+            <input type="email" id="admin-email" required placeholder="admin@maralma.catering" />
+          </div>
+          <div class="form-group">
+            <label for="admin-password">Contraseña</label>
+            <input type="password" id="admin-password" required />
+          </div>
+          <button type="submit" class="btn-submit" id="submitBtn">Iniciar sesión</button>
+          <div id="login-message" class="login-msg hidden"></div>
+        </form>
       </div>
     </div>
-  </div>
-</Layout>
+  </body>
+</html>
 
 <style>
-  .admin-wrap { background: var(--color-blanco); padding: 140px 60px 100px; min-height: 80vh; }
-  .admin-container { max-width: 440px; margin: 0 auto; }
-  .admin-header { text-align: center; margin-bottom: 40px; }
-  .admin-title {
-    font-family: var(--font-serif); font-size: 28px; font-weight: 300;
-    color: var(--color-azul); margin-bottom: 8px;
+  body { margin: 0; }
+  .login-wrap {
+    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    background: var(--color-crema); padding: 24px;
   }
-  .admin-sub { font-size: 13px; color: var(--color-texto-suave); font-weight: 300; }
+  .login-container {
+    max-width: 400px; width: 100%;
+    background: var(--color-blanco); padding: 48px 40px;
+    border: 0.5px solid var(--color-crema-oscuro);
+  }
+  .login-header { text-align: center; margin-bottom: 36px; }
+  .login-logo { height: 28px; margin-bottom: 16px; }
+  .login-sub { font-size: 13px; color: var(--color-texto-suave); font-weight: 300; font-family: var(--font-sans); }
 
-  .admin-form { display: flex; flex-direction: column; gap: 20px; }
+  .login-form { display: flex; flex-direction: column; gap: 20px; }
   .form-group { display: flex; flex-direction: column; gap: 6px; }
   .form-group label {
-    font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
-    color: var(--color-texto-suave);
+    font-family: var(--font-sans); font-size: 9px; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--color-texto-suave);
   }
   .form-group input {
     background: var(--color-blanco); border: 0.5px solid var(--color-crema-oscuro);
@@ -81,41 +77,9 @@ export const prerender = true;
   }
   .btn-submit:hover { background: var(--color-azul-medio); }
 
-  .login-msg { text-align: center; font-size: 13px; padding: 12px; }
+  .login-msg { text-align: center; font-size: 13px; padding: 12px; font-family: var(--font-sans); }
   .login-msg.error { color: #b91c1c; background: #fef2f2; }
   .hidden { display: none !important; }
-
-  .admin-panel { margin-top: 40px; }
-  .panel-header {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 24px; padding-bottom: 16px;
-    border-bottom: 0.5px solid var(--color-crema-oscuro);
-  }
-  .panel-title {
-    font-family: var(--font-serif); font-size: 24px; font-weight: 300;
-    color: var(--color-azul);
-  }
-  .panel-logout {
-    font-size: 12px; color: var(--color-texto-suave); background: none;
-    border: none; cursor: pointer; text-decoration: underline;
-  }
-  .panel-links { display: flex; flex-direction: column; gap: 8px; }
-  .panel-link {
-    display: block; padding: 24px; background: var(--color-crema);
-    text-decoration: none; transition: background 0.2s;
-  }
-  .panel-link:hover { background: var(--color-crema-oscuro); }
-  .panel-link h3 {
-    font-family: var(--font-serif); font-size: 16px; font-weight: 400;
-    color: var(--color-azul); margin-bottom: 4px;
-  }
-  .panel-link p {
-    font-size: 12px; color: var(--color-texto-suave); font-weight: 300;
-  }
-
-  @media (max-width: 768px) {
-    .admin-wrap { padding: 120px 24px 60px; }
-  }
 </style>
 
 <script>
@@ -123,39 +87,37 @@ export const prerender = true;
 
   const supabase = createClient(
     import.meta.env.PUBLIC_SUPABASE_URL,
-    import.meta.env.PUBLIC_SUPABASE_ANON_KEY
+    import.meta.env.PUBLIC_SUPABASE_ANON_KEY,
   );
+
+  // If already logged in, redirect to panel
+  const { data: { session } } = await supabase.auth.getSession();
+  if (session) {
+    document.cookie = "sb-access-token=" + session.access_token + "; path=/; max-age=3600; SameSite=Strict; Secure";
+    window.location.href = "/admin/panel";
+  }
 
   const loginForm = document.getElementById("login-form") as HTMLFormElement;
   const loginMessage = document.getElementById("login-message") as HTMLDivElement;
-  const adminPanel = document.getElementById("admin-panel") as HTMLDivElement;
-  const logoutBtn = document.getElementById("logout-btn") as HTMLButtonElement;
-
-  const { data: { session } } = await supabase.auth.getSession();
-  if (session) {
-    loginForm.classList.add("hidden");
-    adminPanel.classList.remove("hidden");
-  }
 
   loginForm?.addEventListener("submit", async (e) => {
     e.preventDefault();
+    const btn = document.getElementById("submitBtn") as HTMLButtonElement;
+    btn.textContent = "Entrando…";
+
     const email = (document.getElementById("admin-email") as HTMLInputElement).value;
     const password = (document.getElementById("admin-password") as HTMLInputElement).value;
 
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
     if (error) {
       loginMessage.textContent = "Credenciales incorrectas.";
       loginMessage.className = "login-msg error";
-    } else {
-      loginForm.classList.add("hidden");
-      adminPanel.classList.remove("hidden");
+      loginMessage.classList.remove("hidden");
+      btn.textContent = "Iniciar sesión";
+    } else if (data.session) {
+      document.cookie = "sb-access-token=" + data.session.access_token + "; path=/; max-age=3600; SameSite=Strict; Secure";
+      window.location.href = "/admin/panel";
     }
-  });
-
-  logoutBtn?.addEventListener("click", async () => {
-    await supabase.auth.signOut();
-    loginForm.classList.remove("hidden");
-    adminPanel.classList.add("hidden");
   });
 </script>

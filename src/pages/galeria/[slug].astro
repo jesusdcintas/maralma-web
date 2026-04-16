@@ -1,0 +1,294 @@
+---
+import Layout from "../../layouts/Layout.astro";
+
+const { slug } = Astro.params;
+
+// Fetch event by slug (public — only published)
+const evRes = await fetch(new URL(`/api/admin/events?slug=${slug}`, Astro.url));
+if (!evRes.ok) return Astro.redirect("/galeria");
+const events = await evRes.json();
+const event = Array.isArray(events) ? events[0] : events;
+if (!event) return Astro.redirect("/galeria");
+
+// Fetch event images
+const imgRes = await fetch(new URL(`/api/admin/event-images?event_id=${event.id}`, Astro.url));
+const images = imgRes.ok ? await imgRes.json() : [];
+
+function tipoLabel(tipo: string): string {
+  if (tipo === "boda") return "Boda";
+  if (tipo === "corporativo") return "Corporativo";
+  return "Privado";
+}
+
+function cloudinaryFill(url: string, w: number, h: number): string {
+  return url.replace("/upload/", `/upload/c_fill,w_${w},h_${h},q_auto,f_auto/`);
+}
+
+const fecha = event.fecha
+  ? new Date(event.fecha).toLocaleDateString("es-ES", { day: "numeric", month: "long", year: "numeric" })
+  : "";
+---
+
+<Layout title={`${event.titulo} · Galería · Maralma`} description={event.descripcion || `Galería de fotos: ${event.titulo}`}>
+
+  <!-- EVENT HERO -->
+  <div class="event-hero">
+    {event.cover_url && (
+      <div class="event-hero-bg" style={`background-image:url(${cloudinaryFill(event.cover_url, 1920, 800)})`}></div>
+    )}
+    <div class="event-hero-overlay"></div>
+    <div class="event-hero-content">
+      <a href="/galeria" class="event-back">← Volver a galería</a>
+      <span class="event-tipo">{tipoLabel(event.tipo)}</span>
+      <h1 class="event-title">{event.titulo}</h1>
+      {event.subtitulo && <p class="event-subtitle">{event.subtitulo}</p>}
+      <div class="event-meta">
+        {fecha && <span>{fecha}</span>}
+        {event.ubicacion && <span>{event.ubicacion}</span>}
+      </div>
+      {event.descripcion && <p class="event-desc">{event.descripcion}</p>}
+    </div>
+  </div>
+
+  <!-- PHOTOS -->
+  <section class="event-photos">
+    {images.length > 0 ? (
+      <div class="masonry-grid" id="masonryGrid">
+        {images.map((img: any, i: number) => (
+          <div class="masonry-item" data-index={i}>
+            <img
+              src={cloudinaryFill(img.url, 600, 0).replace(",h_0", "")}
+              alt={img.alt_text || event.titulo}
+              loading={i < 6 ? "eager" : "lazy"}
+            />
+          </div>
+        ))}
+      </div>
+    ) : (
+      <p class="no-photos">Próximamente añadiremos fotos de este evento.</p>
+    )}
+  </section>
+
+  <!-- CTA -->
+  <section class="event-cta">
+    <p class="cta-eyebrow">¿Te gustaría algo similar?</p>
+    <h2 class="cta-title">Cuéntanos tu <em>idea.</em></h2>
+    <a href="/contacto" class="btn-dark">Ponerse en contacto →</a>
+  </section>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox hidden" id="lightbox">
+    <button class="lb-close" id="lbClose">&times;</button>
+    <button class="lb-prev" id="lbPrev">&#8249;</button>
+    <button class="lb-next" id="lbNext">&#8250;</button>
+    <div class="lb-img-wrap">
+      <img id="lbImg" alt="" />
+    </div>
+    <div class="lb-counter" id="lbCounter"></div>
+  </div>
+
+</Layout>
+
+<style>
+  .hidden { display: none !important; }
+
+  /* HERO */
+  .event-hero {
+    position: relative; min-height: 460px;
+    display: flex; align-items: flex-end;
+    background: var(--color-azul); overflow: hidden;
+  }
+  .event-hero-bg {
+    position: absolute; inset: 0;
+    background-size: cover; background-position: center;
+    transition: transform 0.6s;
+  }
+  .event-hero-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(0deg, rgba(10,20,28,0.85) 0%, rgba(10,20,28,0.3) 60%, transparent 100%);
+  }
+  .event-hero-content {
+    position: relative; z-index: 1;
+    padding: 60px; max-width: 700px; width: 100%;
+  }
+  .event-back {
+    font-size: 11px; letter-spacing: 0.1em; color: rgba(253,252,250,0.5);
+    text-decoration: none; display: block; margin-bottom: 24px;
+    transition: color 0.2s;
+  }
+  .event-back:hover { color: var(--color-blanco); }
+  .event-tipo {
+    font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--color-azul-claro); display: block; margin-bottom: 12px;
+  }
+  .event-title {
+    font-family: var(--font-serif); font-size: clamp(36px, 5vw, 64px);
+    font-weight: 300; color: var(--color-blanco); line-height: 1;
+    margin-bottom: 8px;
+  }
+  .event-subtitle {
+    font-family: var(--font-serif); font-style: italic; font-size: 20px;
+    font-weight: 300; color: rgba(253,252,250,0.5); margin-bottom: 16px;
+  }
+  .event-meta {
+    font-size: 12px; color: rgba(253,252,250,0.4);
+    display: flex; gap: 16px; margin-bottom: 16px;
+  }
+  .event-desc {
+    font-size: 14px; font-weight: 300; color: rgba(253,252,250,0.55);
+    line-height: 1.7; max-width: 500px;
+  }
+
+  /* PHOTOS */
+  .event-photos {
+    background: var(--color-negro); padding: 60px;
+  }
+  .masonry-grid {
+    columns: 3; column-gap: 12px;
+  }
+  .masonry-item {
+    break-inside: avoid; margin-bottom: 12px;
+    overflow: hidden; cursor: pointer;
+    position: relative;
+  }
+  .masonry-item img {
+    width: 100%; display: block;
+    transition: transform 0.4s ease;
+  }
+  .masonry-item:hover img { transform: scale(1.03); }
+  .no-photos {
+    text-align: center; font-size: 14px; font-weight: 300;
+    color: rgba(253,252,250,0.35); padding: 80px 0;
+  }
+
+  /* CTA */
+  .event-cta {
+    background: var(--color-crema); padding: 80px 60px; text-align: center;
+  }
+  .cta-eyebrow {
+    font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--color-texto-suave); margin-bottom: 16px;
+  }
+  .cta-title {
+    font-family: var(--font-serif); font-size: clamp(28px, 3.5vw, 44px);
+    font-weight: 300; color: var(--color-azul); margin-bottom: 32px; line-height: 1.1;
+  }
+  .cta-title em { font-style: italic; color: var(--color-azul-claro); }
+  .btn-dark {
+    display: inline-block; font-family: var(--font-sans);
+    font-size: 11px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--color-blanco); background: var(--color-azul);
+    padding: 14px 32px; text-decoration: none; transition: background 0.3s;
+  }
+  .btn-dark:hover { background: var(--color-azul-medio); }
+
+  /* LIGHTBOX */
+  .lightbox {
+    position: fixed; inset: 0; z-index: 10000;
+    background: rgba(10,20,28,0.95); backdrop-filter: blur(8px);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .lb-img-wrap {
+    max-width: 90vw; max-height: 85vh;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .lb-img-wrap img {
+    max-width: 90vw; max-height: 85vh; object-fit: contain;
+    display: block;
+  }
+  .lb-close {
+    position: absolute; top: 20px; right: 24px;
+    background: none; border: none; color: rgba(253,252,250,0.7);
+    font-size: 36px; cursor: pointer; z-index: 10;
+    transition: color 0.2s;
+  }
+  .lb-close:hover { color: var(--color-blanco); }
+  .lb-prev, .lb-next {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    background: none; border: none; color: rgba(253,252,250,0.5);
+    font-size: 48px; cursor: pointer; z-index: 10;
+    padding: 20px; transition: color 0.2s;
+  }
+  .lb-prev:hover, .lb-next:hover { color: var(--color-blanco); }
+  .lb-prev { left: 12px; }
+  .lb-next { right: 12px; }
+  .lb-counter {
+    position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+    font-size: 12px; letter-spacing: 0.12em; color: rgba(253,252,250,0.4);
+  }
+
+  @media (max-width: 768px) {
+    .event-hero-content { padding: 40px 24px; }
+    .event-photos { padding: 24px; }
+    .masonry-grid { columns: 2; column-gap: 8px; }
+    .masonry-item { margin-bottom: 8px; }
+    .event-cta { padding: 60px 24px; }
+    .lb-prev, .lb-next { font-size: 32px; padding: 12px; }
+  }
+  @media (max-width: 480px) {
+    .masonry-grid { columns: 1; }
+  }
+</style>
+
+<script define:vars={{ imageUrls: images.map((img: any) => img.url), imageCount: images.length }}>
+  // Lightbox logic
+  const lightbox = document.getElementById("lightbox");
+  const lbImg = document.getElementById("lbImg");
+  const lbCounter = document.getElementById("lbCounter");
+  let currentIndex = 0;
+
+  function cloudinaryLarge(url) {
+    return url.replace("/upload/", "/upload/c_limit,w_1600,q_auto,f_auto/");
+  }
+
+  function openLightbox(index) {
+    currentIndex = index;
+    updateLightbox();
+    lightbox.classList.remove("hidden");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeLightbox() {
+    lightbox.classList.add("hidden");
+    document.body.style.overflow = "";
+  }
+
+  function updateLightbox() {
+    lbImg.src = cloudinaryLarge(imageUrls[currentIndex]);
+    lbCounter.textContent = (currentIndex + 1) + " / " + imageCount;
+  }
+
+  function prevImage() {
+    currentIndex = (currentIndex - 1 + imageCount) % imageCount;
+    updateLightbox();
+  }
+
+  function nextImage() {
+    currentIndex = (currentIndex + 1) % imageCount;
+    updateLightbox();
+  }
+
+  // Click on masonry items
+  document.querySelectorAll(".masonry-item").forEach((item) => {
+    item.addEventListener("click", () => {
+      const idx = parseInt(item.getAttribute("data-index"));
+      openLightbox(idx);
+    });
+  });
+
+  // Lightbox controls
+  document.getElementById("lbClose").addEventListener("click", closeLightbox);
+  document.getElementById("lbPrev").addEventListener("click", prevImage);
+  document.getElementById("lbNext").addEventListener("click", nextImage);
+
+  lightbox.addEventListener("click", (e) => {
+    if (e.target === lightbox) closeLightbox();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (lightbox.classList.contains("hidden")) return;
+    if (e.key === "Escape") closeLightbox();
+    if (e.key === "ArrowLeft") prevImage();
+    if (e.key === "ArrowRight") nextImage();
+  });
+</script>

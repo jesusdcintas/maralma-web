@@ -1,7 +1,11 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { t } from "../utils/i18n";
-export const prerender = true;
+import { loadCms, c as _c, imgStyle as _imgStyle } from "../utils/cms";
+
+const cms = await loadCms();
+const c = (key: string) => _c(cms, key);
+const img = (key: string) => _imgStyle(cms, key);
 ---
 
 <Layout title={t("events.eyebrow") + " · Maralma"} darkNav={true}>
@@ -11,12 +15,12 @@ export const prerender = true;
     <div class="page-hero-bg"></div>
     <div class="page-hero-overlay"></div>
     <div class="page-hero-content">
-      <span class="page-eyebrow" data-cms="events.eyebrow">{t("events.eyebrow")}</span>
+      <span class="page-eyebrow" data-cms="events.eyebrow">{c("events.eyebrow")}</span>
       <h1 class="page-title">{t("events.title").split(",")[0]},<br/><em>{t("events.title").split(",")[1]?.trim()}</em></h1>
       <svg class="hero-wave" width="60" height="12" viewBox="0 0 60 12" fill="none">
         <path d="M3 9 C11 3, 19 3, 27 6 C35 9, 43 9, 51 3" stroke="#a8c4c8" stroke-width="1" stroke-linecap="round" fill="none" opacity="0.6"/>
       </svg>
-      <p class="page-subtitle" data-cms="events.subtitle">{t("events.subtitle")}</p>
+      <p class="page-subtitle" data-cms="events.subtitle">{c("events.subtitle")}</p>
     </div>
     <div class="page-scroll">
       <span>scroll</span>
@@ -28,13 +32,13 @@ export const prerender = true;
   <section class="detail-section" id="corporativo">
     <div class="detail-inner">
       <div class="detail-photo reveal">
-        <div class="detail-photo-bg dp-corp" data-cms-img="events.corporate.photo"></div>
+        <div class="detail-photo-bg dp-corp" data-cms-img="events.corporate.photo" style={img("events.corporate.photo")}></div>
       </div>
       <div class="detail-text reveal reveal-1">
         <span class="detail-tag">01 · {t("events.corporate.title")}</span>
-        <h2 class="detail-title" data-cms="events.corporate.title">{t("events.corporate.title")}</h2>
+        <h2 class="detail-title" data-cms="events.corporate.title">{c("events.corporate.title")}</h2>
         <div class="detail-border"></div>
-        <p class="detail-desc" data-cms="events.corporate.desc">{t("events.corporate.desc")}</p>
+        <p class="detail-desc" data-cms="events.corporate.desc">{c("events.corporate.desc")}</p>
         <ul class="detail-list">
           <li>{t("events.corporate.items.0")}</li>
           <li>{t("events.corporate.items.1")}</li>
@@ -48,7 +52,10 @@ export const prerender = true;
 
   <!-- ═══ FRASE ═══ -->
   <div class="frase dark">
-    <p class="frase-text" data-cms="events.page.phrase"><em>"{t("events.page.phrase")}"</em></p>
+{cms.text["events.page.phrase"]
+      ? <p class="frase-text" data-cms="events.page.phrase">{cms.text["events.page.phrase"]}</p>
+      : <p class="frase-text" data-cms="events.page.phrase"><em>"{t("events.page.phrase")}"</em></p>
+    }
   </div>
 
   <!-- ═══ PRIVADOS ═══ -->
@@ -56,9 +63,9 @@ export const prerender = true;
     <div class="detail-inner detail-reverse">
       <div class="detail-text reveal">
         <span class="detail-tag">02 · {t("events.private.title")}</span>
-        <h2 class="detail-title" data-cms="events.private.title">{t("events.private.title")}</h2>
+        <h2 class="detail-title" data-cms="events.private.title">{c("events.private.title")}</h2>
         <div class="detail-border"></div>
-        <p class="detail-desc" data-cms="events.private.desc">{t("events.private.desc")}</p>
+        <p class="detail-desc" data-cms="events.private.desc">{c("events.private.desc")}</p>
         <ul class="detail-list">
           <li>{t("events.private.items.0")}</li>
           <li>{t("events.private.items.1")}</li>
@@ -68,16 +75,16 @@ export const prerender = true;
         <a href="/contacto" class="detail-cta">{t("events.cta")} →</a>
       </div>
       <div class="detail-photo reveal reveal-1">
-        <div class="detail-photo-bg dp-priv" data-cms-img="events.private.photo"></div>
+        <div class="detail-photo-bg dp-priv" data-cms-img="events.private.photo" style={img("events.private.photo")}></div>
       </div>
     </div>
   </section>
 
   <!-- ═══ CTA FINAL ═══ -->
   <section class="cta-final">
-    <p class="cta-eyebrow reveal" data-cms="cta.eyebrow">{t("cta.eyebrow")}</p>
-    <h2 class="cta-title reveal" data-cms="events.page.cta_title">{t("events.page.cta_title")}</h2>
-    <p class="cta-sub reveal" data-cms="events.page.cta_body">{t("events.page.cta_body")}</p>
+    <p class="cta-eyebrow reveal" data-cms="cta.eyebrow">{c("cta.eyebrow")}</p>
+    <h2 class="cta-title reveal" data-cms="events.page.cta_title">{c("events.page.cta_title")}</h2>
+    <p class="cta-sub reveal" data-cms="events.page.cta_body">{c("events.page.cta_body")}</p>
     <div class="cta-btns reveal">
       <a href="/contacto" class="cta-btn cta-btn-form">
         <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>

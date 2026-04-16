@@ -1,7 +1,11 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { t } from "../utils/i18n";
-export const prerender = true;
+import { loadCms, c as _c, imgStyle as _imgStyle } from "../utils/cms";
+
+const cms = await loadCms();
+const c = (key: string) => _c(cms, key);
+const img = (key: string) => _imgStyle(cms, key);
 ---
 
 <Layout darkNav={true}>
@@ -14,9 +18,9 @@ export const prerender = true;
     </video>
     <div class="hero-overlay"></div>
     <div class="hero-content">
-      <p class="hero-eyebrow" data-cms="hero.eyebrow">{t("hero.eyebrow")}</p>
+      <p class="hero-eyebrow" data-cms="hero.eyebrow">{c("hero.eyebrow")}</p>
       <img src="/img/logo-blanco.png" alt="MarAlma" class="hero-logo-img" />
-      <p class="hero-tagline" data-cms="hero.tagline">{t("hero.tagline")}</p>
+      <p class="hero-tagline" data-cms="hero.tagline">{c("hero.tagline")}</p>
       <div class="hero-btns">
         <a href="/contacto" class="btn-primary">{t("hero.cta_primary")}</a>
         <a href="#servicios" class="btn-ghost">{t("hero.cta_secondary")}</a>
@@ -31,44 +35,47 @@ export const prerender = true;
 
   <!-- ═══ CLAIM GRANDE ═══ -->
   <section class="claim-full">
-    <p class="claim-full-text" data-cms="claim.full">
-      {t("claim.text_1")} <em>{t("claim.text_em_1")}</em><br/>
-      {t("claim.text_2")} <em>{t("claim.text_em_2")}</em>
-    </p>
-    <p class="claim-sub" data-cms="claim.subtitle">{t("claim.subtitle")}</p>
+{cms.text["claim.full"]
+      ? <p class="claim-full-text" data-cms="claim.full">{cms.text["claim.full"]}</p>
+      : <p class="claim-full-text" data-cms="claim.full">
+          {t("claim.text_1")} <em>{t("claim.text_em_1")}</em><br/>
+          {t("claim.text_2")} <em>{t("claim.text_em_2")}</em>
+        </p>
+    }
+    <p class="claim-sub" data-cms="claim.subtitle">{c("claim.subtitle")}</p>
   </section>
 
   <!-- ═══ SERVICIOS ═══ -->
   <section class="servicios" id="servicios">
     <div class="section-header reveal">
-      <h2 class="section-title" data-cms="services.title">{t("services.title")}</h2>
-      <span class="section-eyebrow" data-cms="services.eyebrow">{t("services.eyebrow")}</span>
+      <h2 class="section-title" data-cms="services.title">{c("services.title")}</h2>
+      <span class="section-eyebrow" data-cms="services.eyebrow">{c("services.eyebrow")}</span>
     </div>
     <div class="servicios-grid">
       <div class="srv-card reveal">
-        <div class="srv-photo"><div class="srv-photo-bg sp-bodas" data-cms-img="services.weddings.photo"></div></div>
+        <div class="srv-photo"><div class="srv-photo-bg sp-bodas" data-cms-img="services.weddings.photo" style={img("services.weddings.photo")}></div></div>
         <div class="srv-body">
           <p class="srv-label">{t("services.label")}</p>
-          <h3 class="srv-title" data-cms="services.weddings.title">{t("services.weddings.title")}</h3>
-          <p class="srv-desc" data-cms="services.weddings.desc">{t("services.weddings.desc")}</p>
+          <h3 class="srv-title" data-cms="services.weddings.title">{c("services.weddings.title")}</h3>
+          <p class="srv-desc" data-cms="services.weddings.desc">{c("services.weddings.desc")}</p>
           <a href="/bodas" class="srv-link">{t("services.weddings.link")} →</a>
         </div>
       </div>
       <div class="srv-card reveal reveal-1">
-        <div class="srv-photo"><div class="srv-photo-bg sp-corp" data-cms-img="services.corporate.photo"></div></div>
+        <div class="srv-photo"><div class="srv-photo-bg sp-corp" data-cms-img="services.corporate.photo" style={img("services.corporate.photo")}></div></div>
         <div class="srv-body">
           <p class="srv-label">{t("services.label")}</p>
-          <h3 class="srv-title" data-cms="services.corporate.title">{t("services.corporate.title")}</h3>
-          <p class="srv-desc" data-cms="services.corporate.desc">{t("services.corporate.desc")}</p>
+          <h3 class="srv-title" data-cms="services.corporate.title">{c("services.corporate.title")}</h3>
+          <p class="srv-desc" data-cms="services.corporate.desc">{c("services.corporate.desc")}</p>
           <a href="/eventos" class="srv-link">{t("services.corporate.link")} →</a>
         </div>
       </div>
       <div class="srv-card reveal reveal-2">
-        <div class="srv-photo"><div class="srv-photo-bg sp-priv" data-cms-img="services.private.photo"></div></div>
+        <div class="srv-photo"><div class="srv-photo-bg sp-priv" data-cms-img="services.private.photo" style={img("services.private.photo")}></div></div>
         <div class="srv-body">
           <p class="srv-label">{t("services.label")}</p>
-          <h3 class="srv-title" data-cms="services.private.title">{t("services.private.title")}</h3>
-          <p class="srv-desc" data-cms="services.private.desc">{t("services.private.desc")}</p>
+          <h3 class="srv-title" data-cms="services.private.title">{c("services.private.title")}</h3>
+          <p class="srv-desc" data-cms="services.private.desc">{c("services.private.desc")}</p>
           <a href="/eventos" class="srv-link">{t("services.private.link")} →</a>
         </div>
       </div>
@@ -77,7 +84,10 @@ export const prerender = true;
 
   <!-- ═══ FRASE 1 (dark) ═══ -->
   <div class="frase dark">
-    <p class="frase-text" data-cms="phrases.p1"><em>{t("phrases.p1_1")}</em><br/>{t("phrases.p1_2")} <strong>{t("phrases.p1_strong")}</strong></p>
+{cms.text["phrases.p1"]
+      ? <p class="frase-text" data-cms="phrases.p1">{cms.text["phrases.p1"]}</p>
+      : <p class="frase-text" data-cms="phrases.p1"><em>{t("phrases.p1_1")}</em><br/>{t("phrases.p1_2")} <strong>{t("phrases.p1_strong")}</strong></p>
+    }
   </div>
 
   <!-- ═══ BODAS SPLIT ═══ -->
@@ -90,7 +100,7 @@ export const prerender = true;
     </div>
     <div class="bodas-split">
       <div class="boda-card reveal">
-        <div class="boda-photo"><div class="boda-photo-bg bp-coctel" data-cms-img="weddings.cocktail.photo"></div></div>
+        <div class="boda-photo"><div class="boda-photo-bg bp-coctel" data-cms-img="weddings.cocktail.photo" style={img("weddings.cocktail.photo")}></div></div>
         <div class="boda-body">
           <span class="boda-tag">{t("weddings.cocktail.tag")}</span>
           <h3 class="boda-title">{t("weddings.cocktail.title_1")}<br/>{t("weddings.cocktail.title_2")}</h3>
@@ -99,7 +109,7 @@ export const prerender = true;
         </div>
       </div>
       <div class="boda-card reveal reveal-1">
-        <div class="boda-photo"><div class="boda-photo-bg bp-banquete" data-cms-img="weddings.banquet.photo"></div></div>
+        <div class="boda-photo"><div class="boda-photo-bg bp-banquete" data-cms-img="weddings.banquet.photo" style={img("weddings.banquet.photo")}></div></div>
         <div class="boda-body">
           <span class="boda-tag">{t("weddings.banquet.tag")}</span>
           <h3 class="boda-title">{t("weddings.banquet.title_1")}<br/>{t("weddings.banquet.title_2")}</h3>
@@ -112,7 +122,10 @@ export const prerender = true;
 
   <!-- ═══ FRASE 2 (crema) ═══ -->
   <div class="frase crema">
-    <p class="frase-text" data-cms="phrases.p2">{t("phrases.p2_1")}<br/><em>{t("phrases.p2_2")}</em></p>
+{cms.text["phrases.p2"]
+      ? <p class="frase-text" data-cms="phrases.p2">{cms.text["phrases.p2"]}</p>
+      : <p class="frase-text" data-cms="phrases.p2">{t("phrases.p2_1")}<br/><em>{t("phrases.p2_2")}</em></p>
+    }
   </div>
 
   <!-- ═══ POR QUÉ MARALMA ═══ -->
@@ -124,23 +137,23 @@ export const prerender = true;
     <div class="porque-grid">
       <div class="pq-card reveal">
         <div class="pq-number">01</div>
-        <h3 class="pq-title" data-cms="why.items.0.title">{t("why.items.0.title")}</h3>
-        <p class="pq-desc" data-cms="why.items.0.desc">{t("why.items.0.desc")}</p>
+        <h3 class="pq-title" data-cms="why.items.0.title">{c("why.items.0.title")}</h3>
+        <p class="pq-desc" data-cms="why.items.0.desc">{c("why.items.0.desc")}</p>
       </div>
       <div class="pq-card reveal reveal-1">
         <div class="pq-number">02</div>
-        <h3 class="pq-title" data-cms="why.items.1.title">{t("why.items.1.title")}</h3>
-        <p class="pq-desc" data-cms="why.items.1.desc">{t("why.items.1.desc")}</p>
+        <h3 class="pq-title" data-cms="why.items.1.title">{c("why.items.1.title")}</h3>
+        <p class="pq-desc" data-cms="why.items.1.desc">{c("why.items.1.desc")}</p>
       </div>
       <div class="pq-card reveal reveal-2">
         <div class="pq-number">03</div>
-        <h3 class="pq-title" data-cms="why.items.2.title">{t("why.items.2.title")}</h3>
-        <p class="pq-desc" data-cms="why.items.2.desc">{t("why.items.2.desc")}</p>
+        <h3 class="pq-title" data-cms="why.items.2.title">{c("why.items.2.title")}</h3>
+        <p class="pq-desc" data-cms="why.items.2.desc">{c("why.items.2.desc")}</p>
       </div>
       <div class="pq-card reveal reveal-3">
         <div class="pq-number">04</div>
-        <h3 class="pq-title" data-cms="why.items.3.title">{t("why.items.3.title")}</h3>
-        <p class="pq-desc" data-cms="why.items.3.desc">{t("why.items.3.desc")}</p>
+        <h3 class="pq-title" data-cms="why.items.3.title">{c("why.items.3.title")}</h3>
+        <p class="pq-desc" data-cms="why.items.3.desc">{c("why.items.3.desc")}</p>
       </div>
     </div>
   </section>
@@ -162,42 +175,42 @@ export const prerender = true;
         <div class="resena-card featured">
           <div class="resena-stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
           <span class="resena-mark">"</span>
-          <p class="resena-text" data-cms="reviews.items.0.text">{t("reviews.items.0.text")}</p>
+          <p class="resena-text" data-cms="reviews.items.0.text">{c("reviews.items.0.text")}</p>
           <div class="resena-divider"></div>
-          <p class="resena-name" data-cms="reviews.items.0.name">{t("reviews.items.0.name")}</p>
-          <p class="resena-event" data-cms="reviews.items.0.event">{t("reviews.items.0.event")}</p>
+          <p class="resena-name" data-cms="reviews.items.0.name">{c("reviews.items.0.name")}</p>
+          <p class="resena-event" data-cms="reviews.items.0.event">{c("reviews.items.0.event")}</p>
         </div>
         <div class="resena-card">
           <div class="resena-stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
           <span class="resena-mark">"</span>
-          <p class="resena-text" data-cms="reviews.items.1.text">{t("reviews.items.1.text")}</p>
+          <p class="resena-text" data-cms="reviews.items.1.text">{c("reviews.items.1.text")}</p>
           <div class="resena-divider"></div>
-          <p class="resena-name" data-cms="reviews.items.1.name">{t("reviews.items.1.name")}</p>
-          <p class="resena-event" data-cms="reviews.items.1.event">{t("reviews.items.1.event")}</p>
+          <p class="resena-name" data-cms="reviews.items.1.name">{c("reviews.items.1.name")}</p>
+          <p class="resena-event" data-cms="reviews.items.1.event">{c("reviews.items.1.event")}</p>
         </div>
         <div class="resena-card">
           <div class="resena-stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
           <span class="resena-mark">"</span>
-          <p class="resena-text" data-cms="reviews.items.2.text">{t("reviews.items.2.text")}</p>
+          <p class="resena-text" data-cms="reviews.items.2.text">{c("reviews.items.2.text")}</p>
           <div class="resena-divider"></div>
-          <p class="resena-name" data-cms="reviews.items.2.name">{t("reviews.items.2.name")}</p>
-          <p class="resena-event" data-cms="reviews.items.2.event">{t("reviews.items.2.event")}</p>
+          <p class="resena-name" data-cms="reviews.items.2.name">{c("reviews.items.2.name")}</p>
+          <p class="resena-event" data-cms="reviews.items.2.event">{c("reviews.items.2.event")}</p>
         </div>
         <div class="resena-card">
           <div class="resena-stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
           <span class="resena-mark">"</span>
-          <p class="resena-text" data-cms="reviews.items.3.text">{t("reviews.items.3.text")}</p>
+          <p class="resena-text" data-cms="reviews.items.3.text">{c("reviews.items.3.text")}</p>
           <div class="resena-divider"></div>
-          <p class="resena-name" data-cms="reviews.items.3.name">{t("reviews.items.3.name")}</p>
-          <p class="resena-event" data-cms="reviews.items.3.event">{t("reviews.items.3.event")}</p>
+          <p class="resena-name" data-cms="reviews.items.3.name">{c("reviews.items.3.name")}</p>
+          <p class="resena-event" data-cms="reviews.items.3.event">{c("reviews.items.3.event")}</p>
         </div>
         <div class="resena-card">
           <div class="resena-stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
           <span class="resena-mark">"</span>
-          <p class="resena-text" data-cms="reviews.items.4.text">{t("reviews.items.4.text")}</p>
+          <p class="resena-text" data-cms="reviews.items.4.text">{c("reviews.items.4.text")}</p>
           <div class="resena-divider"></div>
-          <p class="resena-name" data-cms="reviews.items.4.name">{t("reviews.items.4.name")}</p>
-          <p class="resena-event" data-cms="reviews.items.4.event">{t("reviews.items.4.event")}</p>
+          <p class="resena-name" data-cms="reviews.items.4.name">{c("reviews.items.4.name")}</p>
+          <p class="resena-event" data-cms="reviews.items.4.event">{c("reviews.items.4.event")}</p>
         </div>
       </div>
     </div>
@@ -210,7 +223,10 @@ export const prerender = true;
 
   <!-- ═══ FRASE 3 (blanco) ═══ -->
   <div class="frase">
-    <p class="frase-text" data-cms="phrases.p3"><em>"{t("phrases.p3_1")}<br/>{t("phrases.p3_2")}"</em></p>
+{cms.text["phrases.p3"]
+      ? <p class="frase-text" data-cms="phrases.p3">{cms.text["phrases.p3"]}</p>
+      : <p class="frase-text" data-cms="phrases.p3"><em>"{t("phrases.p3_1")}<br/>{t("phrases.p3_2")}"</em></p>
+    }
   </div>
 
   <!-- ═══ QUIÉNES SOMOS ═══ -->
@@ -222,26 +238,26 @@ export const prerender = true;
     <div class="equipo-grid">
       <div class="equipo-card reveal">
         <div class="equipo-photo">
-          <div class="ep-bg ep-juan" data-cms-img="team.juan.photo"></div>
+          <div class="ep-bg ep-juan" data-cms-img="team.juan.photo" style={img("team.juan.photo")}></div>
           <div class="ep-initial">J</div>
         </div>
         <div class="equipo-info">
-          <p class="equipo-rol" data-cms="team.juan.role">{t("team.juan.role")}</p>
-          <h3 class="equipo-nombre" data-cms="team.juan.name">{t("team.juan.name")}</h3>
-          <p class="equipo-frase" data-cms="team.juan.quote">"{t("team.juan.quote")}"</p>
-          <p class="equipo-bio" data-cms="team.juan.bio">{t("team.juan.bio")}</p>
+          <p class="equipo-rol" data-cms="team.juan.role">{c("team.juan.role")}</p>
+          <h3 class="equipo-nombre" data-cms="team.juan.name">{c("team.juan.name")}</h3>
+          <p class="equipo-frase" data-cms="team.juan.quote">"{c("team.juan.quote")}"</p>
+          <p class="equipo-bio" data-cms="team.juan.bio">{c("team.juan.bio")}</p>
         </div>
       </div>
       <div class="equipo-card reveal reveal-1">
         <div class="equipo-photo">
-          <div class="ep-bg ep-miriam" data-cms-img="team.miriam.photo"></div>
+          <div class="ep-bg ep-miriam" data-cms-img="team.miriam.photo" style={img("team.miriam.photo")}></div>
           <div class="ep-initial">M</div>
         </div>
         <div class="equipo-info">
-          <p class="equipo-rol" data-cms="team.miriam.role">{t("team.miriam.role")}</p>
-          <h3 class="equipo-nombre" data-cms="team.miriam.name">{t("team.miriam.name")}</h3>
-          <p class="equipo-frase" data-cms="team.miriam.quote">"{t("team.miriam.quote")}"</p>
-          <p class="equipo-bio" data-cms="team.miriam.bio">{t("team.miriam.bio")}</p>
+          <p class="equipo-rol" data-cms="team.miriam.role">{c("team.miriam.role")}</p>
+          <h3 class="equipo-nombre" data-cms="team.miriam.name">{c("team.miriam.name")}</h3>
+          <p class="equipo-frase" data-cms="team.miriam.quote">"{c("team.miriam.quote")}"</p>
+          <p class="equipo-bio" data-cms="team.miriam.bio">{c("team.miriam.bio")}</p>
         </div>
       </div>
     </div>
@@ -298,9 +314,9 @@ export const prerender = true;
 
   <!-- ═══ CTA FINAL ═══ -->
   <section class="cta-final">
-    <p class="cta-eyebrow reveal" data-cms="cta.eyebrow">{t("cta.eyebrow")}</p>
-    <h2 class="cta-title reveal" data-cms="cta.title">{t("cta.title")}</h2>
-    <p class="cta-sub reveal" data-cms="cta.desc">{t("cta.desc")}</p>
+    <p class="cta-eyebrow reveal" data-cms="cta.eyebrow">{c("cta.eyebrow")}</p>
+    <h2 class="cta-title reveal" data-cms="cta.title">{c("cta.title")}</h2>
+    <p class="cta-sub reveal" data-cms="cta.desc">{c("cta.desc")}</p>
     <div class="cta-btns reveal">
       <a href="/contacto" class="cta-btn cta-btn-form">
         <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>

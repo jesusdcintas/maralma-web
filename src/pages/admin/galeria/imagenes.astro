@@ -1,102 +1,90 @@
 ---
-import Layout from "../../layouts/Layout.astro";
-export const prerender = true;
+import AdminLayout from "../../../layouts/AdminLayout.astro";
 ---
 
-<Layout title="Galería · Admin · Maralma">
-  <div class="admin-wrap">
-    <div class="admin-container"
-         id="gallery-app"
-         data-cloud-name={import.meta.env.CLOUDINARY_CLOUD_NAME}
-         data-upload-preset={import.meta.env.PUBLIC_CLOUDINARY_UPLOAD_PRESET}>
+<AdminLayout title="Imágenes · Admin · Maralma" section="imagenes">
+  <div id="gallery-app"
+       data-cloud-name={import.meta.env.CLOUDINARY_CLOUD_NAME}
+       data-upload-preset={import.meta.env.PUBLIC_CLOUDINARY_UPLOAD_PRESET}>
 
-      <!-- AUTH GATE -->
-      <div id="auth-gate" class="auth-gate">
-        <p class="auth-msg">Verificando sesión…</p>
+    <div class="gal-header">
+      <div>
+        <h1 class="adm-page-title">Galería de imágenes</h1>
+        <p class="adm-page-subtitle">Sube, organiza y elimina imágenes por carpetas.</p>
       </div>
+    </div>
 
-      <!-- GALLERY PANEL (hidden until auth) -->
-      <div id="gallery-panel" class="hidden">
+    <!-- FOLDER MANAGEMENT -->
+    <div class="folders-section">
+      <div class="folders-header">
+        <h2 class="folders-title">Carpetas</h2>
+        <button class="toolbar-btn" id="newFolderBtn">+ Nueva carpeta</button>
+      </div>
+      <div class="new-folder-form hidden" id="newFolderForm">
+        <input type="text" id="newFolderInput" class="folder-input" placeholder="Nombre de la carpeta" />
+        <button class="toolbar-btn" id="createFolderBtn">Crear</button>
+        <button class="toolbar-btn" id="cancelFolderBtn">Cancelar</button>
+      </div>
+    </div>
 
-        <!-- HEADER -->
-        <div class="gal-header">
-          <div>
-            <a href="/admin" class="back-link">← Panel</a>
-            <h1 class="gal-title">Galería de imágenes</h1>
-          </div>
-          <button id="logout-btn" class="panel-logout">Cerrar sesión</button>
+    <!-- CATEGORY TABS -->
+    <div class="cat-tabs" id="catTabs">
+      <button class="cat-tab active" data-folder="maralma">Todas</button>
+    </div>
+
+    <!-- TOOLBAR -->
+    <div class="gal-toolbar" id="galToolbar">
+      <button class="toolbar-btn" id="selectModeBtn">Seleccionar</button>
+      <button class="toolbar-btn hidden" id="selectAllBtn">Seleccionar todas</button>
+    </div>
+
+    <!-- BULK ACTION BAR -->
+    <div class="bulk-bar hidden" id="bulkBar">
+      <span class="bulk-count" id="bulkCount">0 seleccionadas</span>
+      <div class="bulk-actions">
+        <button class="toolbar-btn" id="bulkCancelBtn">Cancelar</button>
+        <button class="toolbar-btn bulk-delete-btn" id="bulkDeleteBtn">Eliminar seleccionadas</button>
+      </div>
+    </div>
+
+    <!-- UPLOAD ZONE -->
+    <div class="upload-zone" id="uploadZone">
+      <div class="uz-icon">
+        <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.2" viewBox="0 0 24 24">
+          <path d="M12 16V4m0 0l-4 4m4-4l4 4"/>
+          <path d="M20 16v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2"/>
+        </svg>
+      </div>
+      <p class="uz-text">Arrastra imágenes aquí o <label for="fileInput" class="uz-link">selecciona archivos</label></p>
+      <p class="uz-sub">JPG, PNG, WebP · Se comprimen automaticamente antes de subir</p>
+      <input type="file" id="fileInput" multiple accept="image/*" class="hidden" />
+      <p class="uz-cat">Carpeta destino: <strong id="folderLabel">maralma</strong></p>
+    </div>
+
+    <!-- UPLOAD PROGRESS -->
+    <div id="uploadProgress" class="upload-progress hidden"></div>
+
+    <!-- IMAGE GRID -->
+    <div class="img-grid" id="imgGrid">
+      <p class="grid-loading" id="gridLoading">Cargando imágenes…</p>
+    </div>
+    <p class="grid-empty hidden" id="gridEmpty">No hay imágenes en esta carpeta.</p>
+
+    <!-- HERO VIDEO SECTION -->
+    <div class="hero-video-section">
+      <h2 class="hvs-title">Video del Hero</h2>
+      <p class="hvs-desc">Sube un video MP4 para la portada. Se almacena en Cloudinary.</p>
+      <div class="hvs-current" id="hvsCurrentWrap">
+        <p class="hvs-status" id="hvsStatus">Cargando...</p>
+        <video id="hvsPreview" class="hvs-preview hidden" muted loop playsinline controls></video>
+      </div>
+      <div class="hvs-upload">
+        <label for="videoInput" class="hvs-btn">Subir nuevo video</label>
+        <input type="file" id="videoInput" accept="video/mp4,video/webm,video/quicktime" class="hidden" />
+        <div class="hvs-progress hidden" id="hvsProgress">
+          <span class="hvs-progress-text" id="hvsProgressText">Subiendo...</span>
+          <div class="up-bar"><div class="up-fill" id="hvsFill" style="width:0%"></div></div>
         </div>
-
-        <!-- CATEGORY TABS -->
-        <div class="cat-tabs" id="catTabs">
-          <button class="cat-tab active" data-folder="maralma">Todas</button>
-          <button class="cat-tab" data-folder="maralma/bodas">Bodas</button>
-          <button class="cat-tab" data-folder="maralma/corporativo">Corporativo</button>
-          <button class="cat-tab" data-folder="maralma/privados">Privados</button>
-          <button class="cat-tab" data-folder="maralma/platos">Platos</button>
-          <button class="cat-tab" data-folder="maralma/hero">Hero</button>
-          <button class="cat-tab" data-folder="maralma/equipo">Equipo</button>
-          <button class="cat-tab" data-folder="maralma/recursos">Recursos</button>
-        </div>
-
-        <!-- TOOLBAR -->
-        <div class="gal-toolbar" id="galToolbar">
-          <button class="toolbar-btn" id="selectModeBtn">Seleccionar</button>
-          <button class="toolbar-btn hidden" id="selectAllBtn">Seleccionar todas</button>
-        </div>
-
-        <!-- BULK ACTION BAR -->
-        <div class="bulk-bar hidden" id="bulkBar">
-          <span class="bulk-count" id="bulkCount">0 seleccionadas</span>
-          <div class="bulk-actions">
-            <button class="toolbar-btn" id="bulkCancelBtn">Cancelar</button>
-            <button class="toolbar-btn bulk-delete-btn" id="bulkDeleteBtn">Eliminar seleccionadas</button>
-          </div>
-        </div>
-
-        <!-- UPLOAD ZONE -->
-        <div class="upload-zone" id="uploadZone">
-          <div class="uz-icon">
-            <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.2" viewBox="0 0 24 24">
-              <path d="M12 16V4m0 0l-4 4m4-4l4 4"/>
-              <path d="M20 16v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2"/>
-            </svg>
-          </div>
-          <p class="uz-text">Arrastra imágenes aquí o <label for="fileInput" class="uz-link">selecciona archivos</label></p>
-          <p class="uz-sub">JPG, PNG, WebP · Se comprimen automaticamente antes de subir</p>
-          <input type="file" id="fileInput" multiple accept="image/*" class="hidden" />
-          <p class="uz-cat">Carpeta destino: <strong id="folderLabel">maralma</strong></p>
-        </div>
-
-        <!-- UPLOAD PROGRESS -->
-        <div id="uploadProgress" class="upload-progress hidden"></div>
-
-        <!-- IMAGE GRID -->
-        <div class="img-grid" id="imgGrid">
-          <p class="grid-loading" id="gridLoading">Cargando imágenes…</p>
-        </div>
-
-        <!-- EMPTY STATE -->
-        <p class="grid-empty hidden" id="gridEmpty">No hay imágenes en esta carpeta.</p>
-
-        <!-- ═══ HERO VIDEO SECTION ═══ -->
-        <div class="hero-video-section">
-          <h2 class="hvs-title">Video del Hero</h2>
-          <p class="hvs-desc">Sube un video MP4 para la portada. Se almacena en Cloudinary.</p>
-          <div class="hvs-current" id="hvsCurrentWrap">
-            <p class="hvs-status" id="hvsStatus">Cargando...</p>
-            <video id="hvsPreview" class="hvs-preview hidden" muted loop playsinline controls></video>
-          </div>
-          <div class="hvs-upload">
-            <label for="videoInput" class="hvs-btn">Subir nuevo video</label>
-            <input type="file" id="videoInput" accept="video/mp4,video/webm,video/quicktime" class="hidden" />
-            <div class="hvs-progress hidden" id="hvsProgress">
-              <span class="hvs-progress-text" id="hvsProgressText">Subiendo...</span>
-              <div class="up-bar"><div class="up-fill" id="hvsFill" style="width:0%"></div></div>
-            </div>
-          </div>
-        </div>
-
       </div>
     </div>
   </div>
@@ -108,37 +96,9 @@ export const prerender = true;
       <div class="modal-actions" id="modalActions"></div>
     </div>
   </div>
-</Layout>
+</AdminLayout>
 
 <style is:global>
-  .admin-wrap { background: var(--color-blanco); padding: 120px 60px 100px; min-height: 100vh; }
-  .admin-container { max-width: 960px; margin: 0 auto; }
-  .hidden { display: none !important; }
-
-  /* AUTH */
-  .auth-gate { text-align: center; padding: 80px 0; }
-  .auth-msg { font-size: 13px; color: var(--color-texto-suave); }
-
-  /* HEADER */
-  .gal-header {
-    display: flex; justify-content: space-between; align-items: flex-start;
-    margin-bottom: 32px; padding-bottom: 20px;
-    border-bottom: 0.5px solid var(--color-crema-oscuro);
-  }
-  .back-link {
-    font-size: 11px; color: var(--color-texto-suave); text-decoration: none;
-    letter-spacing: 0.08em; display: block; margin-bottom: 8px;
-  }
-  .back-link:hover { color: var(--color-azul); }
-  .gal-title {
-    font-family: var(--font-serif); font-size: 28px; font-weight: 300;
-    color: var(--color-azul);
-  }
-  .panel-logout {
-    font-size: 12px; color: var(--color-texto-suave); background: none;
-    border: none; cursor: pointer; text-decoration: underline;
-  }
-
   /* CATEGORY TABS */
   .cat-tabs {
     display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 24px;
@@ -156,11 +116,36 @@ export const prerender = true;
     border-color: var(--color-azul);
   }
 
+  /* FOLDER MANAGEMENT */
+  .folders-section {
+    margin-bottom: 20px; padding-bottom: 16px;
+    border-bottom: 0.5px solid var(--color-crema-oscuro);
+  }
+  .folders-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  .folders-title {
+    font-family: var(--font-serif); font-size: 16px; font-weight: 400;
+    color: var(--color-azul);
+  }
+  .new-folder-form {
+    display: flex; gap: 8px; align-items: center; margin-top: 8px;
+  }
+  .folder-input {
+    font-family: var(--font-sans); font-size: 12px; padding: 8px 14px;
+    border: 0.5px solid var(--color-crema-oscuro); background: var(--color-blanco);
+    color: var(--color-texto); flex: 1; max-width: 280px;
+    transition: border-color 0.2s;
+  }
+  .folder-input:focus { border-color: var(--color-azul); outline: none; }
+
   /* UPLOAD ZONE */
   .upload-zone {
     border: 1.5px dashed var(--color-crema-oscuro);
     padding: 40px; text-align: center; margin-bottom: 32px;
     transition: border-color 0.2s, background 0.2s;
+    background: var(--color-blanco);
   }
   .upload-zone.dragover {
     border-color: var(--color-azul-claro); background: rgba(168,196,200,0.06);
@@ -185,7 +170,7 @@ export const prerender = true;
   .up-item {
     display: flex; align-items: center; gap: 12px;
     font-size: 12px; color: var(--color-texto-suave); padding: 10px 14px;
-    background: var(--color-crema);
+    background: var(--color-blanco);
   }
   .up-item .up-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .up-item .up-bar {
@@ -207,7 +192,7 @@ export const prerender = true;
 
   .img-card {
     position: relative; aspect-ratio: 1;
-    overflow: hidden; background: var(--color-crema);
+    overflow: hidden; background: var(--color-blanco);
     border: 0.5px solid var(--color-crema-oscuro);
   }
   .img-card img {
@@ -291,7 +276,7 @@ export const prerender = true;
 
   /* BULK BAR */
   .bulk-bar {
-    position: fixed; bottom: 0; left: 0; right: 0; z-index: 500;
+    position: fixed; bottom: 0; left: 240px; right: 0; z-index: 500;
     background: var(--color-azul); padding: 16px 40px;
     display: flex; align-items: center; justify-content: space-between;
     animation: slideUp 0.25s ease;
@@ -362,26 +347,22 @@ export const prerender = true;
   .hvs-progress-text { font-size: 12px; color: var(--color-texto-suave); display: block; margin-bottom: 6px; }
 
   @media (max-width: 768px) {
-    .admin-wrap { padding: 100px 16px 60px; }
     .img-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
     .upload-zone { padding: 28px 16px; }
+    .bulk-bar { left: 0; }
   }
 </style>
 
 <script>
   import { createClient } from "@supabase/supabase-js";
-  import { compressImage } from "../../utils/compressImage";
+  import { compressImage } from "../../../utils/compressImage";
 
   const supabase = createClient(
     import.meta.env.PUBLIC_SUPABASE_URL,
     import.meta.env.PUBLIC_SUPABASE_ANON_KEY,
   );
 
-  // DOM refs
   const app = document.getElementById("gallery-app") as HTMLDivElement;
-  const authGate = document.getElementById("auth-gate") as HTMLDivElement;
-  const panel = document.getElementById("gallery-panel") as HTMLDivElement;
-  const logoutBtn = document.getElementById("logout-btn") as HTMLButtonElement;
   const catTabs = document.getElementById("catTabs") as HTMLDivElement;
   const uploadZone = document.getElementById("uploadZone") as HTMLDivElement;
   const fileInput = document.getElementById("fileInput") as HTMLInputElement;
@@ -396,6 +377,7 @@ export const prerender = true;
 
   let currentFolder = "maralma";
   let accessToken = "";
+  let folders: Array<{ id: string; name: string; slug: string; cloudinary_path: string; tipo: string }> = [];
 
   function formatSize(bytes: number): string {
     if (bytes < 1024) return bytes + " B";
@@ -403,27 +385,37 @@ export const prerender = true;
     return (bytes / (1024 * 1024)).toFixed(1) + " MB";
   }
 
+  // ─── LOAD FOLDERS FROM SUPABASE ───
+  async function loadFolders() {
+    try {
+      const res = await fetch("/api/admin/folders");
+      if (res.ok) folders = await res.json();
+    } catch { /* ignore */ }
+    renderFolderTabs();
+  }
+
+  function renderFolderTabs() {
+    catTabs.innerHTML = '<button class="cat-tab active" data-folder="maralma">Todas</button>';
+    for (const f of folders) {
+      const btn = document.createElement("button");
+      btn.className = "cat-tab";
+      btn.dataset.folder = f.cloudinary_path;
+      btn.textContent = f.name;
+      catTabs.appendChild(btn);
+    }
+  }
+
   // ─── AUTH ───
   const { data: { session } } = await supabase.auth.getSession();
   if (session) {
     accessToken = session.access_token;
-    authGate.classList.add("hidden");
-    panel.classList.remove("hidden");
+    document.cookie = "sb-access-token=" + accessToken + "; path=/; max-age=3600; SameSite=Strict; Secure";
+    await loadFolders();
     loadImages();
+    loadHeroVideo();
   } else {
-    (authGate.querySelector(".auth-msg") as HTMLParagraphElement).textContent =
-      "No tienes sesión activa.";
-    const link = document.createElement("a");
-    link.href = "/admin";
-    link.textContent = "Ir al login →";
-    link.style.cssText = "display:block;margin-top:12px;font-size:13px;color:var(--color-azul);";
-    authGate.appendChild(link);
-  }
-
-  logoutBtn?.addEventListener("click", async () => {
-    await supabase.auth.signOut();
     window.location.href = "/admin";
-  });
+  }
 
   // ─── CATEGORY TABS ───
   catTabs.addEventListener("click", (e) => {
@@ -477,11 +469,9 @@ export const prerender = true;
       const fill = row.querySelector(".up-fill") as HTMLDivElement;
 
       try {
-        // 1. Compress
         const compressed = await compressImage(file);
         nameEl.textContent = "Subiendo " + compressed.name + " (" + formatSize(compressed.size) + ")…";
 
-        // 2. Upload to Cloudinary
         const fd = new FormData();
         fd.append("file", compressed);
         fd.append("upload_preset", uploadPreset);
@@ -507,8 +497,6 @@ export const prerender = true;
             xhr.send(fd);
           });
 
-        // 3. Save to Supabase gallery table
-        // Map Cloudinary folder to categoria (e.g. "maralma/bodas" → "bodas")
         const categoria = folder === "maralma" ? "general" : folder.replace("maralma/", "");
         await fetch("/api/gallery/save", {
           method: "POST",
@@ -523,7 +511,6 @@ export const prerender = true;
           }),
         });
 
-        // 4. Done
         row.classList.add("done");
         nameEl.textContent = compressed.name + " — Subida completada";
       } catch {
@@ -597,9 +584,8 @@ export const prerender = true;
   function toggleSelectMode(on?: boolean) {
     selectMode = on !== undefined ? on : !selectMode;
     selectModeBtn.classList.toggle("active", selectMode);
-    selectModeBtn.textContent = selectMode ? "Cancelar seleccion" : "Seleccionar";
+    selectModeBtn.textContent = selectMode ? "Cancelar selección" : "Seleccionar";
     selectAllBtn.classList.toggle("hidden", !selectMode);
-    // Show/hide checkboxes directly
     imgGrid.querySelectorAll(".ic-check").forEach((el) => {
       (el as HTMLElement).style.display = selectMode ? "flex" : "none";
     });
@@ -651,12 +637,11 @@ export const prerender = true;
 
   bulkCancelBtn.addEventListener("click", () => toggleSelectMode(false));
 
-  // ─── DELETE (Cloudinary + Supabase) ───
+  // ─── DELETE ───
   imgGrid.addEventListener("click", async (e) => {
     const card = (e.target as HTMLElement).closest(".img-card") as HTMLDivElement | null;
     if (!card) return;
 
-    // Selection mode: toggle selection on click
     if (selectMode) {
       card.classList.toggle("selected");
       const check = card.querySelector(".ic-check") as HTMLElement;
@@ -677,13 +662,12 @@ export const prerender = true;
       return;
     }
 
-    // Normal mode: single delete via button
     const btn = (e.target as HTMLElement).closest(".ic-delete") as HTMLButtonElement | null;
     if (!btn) return;
 
     const publicId = btn.dataset.id;
     if (!publicId) return;
-    const confirmed = await showConfirm("Se eliminara esta foto de forma permanente.");
+    const confirmed = await showConfirm("Se eliminará esta foto de forma permanente.");
     if (!confirmed) return;
 
     try {
@@ -714,7 +698,7 @@ export const prerender = true;
 
     const count = selected.length;
     const confirmed = await showConfirm(
-      "Se eliminaran " + count + (count === 1 ? " foto" : " fotos") + " de forma permanente."
+      "Se eliminarán " + count + (count === 1 ? " foto" : " fotos") + " de forma permanente."
     );
     if (!confirmed) return;
 
@@ -746,9 +730,7 @@ export const prerender = true;
     }
 
     toggleSelectMode(false);
-
     if (!imgGrid.querySelector(".img-card")) gridEmpty.classList.remove("hidden");
-
     if (failed > 0) {
       showAlert(deleted + " eliminadas, " + failed + " con error.");
     }
@@ -796,6 +778,50 @@ export const prerender = true;
     return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   }
 
+  // ─── FOLDER MANAGEMENT ───
+  const newFolderBtn = document.getElementById("newFolderBtn") as HTMLButtonElement;
+  const newFolderForm = document.getElementById("newFolderForm") as HTMLDivElement;
+  const newFolderInput = document.getElementById("newFolderInput") as HTMLInputElement;
+  const createFolderBtn = document.getElementById("createFolderBtn") as HTMLButtonElement;
+  const cancelFolderBtn = document.getElementById("cancelFolderBtn") as HTMLButtonElement;
+
+  newFolderBtn.addEventListener("click", () => {
+    newFolderForm.classList.remove("hidden");
+    newFolderInput.focus();
+  });
+  cancelFolderBtn.addEventListener("click", () => {
+    newFolderForm.classList.add("hidden");
+    newFolderInput.value = "";
+  });
+  createFolderBtn.addEventListener("click", async () => {
+    const name = newFolderInput.value.trim();
+    if (!name) return;
+    createFolderBtn.textContent = "Creando…";
+    try {
+      const res = await fetch("/api/admin/folders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: "Bearer " + accessToken },
+        body: JSON.stringify({ name }),
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        showAlert(data.error || "Error al crear carpeta");
+        return;
+      }
+      newFolderInput.value = "";
+      newFolderForm.classList.add("hidden");
+      await loadFolders();
+    } catch {
+      showAlert("Error al crear carpeta");
+    } finally {
+      createFolderBtn.textContent = "Crear";
+    }
+  });
+  newFolderInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") createFolderBtn.click();
+    if (e.key === "Escape") cancelFolderBtn.click();
+  });
+
   // ─── HERO VIDEO ───
   const hvsStatus = document.getElementById("hvsStatus") as HTMLParagraphElement;
   const hvsPreview = document.getElementById("hvsPreview") as HTMLVideoElement;
@@ -804,7 +830,6 @@ export const prerender = true;
   const hvsProgressText = document.getElementById("hvsProgressText") as HTMLSpanElement;
   const hvsFill = document.getElementById("hvsFill") as HTMLDivElement;
 
-  // Load current hero video
   async function loadHeroVideo() {
     try {
       const res = await fetch("/api/settings?key=hero_video_url");
@@ -820,8 +845,6 @@ export const prerender = true;
       hvsStatus.textContent = "Error al cargar el video.";
     }
   }
-
-  if (session) loadHeroVideo();
 
   videoInput.addEventListener("change", async () => {
     const file = videoInput.files?.[0];
@@ -857,7 +880,6 @@ export const prerender = true;
         xhr.send(fd);
       });
 
-      // Save URL to settings
       await fetch("/api/settings", {
         method: "POST",
         headers: {
@@ -871,7 +893,7 @@ export const prerender = true;
       hvsPreview.src = result.secure_url;
       hvsPreview.classList.remove("hidden");
       hvsStatus.textContent = "Video actual:";
-    } catch (err) {
+    } catch {
       hvsProgressText.textContent = "Error al subir el video";
     }
   });

@@ -1,7 +1,11 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { t } from "../utils/i18n";
-export const prerender = true;
+import { loadCms, c as _c, imgStyle as _imgStyle } from "../utils/cms";
+
+const cms = await loadCms();
+const c = (key: string) => _c(cms, key);
+const img = (key: string) => _imgStyle(cms, key);
 ---
 
 <Layout title={t("weddings.title") + " · Maralma"} darkNav={true}>
@@ -11,12 +15,12 @@ export const prerender = true;
     <div class="page-hero-bg"></div>
     <div class="page-hero-overlay"></div>
     <div class="page-hero-content">
-      <span class="page-eyebrow" data-cms="weddings.eyebrow">{t("weddings.eyebrow")}</span>
-      <h1 class="page-title" data-cms="weddings.page.hero_title">Tu boda,<br/><em>tu historia.</em></h1>
+      <span class="page-eyebrow" data-cms="weddings.eyebrow">{c("weddings.eyebrow")}</span>
+      <h1 class="page-title" data-cms="weddings.page.hero_title">{cms.text["weddings.page.hero_title"] || "Tu boda,"}<br/><em>{cms.text["weddings.page.hero_title"] ? "" : "tu historia."}</em></h1>
       <svg class="hero-wave" width="60" height="12" viewBox="0 0 60 12" fill="none">
         <path d="M3 9 C11 3, 19 3, 27 6 C35 9, 43 9, 51 3" stroke="#a8c4c8" stroke-width="1" stroke-linecap="round" fill="none" opacity="0.6"/>
       </svg>
-      <p class="page-subtitle" data-cms="weddings.page.hero_subtitle">{t("weddings.page.hero_subtitle")}</p>
+      <p class="page-subtitle" data-cms="weddings.page.hero_subtitle">{c("weddings.page.hero_subtitle")}</p>
     </div>
     <div class="page-scroll">
       <span>scroll</span>
@@ -28,13 +32,16 @@ export const prerender = true;
   <section class="detail-section" id="cocktail">
     <div class="detail-inner">
       <div class="detail-photo reveal">
-        <div class="detail-photo-bg dp-cocktail" data-cms-img="weddings.cocktail.photo"></div>
+        <div class="detail-photo-bg dp-cocktail" data-cms-img="weddings.cocktail.photo" style={img("weddings.cocktail.photo")}></div>
       </div>
       <div class="detail-text reveal reveal-1">
         <span class="detail-tag">{t("weddings.cocktail.tag")}</span>
-        <h2 class="detail-title" data-cms="weddings.cocktail.title">{t("weddings.cocktail.title_1")}<br/><em>{t("weddings.cocktail.title_2")}</em></h2>
+{cms.text["weddings.cocktail.title"]
+          ? <h2 class="detail-title" data-cms="weddings.cocktail.title">{cms.text["weddings.cocktail.title"]}</h2>
+          : <h2 class="detail-title" data-cms="weddings.cocktail.title">{t("weddings.cocktail.title_1")}<br/><em>{t("weddings.cocktail.title_2")}</em></h2>
+        }
         <div class="detail-border"></div>
-        <p class="detail-desc" data-cms="weddings.cocktail.desc">{t("weddings.cocktail.desc")}</p>
+        <p class="detail-desc" data-cms="weddings.cocktail.desc">{c("weddings.cocktail.desc")}</p>
         <ul class="detail-list">
           <li>{t("weddings.cocktail.items.0")}</li>
           <li>{t("weddings.cocktail.items.1")}</li>
@@ -50,7 +57,10 @@ export const prerender = true;
 
   <!-- ═══ FRASE ═══ -->
   <div class="frase dark">
-    <p class="frase-text" data-cms="weddings.page.phrase"><em>"{t("weddings.page.phrase")}"</em></p>
+{cms.text["weddings.page.phrase"]
+      ? <p class="frase-text" data-cms="weddings.page.phrase">{cms.text["weddings.page.phrase"]}</p>
+      : <p class="frase-text" data-cms="weddings.page.phrase"><em>"{t("weddings.page.phrase")}"</em></p>
+    }
   </div>
 
   <!-- ═══ BODA BANQUETE ═══ -->
@@ -58,9 +68,12 @@ export const prerender = true;
     <div class="detail-inner detail-reverse">
       <div class="detail-text reveal">
         <span class="detail-tag">{t("weddings.banquet.tag")}</span>
-        <h2 class="detail-title" data-cms="weddings.banquet.title">{t("weddings.banquet.title_1")}<br/><em>{t("weddings.banquet.title_2")}</em></h2>
+{cms.text["weddings.banquet.title"]
+          ? <h2 class="detail-title" data-cms="weddings.banquet.title">{cms.text["weddings.banquet.title"]}</h2>
+          : <h2 class="detail-title" data-cms="weddings.banquet.title">{t("weddings.banquet.title_1")}<br/><em>{t("weddings.banquet.title_2")}</em></h2>
+        }
         <div class="detail-border"></div>
-        <p class="detail-desc" data-cms="weddings.banquet.desc">{t("weddings.banquet.desc")}</p>
+        <p class="detail-desc" data-cms="weddings.banquet.desc">{c("weddings.banquet.desc")}</p>
         <ul class="detail-list">
           <li>{t("weddings.banquet.items.0")}</li>
           <li>{t("weddings.banquet.items.1")}</li>
@@ -72,7 +85,7 @@ export const prerender = true;
         <a href="/contacto" class="detail-cta">{t("events.cta")} →</a>
       </div>
       <div class="detail-photo reveal reveal-1">
-        <div class="detail-photo-bg dp-banquet" data-cms-img="weddings.banquet.photo"></div>
+        <div class="detail-photo-bg dp-banquet" data-cms-img="weddings.banquet.photo" style={img("weddings.banquet.photo")}></div>
       </div>
     </div>
   </section>
@@ -80,33 +93,33 @@ export const prerender = true;
   <!-- ═══ POR QUÉ MARALMA PARA TU BODA ═══ -->
   <section class="porque-boda">
     <div class="section-header reveal">
-      <h2 class="section-title" data-cms="weddings.page.why_title">{t("weddings.page.why_title")}</h2>
+      <h2 class="section-title" data-cms="weddings.page.why_title">{c("weddings.page.why_title")}</h2>
       <span class="section-eyebrow">{t("why.eyebrow")}</span>
     </div>
     <div class="pq-grid">
       <div class="pq-card reveal">
         <div class="pq-number">01</div>
-        <h3 class="pq-title" data-cms="weddings.page.why.0.title">{t("weddings.page.why.0.title")}</h3>
-        <p class="pq-desc" data-cms="weddings.page.why.0.desc">{t("weddings.page.why.0.desc")}</p>
+        <h3 class="pq-title" data-cms="weddings.page.why.0.title">{c("weddings.page.why.0.title")}</h3>
+        <p class="pq-desc" data-cms="weddings.page.why.0.desc">{c("weddings.page.why.0.desc")}</p>
       </div>
       <div class="pq-card reveal reveal-1">
         <div class="pq-number">02</div>
-        <h3 class="pq-title" data-cms="weddings.page.why.1.title">{t("weddings.page.why.1.title")}</h3>
-        <p class="pq-desc" data-cms="weddings.page.why.1.desc">{t("weddings.page.why.1.desc")}</p>
+        <h3 class="pq-title" data-cms="weddings.page.why.1.title">{c("weddings.page.why.1.title")}</h3>
+        <p class="pq-desc" data-cms="weddings.page.why.1.desc">{c("weddings.page.why.1.desc")}</p>
       </div>
       <div class="pq-card reveal reveal-2">
         <div class="pq-number">03</div>
-        <h3 class="pq-title" data-cms="weddings.page.why.2.title">{t("weddings.page.why.2.title")}</h3>
-        <p class="pq-desc" data-cms="weddings.page.why.2.desc">{t("weddings.page.why.2.desc")}</p>
+        <h3 class="pq-title" data-cms="weddings.page.why.2.title">{c("weddings.page.why.2.title")}</h3>
+        <p class="pq-desc" data-cms="weddings.page.why.2.desc">{c("weddings.page.why.2.desc")}</p>
       </div>
     </div>
   </section>
 
   <!-- ═══ CTA FINAL ═══ -->
   <section class="cta-final">
-    <p class="cta-eyebrow reveal" data-cms="cta.eyebrow">{t("cta.eyebrow")}</p>
-    <h2 class="cta-title reveal" data-cms="weddings.page.cta_title">{t("weddings.page.cta_title")}</h2>
-    <p class="cta-sub reveal" data-cms="weddings.page.cta_body">{t("weddings.page.cta_body")}</p>
+    <p class="cta-eyebrow reveal" data-cms="cta.eyebrow">{c("cta.eyebrow")}</p>
+    <h2 class="cta-title reveal" data-cms="weddings.page.cta_title">{c("weddings.page.cta_title")}</h2>
+    <p class="cta-sub reveal" data-cms="weddings.page.cta_body">{c("weddings.page.cta_body")}</p>
     <div class="cta-btns reveal">
       <a href="/contacto" class="cta-btn cta-btn-form">
         <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>

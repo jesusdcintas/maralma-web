@@ -1,0 +1,431 @@
+---
+import AdminLayout from "../../layouts/AdminLayout.astro";
+---
+
+<AdminLayout title="Testimonios · Admin · Maralma" section="testimonios">
+  <h1 class="adm-page-title">Testimonios</h1>
+  <p class="adm-page-subtitle">Modera los testimonios de clientes. Los aprobados se muestran en la web.</p>
+
+  <!-- TOOLBAR -->
+  <div class="test-toolbar">
+    <div class="test-filters">
+      <button class="filter-btn active" data-filter="todos">Todos</button>
+      <button class="filter-btn" data-filter="pendientes">Pendientes</button>
+      <button class="filter-btn" data-filter="aprobados">Aprobados</button>
+      <button class="filter-btn" data-filter="destacados">Destacados</button>
+    </div>
+    <button class="toolbar-btn" id="newTestBtn">+ Nuevo testimonio</button>
+  </div>
+
+  <!-- LISTA -->
+  <div class="test-list" id="testList">
+    <p class="test-loading" id="testLoading">Cargando testimonios…</p>
+  </div>
+  <p class="test-empty hidden" id="testEmpty">No hay testimonios en esta categoría.</p>
+
+  <!-- MODAL CREAR/EDITAR -->
+  <div class="modal-overlay hidden" id="formOverlay">
+    <div class="modal-box modal-form">
+      <h3 class="modal-title" id="formTitle">Nuevo testimonio</h3>
+      <input type="hidden" id="formId" />
+      <label class="form-label">Nombre *</label>
+      <input type="text" class="form-input" id="formNombre" />
+      <label class="form-label">Evento</label>
+      <input type="text" class="form-input" id="formEvento" placeholder="Ej: Boda en Finca El Olivo" />
+      <label class="form-label">Texto *</label>
+      <textarea class="form-textarea" id="formTexto" rows="4"></textarea>
+      <div class="form-actions">
+        <button class="modal-btn" id="formCancel">Cancelar</button>
+        <button class="modal-btn primary" id="formSave">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL CONFIRMAR -->
+  <div class="modal-overlay hidden" id="confirmOverlay">
+    <div class="modal-box">
+      <p class="modal-text" id="confirmText"></p>
+      <div class="modal-actions">
+        <button class="modal-btn" id="confirmCancel">Cancelar</button>
+        <button class="modal-btn danger" id="confirmOk">Eliminar</button>
+      </div>
+    </div>
+  </div>
+</AdminLayout>
+
+<style>
+  .test-toolbar {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 20px; flex-wrap: wrap; gap: 10px;
+  }
+  .test-filters { display: flex; gap: 6px; flex-wrap: wrap; }
+  .filter-btn {
+    font-family: var(--font-sans); font-size: 10px; font-weight: 500;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--color-texto-suave); background: transparent;
+    border: 0.5px solid var(--color-crema-oscuro); padding: 8px 18px;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .filter-btn:hover { border-color: var(--color-azul); color: var(--color-azul); }
+  .filter-btn.active {
+    background: var(--color-azul); color: var(--color-blanco);
+    border-color: var(--color-azul);
+  }
+  .toolbar-btn {
+    font-family: var(--font-sans); font-size: 10px; font-weight: 500;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--color-texto-suave); background: transparent;
+    border: 0.5px solid var(--color-crema-oscuro); padding: 8px 18px;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .toolbar-btn:hover { border-color: var(--color-azul); color: var(--color-azul); }
+
+  .test-list { display: grid; gap: 12px; }
+  .test-loading, .test-empty {
+    text-align: center; font-size: 13px; color: var(--color-texto-suave); padding: 40px 0;
+  }
+
+  .test-card {
+    background: var(--color-blanco); border: 0.5px solid var(--color-crema-oscuro);
+    padding: 20px 24px; transition: border-color 0.2s; position: relative;
+  }
+  .test-card:hover { border-color: var(--color-azul-claro); }
+  .test-card.pending { border-left: 3px solid #f59e0b; }
+  .test-card.approved { border-left: 3px solid #10b981; }
+  .test-card.featured { border-left: 3px solid var(--color-azul); }
+
+  .test-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 8px; }
+  .test-name {
+    font-family: var(--font-serif); font-size: 16px; font-weight: 400;
+    color: var(--color-azul);
+  }
+  .test-evento {
+    font-size: 11px; color: var(--color-texto-suave); font-weight: 300;
+    margin-top: 2px;
+  }
+  .test-text {
+    font-size: 13px; font-weight: 300; line-height: 1.7;
+    color: var(--color-texto); margin-bottom: 14px;
+    white-space: pre-wrap;
+  }
+  .test-date {
+    font-size: 10px; color: var(--color-texto-suave); font-weight: 300;
+  }
+  .test-badges { display: flex; gap: 4px; flex-shrink: 0; }
+  .test-badge {
+    font-size: 9px; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; padding: 3px 8px; border-radius: 2px;
+  }
+  .test-badge.pend { background: #fef3c7; color: #92400e; }
+  .test-badge.aprov { background: #d1fae5; color: #065f46; }
+  .test-badge.dest { background: #dbeafe; color: #1e40af; }
+
+  .test-actions {
+    display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px;
+    padding-top: 12px; border-top: 0.5px solid var(--color-crema-oscuro);
+  }
+  .act-btn {
+    font-family: var(--font-sans); font-size: 9px; font-weight: 500;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 5px 12px; cursor: pointer; border: 0.5px solid var(--color-crema-oscuro);
+    background: transparent; color: var(--color-texto-suave);
+    transition: all 0.2s;
+  }
+  .act-btn:hover { border-color: var(--color-azul); color: var(--color-azul); }
+  .act-btn.danger:hover { border-color: #b91c1c; color: #b91c1c; }
+
+  /* Modals */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 1000;
+    background: rgba(15,26,32,0.55); backdrop-filter: blur(4px);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .modal-box {
+    background: var(--color-blanco); max-width: 420px; width: 100%;
+    padding: 36px 32px 28px; border: 0.5px solid var(--color-crema-oscuro);
+  }
+  .modal-form { max-width: 480px; }
+  .modal-title {
+    font-family: var(--font-serif); font-size: 18px; font-weight: 400;
+    color: var(--color-azul); margin-bottom: 20px;
+  }
+  .modal-text {
+    font-family: var(--font-sans); font-size: 14px; font-weight: 300;
+    color: var(--color-texto); line-height: 1.7; margin-bottom: 28px;
+    text-align: center;
+  }
+  .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
+  .modal-btn {
+    font-family: var(--font-sans); font-size: 10px; font-weight: 500;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 10px 24px; cursor: pointer; border: 0.5px solid var(--color-crema-oscuro);
+    background: transparent; color: var(--color-texto-suave);
+    transition: all 0.2s;
+  }
+  .modal-btn:hover { border-color: var(--color-azul); color: var(--color-azul); }
+  .modal-btn.primary {
+    background: var(--color-azul); color: var(--color-blanco); border-color: var(--color-azul);
+  }
+  .modal-btn.primary:hover { background: #1a3144; }
+  .modal-btn.danger {
+    background: #7f1d1d; color: var(--color-blanco); border-color: #7f1d1d;
+  }
+  .modal-btn.danger:hover { background: #991b1b; }
+
+  .form-label {
+    display: block; font-size: 10px; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--color-texto-suave); margin-bottom: 6px; margin-top: 14px;
+  }
+  .form-label:first-of-type { margin-top: 0; }
+  .form-input, .form-textarea {
+    width: 100%; font-family: var(--font-sans); font-size: 13px;
+    padding: 10px 14px; border: 0.5px solid var(--color-crema-oscuro);
+    background: var(--color-crema); color: var(--color-texto);
+    outline: none; transition: border-color 0.2s; box-sizing: border-box;
+  }
+  .form-input:focus, .form-textarea:focus { border-color: var(--color-azul); }
+  .form-textarea { resize: vertical; min-height: 80px; }
+
+  .hidden { display: none !important; }
+</style>
+
+<script>
+  import { createClient } from "@supabase/supabase-js";
+
+  const supabase = createClient(
+    import.meta.env.PUBLIC_SUPABASE_URL,
+    import.meta.env.PUBLIC_SUPABASE_ANON_KEY,
+  );
+
+  let accessToken = "";
+  let allTestimonios: any[] = [];
+  let currentFilter = "todos";
+  let confirmResolve: ((v: boolean) => void) | null = null;
+
+  const { data: { session } } = await supabase.auth.getSession();
+  if (session) {
+    accessToken = session.access_token;
+    document.cookie = "sb-access-token=" + accessToken + "; path=/; max-age=3600; SameSite=Strict; Secure";
+    loadTestimonios();
+  } else {
+    window.location.href = "/admin";
+  }
+
+  const testList = document.getElementById("testList") as HTMLDivElement;
+  const testLoading = document.getElementById("testLoading") as HTMLParagraphElement;
+  const testEmpty = document.getElementById("testEmpty") as HTMLParagraphElement;
+
+  async function loadTestimonios() {
+    testLoading.classList.remove("hidden");
+    testEmpty.classList.add("hidden");
+    testList.querySelectorAll(".test-card").forEach((c) => c.remove());
+
+    try {
+      const res = await fetch("/api/admin/testimonios", {
+        headers: { Authorization: "Bearer " + accessToken },
+      });
+      if (!res.ok) throw new Error();
+      allTestimonios = await res.json();
+      testLoading.classList.add("hidden");
+      renderList();
+    } catch {
+      testLoading.textContent = "Error al cargar testimonios.";
+    }
+  }
+
+  function renderList() {
+    testList.querySelectorAll(".test-card").forEach((c) => c.remove());
+    testEmpty.classList.add("hidden");
+
+    let filtered = allTestimonios;
+    if (currentFilter === "pendientes") filtered = allTestimonios.filter((t: any) => !t.aprobado);
+    else if (currentFilter === "aprobados") filtered = allTestimonios.filter((t: any) => t.aprobado);
+    else if (currentFilter === "destacados") filtered = allTestimonios.filter((t: any) => t.destacado);
+
+    if (!filtered.length) {
+      testEmpty.classList.remove("hidden");
+      return;
+    }
+
+    for (const t of filtered) {
+      const card = document.createElement("div");
+      const cls = t.destacado ? "featured" : t.aprobado ? "approved" : "pending";
+      card.className = "test-card " + cls;
+
+      let badges = "";
+      if (!t.aprobado) badges += '<span class="test-badge pend">Pendiente</span>';
+      else badges += '<span class="test-badge aprov">Aprobado</span>';
+      if (t.destacado) badges += '<span class="test-badge dest">Destacado</span>';
+
+      let actions = "";
+      if (!t.aprobado) {
+        actions += '<button class="act-btn" data-action="approve" data-id="' + t.id + '">Aprobar</button>';
+      } else {
+        actions += '<button class="act-btn" data-action="unapprove" data-id="' + t.id + '">Desaprobar</button>';
+      }
+      if (!t.destacado) {
+        actions += '<button class="act-btn" data-action="feature" data-id="' + t.id + '">Destacar</button>';
+      } else {
+        actions += '<button class="act-btn" data-action="unfeature" data-id="' + t.id + '">Quitar destacado</button>';
+      }
+      actions += '<button class="act-btn danger" data-action="delete" data-id="' + t.id + '">Eliminar</button>';
+
+      card.innerHTML =
+        '<div class="test-header">' +
+          '<div>' +
+            '<div class="test-name">' + esc(t.nombre) + '</div>' +
+            (t.evento ? '<div class="test-evento">' + esc(t.evento) + '</div>' : '') +
+          '</div>' +
+          '<div class="test-badges">' + badges + '</div>' +
+        '</div>' +
+        '<div class="test-text">' + esc(t.texto) + '</div>' +
+        '<div class="test-date">' + formatDate(t.created_at) + '</div>' +
+        '<div class="test-actions">' + actions + '</div>';
+      testList.appendChild(card);
+    }
+  }
+
+  // Filter buttons
+  document.querySelectorAll(".filter-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      document.querySelector(".filter-btn.active")?.classList.remove("active");
+      btn.classList.add("active");
+      currentFilter = (btn as HTMLElement).dataset.filter || "todos";
+      renderList();
+    });
+  });
+
+  // Action buttons
+  testList.addEventListener("click", async (e) => {
+    const btn = (e.target as HTMLElement).closest(".act-btn") as HTMLButtonElement | null;
+    if (!btn) return;
+    const action = btn.dataset.action;
+    const id = btn.dataset.id;
+    if (!action || !id) return;
+
+    if (action === "approve") await patchTest(id, { aprobado: true });
+    else if (action === "unapprove") await patchTest(id, { aprobado: false });
+    else if (action === "feature") await patchTest(id, { destacado: true });
+    else if (action === "unfeature") await patchTest(id, { destacado: false });
+    else if (action === "delete") {
+      const ok = await showConfirm("¿Eliminar este testimonio? Esta acción no se puede deshacer.");
+      if (ok) await deleteTest(id);
+    }
+  });
+
+  async function patchTest(id: string, fields: Record<string, unknown>) {
+    try {
+      const res = await fetch("/api/admin/testimonios", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json", Authorization: "Bearer " + accessToken },
+        body: JSON.stringify({ id, ...fields }),
+      });
+      if (!res.ok) throw new Error();
+      // Update local data
+      const t = allTestimonios.find((x: any) => x.id === id);
+      if (t) Object.assign(t, fields);
+      renderList();
+    } catch {
+      alert("Error al actualizar testimonio");
+    }
+  }
+
+  async function deleteTest(id: string) {
+    try {
+      const res = await fetch("/api/admin/testimonios", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json", Authorization: "Bearer " + accessToken },
+        body: JSON.stringify({ id }),
+      });
+      if (!res.ok) throw new Error();
+      allTestimonios = allTestimonios.filter((x: any) => x.id !== id);
+      renderList();
+    } catch {
+      alert("Error al eliminar testimonio");
+    }
+  }
+
+  // New / edit form
+  const formOverlay = document.getElementById("formOverlay") as HTMLDivElement;
+  const formTitle = document.getElementById("formTitle") as HTMLHeadingElement;
+  const formId = document.getElementById("formId") as HTMLInputElement;
+  const formNombre = document.getElementById("formNombre") as HTMLInputElement;
+  const formEvento = document.getElementById("formEvento") as HTMLInputElement;
+  const formTexto = document.getElementById("formTexto") as HTMLTextAreaElement;
+  const formCancel = document.getElementById("formCancel") as HTMLButtonElement;
+  const formSave = document.getElementById("formSave") as HTMLButtonElement;
+
+  document.getElementById("newTestBtn")!.addEventListener("click", () => {
+    formTitle.textContent = "Nuevo testimonio";
+    formId.value = "";
+    formNombre.value = "";
+    formEvento.value = "";
+    formTexto.value = "";
+    formOverlay.classList.remove("hidden");
+    formNombre.focus();
+  });
+
+  formCancel.addEventListener("click", () => formOverlay.classList.add("hidden"));
+  formOverlay.addEventListener("click", (e) => {
+    if (e.target === formOverlay) formOverlay.classList.add("hidden");
+  });
+
+  formSave.addEventListener("click", async () => {
+    const nombre = formNombre.value.trim();
+    const texto = formTexto.value.trim();
+    if (!nombre || !texto) { alert("Nombre y texto son obligatorios"); return; }
+
+    formSave.textContent = "Guardando…";
+    try {
+      const res = await fetch("/api/admin/testimonios", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: "Bearer " + accessToken },
+        body: JSON.stringify({ nombre, texto, evento: formEvento.value.trim() || null }),
+      });
+      if (!res.ok) throw new Error();
+      formOverlay.classList.add("hidden");
+      loadTestimonios();
+    } catch {
+      alert("Error al crear testimonio");
+    } finally {
+      formSave.textContent = "Guardar";
+    }
+  });
+
+  // Confirm modal
+  const confirmOverlay = document.getElementById("confirmOverlay") as HTMLDivElement;
+  const confirmText = document.getElementById("confirmText") as HTMLParagraphElement;
+  const confirmCancel = document.getElementById("confirmCancel") as HTMLButtonElement;
+  const confirmOk = document.getElementById("confirmOk") as HTMLButtonElement;
+
+  function showConfirm(message: string): Promise<boolean> {
+    return new Promise((resolve) => {
+      confirmResolve = resolve;
+      confirmText.textContent = message;
+      confirmOverlay.classList.remove("hidden");
+    });
+  }
+  confirmCancel.addEventListener("click", () => {
+    confirmOverlay.classList.add("hidden");
+    confirmResolve?.(false);
+  });
+  confirmOk.addEventListener("click", () => {
+    confirmOverlay.classList.add("hidden");
+    confirmResolve?.(true);
+  });
+  confirmOverlay.addEventListener("click", (e) => {
+    if (e.target === confirmOverlay) {
+      confirmOverlay.classList.add("hidden");
+      confirmResolve?.(false);
+    }
+  });
+
+  function formatDate(d: string): string {
+    if (!d) return "—";
+    return new Date(d).toLocaleDateString("es-ES", { day: "2-digit", month: "short", year: "numeric" });
+  }
+  function esc(s: string): string {
+    return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+</script>
