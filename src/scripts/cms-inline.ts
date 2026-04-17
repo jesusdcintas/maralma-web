@@ -385,48 +385,64 @@ function enableImageEditing(el: HTMLElement, key: string) {
     await saveContent(key, result.url, result.publicId);
   });
 
-  // ── Position grid (only for background-image elements) ──
+  // ── Position sliders (only for background-image elements) ──
   if (el.tagName !== "IMG") {
-    const positions = [
-      { label: "\u2196", value: "top left" },
-      { label: "\u2191", value: "top center" },
-      { label: "\u2197", value: "top right" },
-      { label: "\u2190", value: "center left" },
-      { label: "\u00b7", value: "center center" },
-      { label: "\u2192", value: "center right" },
-      { label: "\u2199", value: "bottom left" },
-      { label: "\u2193", value: "bottom center" },
-      { label: "\u2198", value: "bottom right" },
-    ];
-
-    const posGrid = document.createElement("div");
-    posGrid.className = "cms-pos-grid";
-
-    const currentPos = el.style.backgroundPosition || "center";
-
-    positions.forEach((p) => {
-      const btn = document.createElement("button");
-      btn.className = "cms-pos-btn";
-      btn.textContent = p.label;
-      btn.title = p.value;
-      // Normalize for comparison
-      const normalizedCurrent = currentPos.replace("center center", "center");
-      const normalizedValue = p.value.replace("center center", "center");
-      if (normalizedCurrent === normalizedValue || normalizedCurrent === p.value) {
-        btn.classList.add("active");
+    const currentPos = el.style.backgroundPosition || "center center";
+    // Parse "50% 30%" or "center" into numeric values
+    function parsePos(pos: string): { x: number; y: number } {
+      const map: Record<string, number> = { left: 0, center: 50, right: 100, top: 0, bottom: 100 };
+      const parts = pos.trim().split(/\s+/);
+      let x = 50, y = 50;
+      if (parts.length >= 2) {
+        x = parts[0].endsWith("%") ? parseFloat(parts[0]) : (map[parts[0]] ?? 50);
+        y = parts[1].endsWith("%") ? parseFloat(parts[1]) : (map[parts[1]] ?? 50);
+      } else if (parts.length === 1) {
+        const v = parts[0].endsWith("%") ? parseFloat(parts[0]) : (map[parts[0]] ?? 50);
+        x = v; y = v === 50 ? 50 : v; // "center" → 50/50
       }
-      btn.addEventListener("click", async (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        el.style.backgroundPosition = p.value;
-        posGrid.querySelectorAll(".cms-pos-btn").forEach((b) => b.classList.remove("active"));
-        btn.classList.add("active");
-        await saveContent(key + ".position", p.value);
-      });
-      posGrid.appendChild(btn);
-    });
+      return { x: Math.round(x), y: Math.round(y) };
+    }
 
-    container.appendChild(posGrid);
+    const parsed = parsePos(currentPos);
+
+    const panel = document.createElement("div");
+    panel.className = "cms-pos-panel";
+    panel.innerHTML =
+      '<div class="cms-pos-row">' +
+        '<span class="cms-pos-icon">\u2195</span>' +
+        '<input type="range" class="cms-pos-slider" min="0" max="100" step="1" value="' + parsed.y + '" />' +
+      '</div>' +
+      '<div class="cms-pos-row">' +
+        '<span class="cms-pos-icon">\u2194</span>' +
+        '<input type="range" class="cms-pos-slider" min="0" max="100" step="1" value="' + parsed.x + '" />' +
+      '</div>' +
+      '<span class="cms-pos-label">\u2195 ' + parsed.y + '%  \u2194 ' + parsed.x + '%</span>';
+
+    const sliders = panel.querySelectorAll<HTMLInputElement>(".cms-pos-slider");
+    const sliderY = sliders[0];
+    const sliderX = sliders[1];
+    const label = panel.querySelector(".cms-pos-label") as HTMLElement;
+
+    function updatePreview() {
+      const x = sliderX.value;
+      const y = sliderY.value;
+      el.style.backgroundPosition = x + "% " + y + "%";
+      label.textContent = "\u2195 " + y + "%  \u2194 " + x + "%";
+    }
+
+    sliderY.addEventListener("input", updatePreview);
+    sliderX.addEventListener("input", updatePreview);
+
+    async function savePos() {
+      await saveContent(key + ".position", sliderX.value + "% " + sliderY.value + "%");
+    }
+    sliderY.addEventListener("change", savePos);
+    sliderX.addEventListener("change", savePos);
+
+    // Prevent click from bubbling to the overlay (which opens media picker)
+    panel.addEventListener("click", (e) => e.stopPropagation());
+
+    container.appendChild(panel);
   }
 }
 
@@ -516,12 +532,14 @@ function injectStyles() {
     '.cms-media-item-size{position:absolute;bottom:4px;right:6px;font-size:9px;color:rgba(255,255,255,0.7);background:rgba(0,0,0,0.4);padding:2px 6px;letter-spacing:0.06em}' +
     '.cms-media-loading,.cms-media-empty{grid-column:1/-1;text-align:center;font-size:13px;color:rgba(15,26,32,0.4);padding:40px 0}' +
 
-    /* Position grid */
-    '.cms-pos-grid{position:absolute;bottom:10px;right:10px;display:grid;grid-template-columns:repeat(3,28px);gap:3px;background:rgba(30,58,79,0.85);padding:6px;border-radius:4px;opacity:0;transition:opacity 0.2s;z-index:11}' +
-    '.cms-img-wrapper:hover .cms-pos-grid{opacity:1}' +
-    '.cms-pos-btn{width:28px;height:28px;background:rgba(255,255,255,0.15);border:none;color:white;font-size:12px;cursor:pointer;border-radius:2px;transition:background 0.2s;padding:0;line-height:28px;text-align:center}' +
-    '.cms-pos-btn:hover{background:rgba(255,255,255,0.35)}' +
-    '.cms-pos-btn.active{background:#a8c4c8;color:#1e3a4f}' +
+    /* Position sliders */
+    '.cms-pos-panel{position:absolute;bottom:10px;right:10px;background:rgba(30,58,79,0.9);padding:10px 14px;border-radius:6px;z-index:11;display:flex;flex-direction:column;gap:6px;min-width:180px}' +
+    '.cms-pos-row{display:flex;align-items:center;gap:8px}' +
+    ".cms-pos-icon{font-size:13px;color:rgba(255,255,255,0.6);width:14px;text-align:center;font-family:'Jost',sans-serif}" +
+    '.cms-pos-slider{-webkit-appearance:none;appearance:none;flex:1;height:4px;background:rgba(255,255,255,0.2);border-radius:2px;outline:none;cursor:pointer}' +
+    '.cms-pos-slider::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:#a8c4c8;cursor:pointer;border:none}' +
+    '.cms-pos-slider::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:#a8c4c8;cursor:pointer;border:none}' +
+    ".cms-pos-label{font-family:'Jost',sans-serif;font-size:9px;letter-spacing:0.1em;color:rgba(255,255,255,0.5);text-align:center}" +
 
     /* Responsive media picker */
     '@media(max-width:768px){.cms-media-modal{width:96vw;max-height:92vh}.cms-media-grid{grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:6px;padding:12px 16px}}';
