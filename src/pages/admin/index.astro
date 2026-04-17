@@ -90,12 +90,8 @@ import "../../styles/global.css";
     import.meta.env.PUBLIC_SUPABASE_ANON_KEY,
   );
 
-  // If already logged in, redirect to panel
-  const { data: { session } } = await supabase.auth.getSession();
-  if (session) {
-    document.cookie = "sb-access-token=" + session.access_token + "; path=/; max-age=3600; SameSite=Strict; Secure";
-    window.location.href = "/admin/panel";
-  }
+  const isSecure = window.location.protocol === "https:";
+  const cookieFlags = "; path=/; max-age=3600; SameSite=Strict" + (isSecure ? "; Secure" : "");
 
   const loginForm = document.getElementById("login-form") as HTMLFormElement;
   const loginMessage = document.getElementById("login-message") as HTMLDivElement;
@@ -116,7 +112,7 @@ import "../../styles/global.css";
       loginMessage.classList.remove("hidden");
       btn.textContent = "Iniciar sesión";
     } else if (data.session) {
-      document.cookie = "sb-access-token=" + data.session.access_token + "; path=/; max-age=3600; SameSite=Strict; Secure";
+      document.cookie = "sb-access-token=" + data.session.access_token + cookieFlags;
       window.location.href = "/admin/panel";
     }
   });

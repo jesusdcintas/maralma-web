@@ -418,10 +418,12 @@ import AdminLayout from "../../../layouts/AdminLayout.astro";
   }
 
   // ─── AUTH ───
+  const isSecure = window.location.protocol === "https:";
+  const cookieFlags = "; path=/; max-age=3600; SameSite=Strict" + (isSecure ? "; Secure" : "");
   const { data: { session } } = await supabase.auth.getSession();
   if (session) {
     accessToken = session.access_token;
-    document.cookie = "sb-access-token=" + accessToken + "; path=/; max-age=3600; SameSite=Strict; Secure";
+    document.cookie = "sb-access-token=" + accessToken + cookieFlags;
     await loadFolders();
     loadEvents();
   } else {

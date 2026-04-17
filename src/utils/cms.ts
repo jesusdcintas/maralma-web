@@ -35,7 +35,7 @@ export function c(cms: CmsOverrides, key: string, lang: Lang = "es"): string {
 /** Return inline background-image style if CMS image override exists. */
 export function imgStyle(cms: CmsOverrides, key: string): string | undefined {
   const url = cms.images[key];
-  return url
-    ? `background-image:url(${url});background-size:cover;background-position:center`
-    : undefined;
+  if (!url) return undefined;
+  const pos = cms.text[key + ".position"] || "center";
+  return `background-image:url(${url});background-size:cover;background-position:${pos}`;
 }

@@ -387,6 +387,50 @@ function enableImageEditing(el: HTMLElement, key: string) {
     }
     await saveContent(key, result.url, result.publicId);
   });
+
+  // ── Position grid (only for background-image elements) ──
+  if (el.tagName !== "IMG") {
+    const positions = [
+      { label: "\u2196", value: "top left" },
+      { label: "\u2191", value: "top center" },
+      { label: "\u2197", value: "top right" },
+      { label: "\u2190", value: "center left" },
+      { label: "\u00b7", value: "center center" },
+      { label: "\u2192", value: "center right" },
+      { label: "\u2199", value: "bottom left" },
+      { label: "\u2193", value: "bottom center" },
+      { label: "\u2198", value: "bottom right" },
+    ];
+
+    const posGrid = document.createElement("div");
+    posGrid.className = "cms-pos-grid";
+
+    const currentPos = el.style.backgroundPosition || "center";
+
+    positions.forEach((p) => {
+      const btn = document.createElement("button");
+      btn.className = "cms-pos-btn";
+      btn.textContent = p.label;
+      btn.title = p.value;
+      // Normalize for comparison
+      const normalizedCurrent = currentPos.replace("center center", "center");
+      const normalizedValue = p.value.replace("center center", "center");
+      if (normalizedCurrent === normalizedValue || normalizedCurrent === p.value) {
+        btn.classList.add("active");
+      }
+      btn.addEventListener("click", async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        el.style.backgroundPosition = p.value;
+        posGrid.querySelectorAll(".cms-pos-btn").forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        await saveContent(key + ".position", p.value);
+      });
+      posGrid.appendChild(btn);
+    });
+
+    container.appendChild(posGrid);
+  }
 }
 
 /* ── Apply overrides to DOM ── */
@@ -405,7 +449,14 @@ function applyOverrides(overrides: Record<string, { value: string; type: string;
       } else {
         el.style.backgroundImage = "url(" + o.value + ")";
         el.style.backgroundSize = "cover";
-        el.style.backgroundPosition = "center";
+        const pos = overrides[key + ".position"];
+        el.style.backgroundPosition = (pos && pos.type === "text") ? pos.value : "center";
+      }
+    } else {
+      // No image override, but maybe a position override for the default SSR image
+      const pos = overrides[key + ".position"];
+      if (pos && pos.type === "text") {
+        el.style.backgroundPosition = pos.value;
       }
     }
   });
@@ -467,6 +518,13 @@ function injectStyles() {
     '.cms-media-item img{width:100%;height:100%;object-fit:cover;display:block}' +
     '.cms-media-item-size{position:absolute;bottom:4px;right:6px;font-size:9px;color:rgba(255,255,255,0.7);background:rgba(0,0,0,0.4);padding:2px 6px;letter-spacing:0.06em}' +
     '.cms-media-loading,.cms-media-empty{grid-column:1/-1;text-align:center;font-size:13px;color:rgba(15,26,32,0.4);padding:40px 0}' +
+
+    /* Position grid */
+    '.cms-pos-grid{position:absolute;bottom:10px;right:10px;display:grid;grid-template-columns:repeat(3,28px);gap:3px;background:rgba(30,58,79,0.85);padding:6px;border-radius:4px;opacity:0;transition:opacity 0.2s;z-index:11}' +
+    '.cms-img-wrapper:hover .cms-pos-grid{opacity:1}' +
+    '.cms-pos-btn{width:28px;height:28px;background:rgba(255,255,255,0.15);border:none;color:white;font-size:12px;cursor:pointer;border-radius:2px;transition:background 0.2s;padding:0;line-height:28px;text-align:center}' +
+    '.cms-pos-btn:hover{background:rgba(255,255,255,0.35)}' +
+    '.cms-pos-btn.active{background:#a8c4c8;color:#1e3a4f}' +
 
     /* Responsive media picker */
     '@media(max-width:768px){.cms-media-modal{width:96vw;max-height:92vh}.cms-media-grid{grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:6px;padding:12px 16px}}';

@@ -144,7 +144,8 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
     const token = session.access_token;
 
     // Refresh cookie
-    document.cookie = "sb-access-token=" + token + "; path=/; max-age=3600; SameSite=Strict; Secure";
+    const isSecure = window.location.protocol === "https:";
+    document.cookie = "sb-access-token=" + token + "; path=/; max-age=3600; SameSite=Strict" + (isSecure ? "; Secure" : "");
 
     // Load dashboard data
     try {

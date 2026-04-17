@@ -4,13 +4,30 @@ import { createClient } from "@supabase/supabase-js";
 export const onRequest = defineMiddleware(async ({ cookies, redirect, url }, next) => {
   const path = url.pathname;
 
-  // Only protect /admin/* pages (not the login page itself, not API routes)
+  // Only act on /admin/* routes (not API routes)
   const isAdmin = path.startsWith("/admin") || path.startsWith("/en/admin");
   if (!isAdmin) return next();
-  if (path === "/admin" || path === "/admin/" || path === "/en/admin" || path === "/en/admin/") return next();
   if (path.startsWith("/api/")) return next();
 
+  const isLoginPage = path === "/admin" || path === "/admin/" || path === "/en/admin" || path === "/en/admin/";
   const token = cookies.get("sb-access-token")?.value;
+
+  // Login page: if user has a valid token, send them straight to panel
+  if (isLoginPage) {
+    if (token) {
+      try {
+        const supabase = createClient(
+          import.meta.env.PUBLIC_SUPABASE_URL,
+          import.meta.env.PUBLIC_SUPABASE_ANON_KEY,
+        );
+        const { data: { user }, error } = await supabase.auth.getUser(token);
+        if (user && !error) return redirect("/admin/panel", 302);
+      } catch { /* token invalid — just show login */ }
+    }
+    return next();
+  }
+
+  // Protected admin pages: require valid token
   if (!token) return redirect("/admin", 302);
 
   try {
