@@ -24,60 +24,53 @@ const img = (key: string) => _imgStyle(cms, key);
   </section>
 
   <!-- 2. JUAN — Split -->
-  <section class="split-section">
-    <div class="split-text">
+  <section class="nosotros-section split-2">
+    <div class="celda-texto">
       <h2 class="split-name" data-cms="about.juan.name">{c("about.juan.name")}</h2>
       <p class="split-role" data-cms="about.juan.role">{c("about.juan.role")}</p>
       <p class="split-tagline" data-cms="about.juan.tagline">&ldquo;{c("about.juan.tagline")}&rdquo;</p>
       <p class="split-body" data-cms="about.juan.bio">{c("about.juan.bio")}</p>
     </div>
-    <div class="split-photo" data-cms-img="nosotros.juan.foto" style={img("nosotros.juan.foto")}>
-      <div class="split-photo-placeholder"></div>
+    <div class="celda-foto" data-cms-img="nosotros.juan.foto" style={img("nosotros.juan.foto")}>
     </div>
   </section>
 
   <!-- 3. Separador — dos fotos lado a lado -->
-  <section class="photo-sep two-photos">
-    <div class="sep-framed" data-cms-img="nosotros.sep1.foto_izq" style={img("nosotros.sep1.foto_izq")}>
-      <div class="sep-framed-inner"></div>
-    </div>
-    <div class="sep-bleed" data-cms-img="nosotros.sep1.foto_der" style={img("nosotros.sep1.foto_der")}></div>
+  <section class="nosotros-section fotos-2">
+    <div class="celda-foto" data-cms-img="nosotros.sep1.foto_izq" style={img("nosotros.sep1.foto_izq")}></div>
+    <div class="celda-foto" data-cms-img="nosotros.sep1.foto_der" style={img("nosotros.sep1.foto_der")}></div>
   </section>
 
   <!-- 4. MIRIAM — Split -->
-  <section class="split-section">
-    <div class="split-text">
+  <section class="nosotros-section split-2">
+    <div class="celda-texto">
       <h2 class="split-name" data-cms="about.miriam.name">{c("about.miriam.name")}</h2>
       <p class="split-role" data-cms="about.miriam.role">{c("about.miriam.role")}</p>
       <p class="split-tagline" data-cms="about.miriam.tagline">&ldquo;{c("about.miriam.tagline")}&rdquo;</p>
       <p class="split-body" data-cms="about.miriam.bio">{c("about.miriam.bio")}</p>
     </div>
-    <div class="split-photo" data-cms-img="nosotros.miriam.foto" style={img("nosotros.miriam.foto")}>
-      <div class="split-photo-placeholder"></div>
+    <div class="celda-foto" data-cms-img="nosotros.miriam.foto" style={img("nosotros.miriam.foto")}>
     </div>
   </section>
 
   <!-- 5. Separador — dos fotos lado a lado -->
-  <section class="photo-sep two-photos">
-    <div class="sep-framed" data-cms-img="nosotros.sep2.foto_izq" style={img("nosotros.sep2.foto_izq")}>
-      <div class="sep-framed-inner"></div>
-    </div>
-    <div class="sep-bleed" data-cms-img="nosotros.sep2.foto_der" style={img("nosotros.sep2.foto_der")}></div>
+  <section class="nosotros-section fotos-2">
+    <div class="celda-foto" data-cms-img="nosotros.sep2.foto_izq" style={img("nosotros.sep2.foto_izq")}></div>
+    <div class="celda-foto" data-cms-img="nosotros.sep2.foto_der" style={img("nosotros.sep2.foto_der")}></div>
   </section>
 
   <!-- 6. Separador — foto a sangre completa -->
-  <section class="photo-sep full-bleed">
-    <div class="sep-full" data-cms-img="nosotros.sep3.foto" style={img("nosotros.sep3.foto")}></div>
+  <section class="nosotros-section foto-1">
+    <div class="celda-foto" data-cms-img="nosotros.sep3.foto" style={img("nosotros.sep3.foto")}></div>
   </section>
 
   <!-- 7. CODO CON CODO — Split -->
-  <section class="split-section">
-    <div class="split-text">
+  <section class="nosotros-section split-2">
+    <div class="celda-texto">
       <h2 class="split-title" data-cms="about.juntos.title">{c("about.juntos.title")}</h2>
       <p class="split-body" data-cms="about.juntos.body">{c("about.juntos.body")}</p>
     </div>
-    <div class="split-photo" data-cms-img="nosotros.juntos.foto" style={img("nosotros.juntos.foto")}>
-      <div class="split-photo-placeholder"></div>
+    <div class="celda-foto" data-cms-img="nosotros.juntos.foto" style={img("nosotros.juntos.foto")}>
     </div>
   </section>
 
@@ -87,31 +80,27 @@ const img = (key: string) => _imgStyle(cms, key);
   </section>
 
   <!-- 9. QUE SOMOS — Split -->
-  <section class="split-section">
-    <div class="split-text">
+  <section class="nosotros-section split-2">
+    <div class="celda-texto">
       <h2 class="split-title" data-cms="about.quesomos.title">{c("about.quesomos.title")}</h2>
       <p class="split-body" data-cms="about.quesomos.body">{c("about.quesomos.body")}</p>
     </div>
-    <div class="split-photo" data-cms-img="nosotros.quesomos.foto" style={img("nosotros.quesomos.foto")}>
-      <div class="split-photo-placeholder"></div>
+    <div class="celda-foto" data-cms-img="nosotros.quesomos.foto" style={img("nosotros.quesomos.foto")}>
     </div>
   </section>
 
   <!-- 10. Separador — dos fotos lado a lado -->
-  <section class="photo-sep two-photos">
-    <div class="sep-framed" data-cms-img="nosotros.sep4.foto_izq" style={img("nosotros.sep4.foto_izq")}>
-      <div class="sep-framed-inner"></div>
-    </div>
-    <div class="sep-bleed" data-cms-img="nosotros.sep4.foto_der" style={img("nosotros.sep4.foto_der")}></div>
+  <section class="nosotros-section fotos-2">
+    <div class="celda-foto" data-cms-img="nosotros.sep4.foto_izq" style={img("nosotros.sep4.foto_izq")}></div>
+    <div class="celda-foto" data-cms-img="nosotros.sep4.foto_der" style={img("nosotros.sep4.foto_der")}></div>
   </section>
 
   <!-- 11. Solo realizamos una boda por dia — Split -->
-  <section class="split-section">
-    <div class="split-text">
+  <section class="nosotros-section split-2">
+    <div class="celda-texto">
       <p class="split-highlight" data-cms="about.unboda.text">{c("about.unboda.text")}</p>
     </div>
-    <div class="split-photo" data-cms-img="nosotros.unboda.foto" style={img("nosotros.unboda.foto")}>
-      <div class="split-photo-placeholder"></div>
+    <div class="celda-foto" data-cms-img="nosotros.unboda.foto" style={img("nosotros.unboda.foto")}>
     </div>
   </section>
 
@@ -121,68 +110,62 @@ const img = (key: string) => _imgStyle(cms, key);
   </section>
 
   <!-- 13. Separador — foto a sangre completa -->
-  <section class="photo-sep full-bleed">
-    <div class="sep-full" data-cms-img="nosotros.sep5.foto" style={img("nosotros.sep5.foto")}></div>
+  <section class="nosotros-section foto-1">
+    <div class="celda-foto" data-cms-img="nosotros.sep5.foto" style={img("nosotros.sep5.foto")}></div>
   </section>
 
   <!-- 14. COMO HACEMOS CADA MENU — Split -->
-  <section class="split-section">
-    <div class="split-text">
+  <section class="nosotros-section split-2">
+    <div class="celda-texto">
       <h2 class="split-title" data-cms="about.comohacemos.title">{c("about.comohacemos.title")}</h2>
       <p class="split-body" data-cms="about.comohacemos.body">{c("about.comohacemos.body")}</p>
     </div>
-    <div class="split-photo" data-cms-img="nosotros.comohacemos.foto" style={img("nosotros.comohacemos.foto")}>
-      <div class="split-photo-placeholder"></div>
+    <div class="celda-foto" data-cms-img="nosotros.comohacemos.foto" style={img("nosotros.comohacemos.foto")}>
     </div>
   </section>
 
   <!-- 15. Continuacion COMO HACEMOS — Split -->
-  <section class="split-section">
-    <div class="split-text">
+  <section class="nosotros-section split-2">
+    <div class="celda-texto">
       <p class="split-body" data-cms="about.comohacemos2.body">{c("about.comohacemos2.body")}</p>
     </div>
-    <div class="split-photo" data-cms-img="nosotros.comohacemos2.foto" style={img("nosotros.comohacemos2.foto")}>
-      <div class="split-photo-placeholder"></div>
+    <div class="celda-foto" data-cms-img="nosotros.comohacemos2.foto" style={img("nosotros.comohacemos2.foto")}>
     </div>
   </section>
 
   <!-- 16. FILOSOFIA — Split -->
-  <section class="split-section">
-    <div class="split-text">
+  <section class="nosotros-section split-2">
+    <div class="celda-texto">
       <h2 class="split-title" data-cms="about.filosofia.title">{c("about.filosofia.title")}</h2>
       <p class="split-body" data-cms="about.filosofia.body">{c("about.filosofia.body")}</p>
       <p class="split-emphasis" data-cms="about.filosofia.emphasis"><em>{c("about.filosofia.emphasis")}</em></p>
     </div>
-    <div class="split-photo" data-cms-img="nosotros.filosofia.foto" style={img("nosotros.filosofia.foto")}>
-      <div class="split-photo-placeholder"></div>
+    <div class="celda-foto" data-cms-img="nosotros.filosofia.foto" style={img("nosotros.filosofia.foto")}>
     </div>
   </section>
 
   <!-- 17. EQUIPO — Split -->
-  <section class="split-section">
-    <div class="split-text">
+  <section class="nosotros-section split-2">
+    <div class="celda-texto">
       <h2 class="split-title" data-cms="about.equipo.title">{c("about.equipo.title")}</h2>
       <p class="split-tagline" data-cms="about.equipo.tagline">&ldquo;{c("about.equipo.tagline")}&rdquo;</p>
       <p class="split-body" data-cms="about.equipo.body">{c("about.equipo.body")}</p>
     </div>
-    <div class="split-photo" data-cms-img="nosotros.equipo.foto" style={img("nosotros.equipo.foto")}>
-      <div class="split-photo-placeholder"></div>
+    <div class="celda-foto" data-cms-img="nosotros.equipo.foto" style={img("nosotros.equipo.foto")}>
     </div>
   </section>
 
   <!-- 18. Separador — dos fotos lado a lado -->
-  <section class="photo-sep two-photos">
-    <div class="sep-framed" data-cms-img="nosotros.sep6.foto_izq" style={img("nosotros.sep6.foto_izq")}>
-      <div class="sep-framed-inner"></div>
-    </div>
-    <div class="sep-bleed" data-cms-img="nosotros.sep6.foto_der" style={img("nosotros.sep6.foto_der")}></div>
+  <section class="nosotros-section fotos-2">
+    <div class="celda-foto" data-cms-img="nosotros.sep6.foto_izq" style={img("nosotros.sep6.foto_izq")}></div>
+    <div class="celda-foto" data-cms-img="nosotros.sep6.foto_der" style={img("nosotros.sep6.foto_der")}></div>
   </section>
 
   <!-- 19. Separador — tres fotos en fila -->
-  <section class="photo-sep three-photos">
-    <div class="sep-third" data-cms-img="nosotros.sep7.foto1" style={img("nosotros.sep7.foto1")}></div>
-    <div class="sep-third" data-cms-img="nosotros.sep7.foto2" style={img("nosotros.sep7.foto2")}></div>
-    <div class="sep-third" data-cms-img="nosotros.sep7.foto3" style={img("nosotros.sep7.foto3")}></div>
+  <section class="nosotros-section fotos-3">
+    <div class="celda-foto" data-cms-img="nosotros.sep7.foto1" style={img("nosotros.sep7.foto1")}></div>
+    <div class="celda-foto" data-cms-img="nosotros.sep7.foto2" style={img("nosotros.sep7.foto2")}></div>
+    <div class="celda-foto" data-cms-img="nosotros.sep7.foto3" style={img("nosotros.sep7.foto3")}></div>
   </section>
 
   <!-- 20. Frase final — fondo negro -->
@@ -225,17 +208,30 @@ const img = (key: string) => _imgStyle(cms, key);
     animation: fadeUp 1s ease 0.3s both;
   }
 
-  /* SPLIT SECTIONS */
-  .split-section {
-    display: grid; grid-template-columns: 1fr 1fr;
+  /* NOSOTROS SECTIONS — unified 90vh grid */
+  .nosotros-section {
+    display: grid;
     min-height: 90vh;
   }
-  .split-text {
-    padding: 80px 72px;
-    display: flex; flex-direction: column; justify-content: center;
+  .nosotros-section.split-2 { grid-template-columns: 1fr 1fr; }
+  .nosotros-section.fotos-2 { grid-template-columns: 1fr 1fr; }
+  .nosotros-section.fotos-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .nosotros-section.foto-1  { grid-template-columns: 1fr; }
+
+  .nosotros-section .celda-foto {
+    position: relative; overflow: hidden;
     min-height: 90vh;
+    background: var(--color-crema);
+    background-size: cover; background-position: center;
+  }
+
+  .nosotros-section .celda-texto {
+    min-height: 90vh;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 80px 70px;
     background: var(--color-blanco);
   }
+
   .split-name {
     font-family: var(--font-serif);
     font-size: clamp(48px, 5vw, 72px); font-weight: 300;
@@ -269,73 +265,6 @@ const img = (key: string) => _imgStyle(cms, key);
     font-family: var(--font-serif); font-size: 16px;
     color: var(--color-azul); margin-top: 20px; line-height: 1.7;
   }
-  .split-photo {
-    position: relative; overflow: hidden;
-    min-height: 90vh;
-    background: var(--color-crema);
-    background-size: cover; background-position: center;
-  }
-  .split-photo img {
-    position: absolute; inset: 0;
-    width: 100%; height: 100%; object-fit: cover;
-  }
-  .split-photo-placeholder {
-    position: absolute; inset: 0;
-    background: linear-gradient(160deg, rgba(30,58,79,0.08) 0%, rgba(168,196,200,0.12) 100%);
-  }
-
-  /* PHOTO SEPARATORS */
-  .photo-sep { width: 100%; }
-
-  .two-photos {
-    display: grid; grid-template-columns: 1fr 1fr;
-  }
-  .sep-framed {
-    background-color: var(--color-crema);
-    display: flex; align-items: center; justify-content: center;
-    padding: 80px;
-    position: relative;
-    min-height: 70vh;
-  }
-  .sep-framed-inner {
-    width: 100%; height: 100%; min-height: 320px;
-    background: inherit; background-size: cover; background-position: center;
-    border: 0.5px solid var(--color-crema-oscuro);
-  }
-  .sep-bleed {
-    position: relative; overflow: hidden;
-    min-height: 70vh;
-    background-color: var(--color-crema);
-  }
-  .sep-bleed img {
-    position: absolute; inset: 0;
-    width: 100%; height: 100%; object-fit: cover;
-  }
-
-  .full-bleed { min-height: 80vh; }
-  .sep-full {
-    width: 100%; min-height: 80vh;
-    position: relative; overflow: hidden;
-    background: var(--color-negro);
-  }
-  .sep-full img {
-    position: absolute; inset: 0;
-    width: 100%; height: 100%; object-fit: cover;
-  }
-
-  .three-photos {
-    display: grid; grid-template-columns: 1fr 1fr 1fr;
-  }
-  .sep-third {
-    position: relative; overflow: hidden;
-    background: var(--color-crema);
-    min-height: 60vh;
-  }
-  .sep-third img {
-    position: absolute; inset: 0;
-    width: 100%; height: 100%; object-fit: cover;
-  }
-
   /* PHRASE SEPARATORS */
   .phrase-sep {
     padding: 100px 60px; text-align: center;
@@ -381,16 +310,9 @@ const img = (key: string) => _imgStyle(cms, key);
   /* RESPONSIVE */
   @media (max-width: 768px) {
     .page-hero-content { padding: 120px 24px 60px; }
-    .split-section { grid-template-columns: 1fr; min-height: auto; }
-    .split-text { padding: 48px 24px; min-height: auto; }
-    .split-photo { min-height: auto; height: 70vw; }
-    .two-photos { grid-template-columns: 1fr; }
-    .sep-framed { padding: 40px; min-height: auto; height: 60vw; }
-    .sep-framed-inner { min-height: 240px; }
-    .sep-bleed { min-height: auto; height: 60vw; }
-    .three-photos { grid-template-columns: 1fr; }
-    .sep-third { min-height: auto; height: 60vw; }
-    .full-bleed, .sep-full { min-height: 50vw; }
+    .nosotros-section { grid-template-columns: 1fr; min-height: auto; }
+    .nosotros-section .celda-foto { min-height: 60vw; }
+    .nosotros-section .celda-texto { min-height: auto; padding: 48px 24px; }
     .phrase-sep { padding: 60px 24px; }
     .contact-cta { padding: 60px 24px; }
   }
