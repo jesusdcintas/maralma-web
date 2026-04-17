@@ -22,7 +22,9 @@ export const onRequest = defineMiddleware(async ({ cookies, redirect, url }, nex
         );
         const { data: { user }, error } = await supabase.auth.getUser(token);
         if (user && !error) return redirect("/admin/panel", 302);
-      } catch { /* token invalid — just show login */ }
+      } catch { /* token invalid — fall through */ }
+      // Token present but invalid — clear it to avoid redirect loops
+      cookies.delete("sb-access-token", { path: "/" });
     }
     return next();
   }
