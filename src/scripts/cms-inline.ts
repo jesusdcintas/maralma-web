@@ -313,8 +313,13 @@ function openMediaPicker(): Promise<MediaResult | null> {
         resources.forEach((r) => {
           const item = document.createElement("div");
           item.className = "cms-media-item";
-          item.innerHTML =
-            '<img src="' + cloudinaryThumb(r.secure_url) + '" alt="" loading="lazy" />';
+          item.style.cssText = "aspect-ratio:1/1;width:100%;overflow:hidden;cursor:pointer;border-radius:4px;border:2px solid transparent;background:#e8e2d8;display:block;position:relative";
+          const img = document.createElement("img");
+          img.src = cloudinaryThumb(r.secure_url);
+          img.alt = "";
+          img.loading = "lazy";
+          img.style.cssText = "width:100%;height:100%;object-fit:cover;object-position:center;display:block;position:absolute;inset:0";
+          item.appendChild(img);
           item.addEventListener("click", () => {
             finish({ url: r.secure_url, publicId: r.public_id });
           });

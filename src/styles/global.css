@@ -1,5 +1,13 @@
 @import "tailwindcss";
 
+/* Override Tailwind preflight for media picker thumbnails */
+@layer base {
+  .cms-media-item img,
+  .media-item img {
+    height: 100% !important;
+  }
+}
+
 /* ── Tema Maralma ── */
 @theme {
   --color-azul: #1e3a4f;
