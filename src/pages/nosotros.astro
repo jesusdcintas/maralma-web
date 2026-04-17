@@ -218,26 +218,23 @@ const img = (key: string) => _imgStyle(cms, key);
   .nosotros-section.fotos-3 { grid-template-columns: 1fr 1fr 1fr; }
   .nosotros-section.foto-1  { grid-template-columns: 1fr; }
 
-  /* Separadores de fotos — margen interior, sin recorte */
+  /* Separadores de fotos — margen interior, fondo crema */
   .nosotros-section.fotos-2,
   .nosotros-section.fotos-3 {
     background: var(--color-crema);
     padding: 60px;
     gap: 24px;
-    align-items: center;
+    align-items: stretch;
     min-height: auto;
   }
   .nosotros-section.fotos-2 .celda-foto,
   .nosotros-section.fotos-3 .celda-foto {
     min-height: unset;
-    overflow: visible;
-  }
-  .nosotros-section.fotos-2 .celda-foto img,
-  .nosotros-section.fotos-3 .celda-foto img {
-    position: static;
-    width: 100%; height: auto;
-    object-fit: unset;
-    display: block;
+    aspect-ratio: 3 / 4;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: transparent;
   }
 
   .nosotros-section .celda-foto {
