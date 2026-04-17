@@ -200,12 +200,15 @@ async function loadMediaFolders(): Promise<Array<{ label: string; folder: string
 
 function cloudinaryThumb(url: string): string {
   if (!url) return url;
-  // Soporta URLs con y sin transformaciones previas
-  if (url.includes('res.cloudinary.com')) {
+  if (url.includes('res.cloudinary.com') && url.includes('/upload/')) {
     const parts = url.split('/upload/');
     if (parts.length === 2) {
-      const afterUpload = parts[1].replace(/^[^\/]+\//, '');
-      return `${parts[0]}/upload/c_fill,w_280,h_280,q_auto,f_auto/${afterUpload}`;
+      const afterUpload = parts[1];
+      const hasTransform = /^[a-z]+_[^/]+,|^[a-z]+_[^/]+\//.test(afterUpload);
+      const cleanPath = hasTransform
+        ? afterUpload.replace(/^[^/]+\//, '')
+        : afterUpload;
+      return `${parts[0]}/upload/c_fill,w_280,h_280,q_auto,f_auto/${cleanPath}`;
     }
   }
   return url;
