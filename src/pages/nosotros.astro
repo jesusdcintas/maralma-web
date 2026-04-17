@@ -228,11 +228,12 @@ const img = (key: string) => _imgStyle(cms, key);
   /* SPLIT SECTIONS */
   .split-section {
     display: grid; grid-template-columns: 1fr 1fr;
-    min-height: 560px;
+    min-height: 90vh;
   }
   .split-text {
     padding: 80px 72px;
     display: flex; flex-direction: column; justify-content: center;
+    min-height: 90vh;
     background: var(--color-blanco);
   }
   .split-name {
@@ -270,8 +271,13 @@ const img = (key: string) => _imgStyle(cms, key);
   }
   .split-photo {
     position: relative; overflow: hidden;
+    min-height: 90vh;
     background: var(--color-crema);
     background-size: cover; background-position: center;
+  }
+  .split-photo img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%; object-fit: cover;
   }
   .split-photo-placeholder {
     position: absolute; inset: 0;
@@ -283,7 +289,7 @@ const img = (key: string) => _imgStyle(cms, key);
 
   .two-photos {
     display: grid; grid-template-columns: 1fr 1fr;
-    min-height: 480px;
+    min-height: 60vh;
   }
   .sep-framed {
     background-color: var(--color-crema);
@@ -301,9 +307,9 @@ const img = (key: string) => _imgStyle(cms, key);
     background-size: cover; background-position: center;
   }
 
-  .full-bleed { min-height: 500px; }
+  .full-bleed { min-height: 60vh; }
   .sep-full {
-    width: 100%; min-height: 500px;
+    width: 100%; min-height: 60vh;
     background: var(--color-negro);
     background-size: cover; background-position: center;
   }
@@ -363,9 +369,9 @@ const img = (key: string) => _imgStyle(cms, key);
   /* RESPONSIVE */
   @media (max-width: 768px) {
     .page-hero-content { padding: 120px 24px 60px; }
-    .split-section { grid-template-columns: 1fr; }
-    .split-text { padding: 48px 24px; }
-    .split-photo { min-height: 320px; }
+    .split-section { grid-template-columns: 1fr; min-height: auto; }
+    .split-text { padding: 48px 24px; min-height: auto; }
+    .split-photo { min-height: auto; height: 60vw; }
     .two-photos { grid-template-columns: 1fr; }
     .sep-framed { padding: 40px; }
     .sep-framed-inner { min-height: 240px; }
