@@ -344,7 +344,7 @@ import AdminLayout from "../../../layouts/AdminLayout.astro";
     background: var(--color-crema);
   }
   .media-item:hover { border-color: var(--color-azul-claro); transform: scale(1.02); }
-  .media-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .media-item img { width: 100%; height: 100% !important; object-fit: cover; display: block; }
   .media-loading, .media-empty {
     grid-column: 1/-1; text-align: center; font-size: 13px;
     color: rgba(15,26,32,0.4); padding: 40px 0;
@@ -413,7 +413,7 @@ import AdminLayout from "../../../layouts/AdminLayout.astro";
   let multiSelect = false;
   let multiResults: Array<{ url: string; publicId: string }> = [];
 
-  function cloudinaryThumb(url: string, w = 200, h = 200): string {
+  function cloudinaryThumb(url: string, w = 300, h = 300): string {
     return url.replace("/upload/", "/upload/c_fill,w_" + w + ",h_" + h + ",q_auto,f_auto/");
   }
 
