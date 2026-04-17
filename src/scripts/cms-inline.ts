@@ -349,14 +349,11 @@ function enableImageEditing(el: HTMLElement, key: string) {
     wrapper.appendChild(el);
     container = wrapper;
   } else {
-    // For background-image divs, use the parent as container
-    // (the element itself may be position:absolute or width/height:100%)
-    const parent = el.parentElement;
-    if (!parent) return;
-    const parentPos = getComputedStyle(parent).position;
-    if (parentPos === "static") parent.style.position = "relative";
-    parent.classList.add("cms-img-wrapper");
-    container = parent;
+    // For background-image divs, use the element itself as container
+    const elPos = getComputedStyle(el).position;
+    if (elPos === "static") el.style.position = "relative";
+    el.classList.add("cms-img-wrapper");
+    container = el;
   }
 
   const overlay = document.createElement("div");
