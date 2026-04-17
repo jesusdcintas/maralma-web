@@ -124,10 +124,12 @@ import AdminLayout from "../../../layouts/AdminLayout.astro";
 
   const isSecure = window.location.protocol === "https:";
   const cookieFlags = "; path=/; max-age=3600; SameSite=Strict" + (isSecure ? "; Secure" : "");
-  const { data: { session } } = await supabase.auth.getSession();
-  if (session) {
-    accessToken = session.access_token;
-    document.cookie = "sb-access-token=" + accessToken + cookieFlags;
+  function getCookie(name: string): string | null {
+    const match = document.cookie.match(new RegExp("(?:^|; )" + name + "=([^;]*)"));
+    return match ? decodeURIComponent(match[1]) : null;
+  }
+  accessToken = getCookie("sb-access-token") || "";
+  if (accessToken) {
     loadFolders();
   } else {
     window.location.href = "/admin";

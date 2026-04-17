@@ -130,23 +130,16 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
 </style>
 
 <script>
-  import { createClient } from "@supabase/supabase-js";
+  // Read token from cookie (middleware already validated it server-side)
+  function getCookie(name: string): string | null {
+    const match = document.cookie.match(new RegExp("(?:^|; )" + name + "=([^;]*)"));
+    return match ? decodeURIComponent(match[1]) : null;
+  }
 
-  const supabase = createClient(
-    import.meta.env.PUBLIC_SUPABASE_URL,
-    import.meta.env.PUBLIC_SUPABASE_ANON_KEY,
-  );
-
-  const { data: { session } } = await supabase.auth.getSession();
-  if (!session) {
+  const token = getCookie("sb-access-token");
+  if (!token) {
     window.location.href = "/admin";
   } else {
-    const token = session.access_token;
-
-    // Refresh cookie
-    const isSecure = window.location.protocol === "https:";
-    document.cookie = "sb-access-token=" + token + "; path=/; max-age=3600; SameSite=Strict" + (isSecure ? "; Secure" : "");
-
     // Load dashboard data
     try {
       const res = await fetch("/api/admin/quotes?count_only=true", {
@@ -190,11 +183,13 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
 
     // Photo count from gallery table
     try {
-      const { count } = await supabase
-        .from("gallery")
-        .select("*", { count: "exact", head: true })
-        .not("categoria", "in", '("cms","cms_img")');
-      (document.getElementById("cardPhotos") as HTMLElement).textContent = String(count || 0);
+      const res = await fetch("/api/admin/images?count_only=true", {
+        headers: { Authorization: "Bearer " + token },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        (document.getElementById("cardPhotos") as HTMLElement).textContent = String(data.total || 0);
+      }
     } catch { /* ignore */ }
   }
 </script>
