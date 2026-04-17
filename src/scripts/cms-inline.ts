@@ -526,7 +526,8 @@ function injectStyles() {
     '.cms-media-upload-btn svg{width:14px;height:14px}' +
     '.cms-media-upload-status{font-size:10px;letter-spacing:0.1em;color:#a8c4c8}' +
     '.cms-media-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;padding:16px 24px 24px;overflow-y:auto;flex:1;min-height:200px}' +
-    '.cms-media-item{position:relative;aspect-ratio:1;overflow:hidden;cursor:pointer;border:2px solid transparent;transition:border-color 0.2s,transform 0.2s;background:#e8e2d8}' +
+    '.cms-media-item{position:relative;overflow:hidden;cursor:pointer;border:2px solid transparent;transition:border-color 0.2s,transform 0.2s;background:#e8e2d8}' +
+    '.cms-media-item::before{content:"";display:block;padding-bottom:100%}' +
     '.cms-media-item:hover{border-color:#a8c4c8;transform:scale(1.02)}' +
     '.cms-media-item img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}' +
     '.cms-media-item-size{position:absolute;bottom:4px;right:6px;font-size:9px;color:rgba(255,255,255,0.7);background:rgba(0,0,0,0.4);padding:2px 6px;letter-spacing:0.06em}' +
