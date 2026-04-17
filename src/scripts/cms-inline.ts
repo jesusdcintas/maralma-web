@@ -538,7 +538,7 @@ function injectStyles() {
     '.cms-media-upload-btn:hover{background:#1e3a4f;color:#fdfcfa}' +
     '.cms-media-upload-btn svg{width:14px;height:14px}' +
     '.cms-media-upload-status{font-size:10px;letter-spacing:0.1em;color:#a8c4c8}' +
-    '.cms-media-grid{flex:1;overflow-y:auto;padding:16px 24px 24px;display:grid;grid-template-columns:repeat(5,1fr);gap:8px;align-content:start}' +
+    '.cms-media-grid{flex:1;overflow-y:auto;padding:16px 24px 24px;display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;align-content:start}' +
     '.cms-media-item{aspect-ratio:1/1!important;width:100%;overflow:hidden;cursor:pointer;border-radius:4px;border:2px solid transparent;transition:border-color 0.2s;background:#e8e2d8;display:block}' +
     '.cms-media-item img{width:100%!important;height:100%!important;object-fit:cover!important;object-position:center!important;display:block;aspect-ratio:1/1!important}' +
     '.cms-media-item:hover{border-color:#a8c4c8}' +
