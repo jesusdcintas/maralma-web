@@ -93,7 +93,7 @@ export const POST: APIRoute = async ({ request }) => {
   // Insert new
   const { error } = await supabaseAdmin.from("gallery").insert({
     url: value,
-    public_id: publicId || null,
+    public_id: publicId || `cms_${key}`,
     categoria,
     alt_text: key,
     orden: 0,
