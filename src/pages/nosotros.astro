@@ -289,13 +289,13 @@ const img = (key: string) => _imgStyle(cms, key);
 
   .two-photos {
     display: grid; grid-template-columns: 1fr 1fr;
-    min-height: 60vh;
   }
   .sep-framed {
     background-color: var(--color-crema);
     display: flex; align-items: center; justify-content: center;
     padding: 80px;
     position: relative;
+    min-height: 70vh;
   }
   .sep-framed-inner {
     width: 100%; height: 100%; min-height: 320px;
@@ -303,25 +303,37 @@ const img = (key: string) => _imgStyle(cms, key);
     border: 0.5px solid var(--color-crema-oscuro);
   }
   .sep-bleed {
+    position: relative; overflow: hidden;
+    min-height: 70vh;
     background-color: var(--color-crema);
-    background-size: cover; background-position: center;
+  }
+  .sep-bleed img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%; object-fit: cover;
   }
 
-  .full-bleed { min-height: 60vh; }
+  .full-bleed { min-height: 80vh; }
   .sep-full {
-    width: 100%; min-height: 60vh;
+    width: 100%; min-height: 80vh;
+    position: relative; overflow: hidden;
     background: var(--color-negro);
-    background-size: cover; background-position: center;
+  }
+  .sep-full img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%; object-fit: cover;
   }
 
   .three-photos {
     display: grid; grid-template-columns: 1fr 1fr 1fr;
-    min-height: 400px;
   }
   .sep-third {
+    position: relative; overflow: hidden;
     background: var(--color-crema);
-    background-size: cover; background-position: center;
-    min-height: 400px;
+    min-height: 60vh;
+  }
+  .sep-third img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%; object-fit: cover;
   }
 
   /* PHRASE SEPARATORS */
@@ -371,14 +383,14 @@ const img = (key: string) => _imgStyle(cms, key);
     .page-hero-content { padding: 120px 24px 60px; }
     .split-section { grid-template-columns: 1fr; min-height: auto; }
     .split-text { padding: 48px 24px; min-height: auto; }
-    .split-photo { min-height: auto; height: 60vw; }
+    .split-photo { min-height: auto; height: 70vw; }
     .two-photos { grid-template-columns: 1fr; }
-    .sep-framed { padding: 40px; }
+    .sep-framed { padding: 40px; min-height: auto; height: 60vw; }
     .sep-framed-inner { min-height: 240px; }
-    .sep-bleed { min-height: 320px; }
+    .sep-bleed { min-height: auto; height: 60vw; }
     .three-photos { grid-template-columns: 1fr; }
-    .sep-third { min-height: 280px; }
-    .full-bleed, .sep-full { min-height: 300px; }
+    .sep-third { min-height: auto; height: 60vw; }
+    .full-bleed, .sep-full { min-height: 50vw; }
     .phrase-sep { padding: 60px 24px; }
     .contact-cta { padding: 60px 24px; }
   }
