@@ -20,6 +20,8 @@ const img = (key: string) => _imgStyle(cms, key);
     <div class="page-hero-overlay"></div>
     <div class="page-hero-content">
       <span class="page-eyebrow" data-cms="about.eyebrow">{c("about.eyebrow")}</span>
+      <h1 class="page-title" data-cms="about.hero_title"><Fragment set:html={cms.text["about.hero_title"] || 'El equipo<br/><em>Maralma.</em>'} /></h1>
+      <p class="page-subtitle" data-cms="about.hero_subtitle">{cms.text["about.hero_subtitle"] || "Creatividad, sabor y fuego. Orden, mimo y confianza."}</p>
     </div>
   </section>
 
@@ -201,6 +203,20 @@ const img = (key: string) => _imgStyle(cms, key);
   .page-hero-content {
     position: relative; z-index: 2;
     padding: 180px 60px 100px; max-width: 680px;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .page-title {
+    font-family: var(--font-serif); font-size: clamp(44px, 6vw, 80px);
+    font-weight: 300; color: var(--color-blanco); line-height: 0.95;
+    letter-spacing: -0.01em; margin-bottom: 24px;
+    animation: fadeUp 1s ease 0.5s both;
+  }
+  .page-title em { font-style: italic; color: var(--color-azul-claro); }
+  .page-subtitle {
+    font-family: var(--font-serif); font-style: italic;
+    font-size: clamp(15px, 2vw, 19px); font-weight: 300;
+    color: rgba(253,252,250,0.5); line-height: 1.7;
+    animation: fadeUp 1s ease 0.9s both;
   }
   .page-eyebrow {
     font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase;
