@@ -262,55 +262,6 @@ const img = (key: string) => _imgStyle(cms, key);
     </div>
   </section>
 
-  <!-- ═══ GALERÍA ═══ -->
-  <section class="galeria" id="galeria">
-    <div class="galeria-header reveal">
-      <h2 class="galeria-title">{t("gallery.title")}</h2>
-      <div class="galeria-filters">
-        <button class="gal-filter active" data-cat="all">{t("gallery.filters.all")}</button>
-        <button class="gal-filter" data-cat="bodas">{t("gallery.filters.weddings")}</button>
-        <button class="gal-filter" data-cat="platos">{t("gallery.filters.dishes")}</button>
-        <button class="gal-filter" data-cat="eventos">{t("gallery.filters.events")}</button>
-      </div>
-    </div>
-    <div class="galeria-grid">
-      <div class="gal-item" data-cat="bodas">
-        <div class="gi-bg-img gi-c1"></div>
-        <div class="gi-hover"><div class="gi-icon"><svg width="16" height="16" fill="none" stroke="white" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div></div>
-        <span class="gi-caption">{t("gallery.captions.0")}</span>
-      </div>
-      <div class="gal-item" data-cat="platos">
-        <div class="gi-bg-img gi-c2"></div>
-        <div class="gi-hover"><div class="gi-icon"><svg width="16" height="16" fill="none" stroke="white" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div></div>
-        <span class="gi-caption">{t("gallery.captions.1")}</span>
-      </div>
-      <div class="gal-item" data-cat="platos">
-        <div class="gi-bg-img gi-c3"></div>
-        <div class="gi-hover"><div class="gi-icon"><svg width="16" height="16" fill="none" stroke="white" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div></div>
-        <span class="gi-caption">{t("gallery.captions.2")}</span>
-      </div>
-      <div class="gal-item" data-cat="eventos">
-        <div class="gi-bg-img gi-c4"></div>
-        <div class="gi-hover"><div class="gi-icon"><svg width="16" height="16" fill="none" stroke="white" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div></div>
-        <span class="gi-caption">{t("gallery.captions.3")}</span>
-      </div>
-      <div class="gal-item" data-cat="bodas">
-        <div class="gi-bg-img gi-c5"></div>
-        <div class="gi-hover"><div class="gi-icon"><svg width="16" height="16" fill="none" stroke="white" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div></div>
-        <span class="gi-caption">{t("gallery.captions.4")}</span>
-      </div>
-      <div class="gal-item" data-cat="eventos">
-        <div class="gi-bg-img gi-c6"></div>
-        <div class="gi-hover"><div class="gi-icon"><svg width="16" height="16" fill="none" stroke="white" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div></div>
-        <span class="gi-caption">{t("gallery.captions.5")}</span>
-      </div>
-    </div>
-    <div class="galeria-cta">
-      <p class="galeria-cta-text">{t("gallery.cta_phrase")}</p>
-      <a href={localePath("/galeria")} class="galeria-ver">{t("gallery.cta")} →</a>
-    </div>
-  </section>
-
   <!-- ═══ CTA FINAL ═══ -->
   <section class="cta-final">
     <p class="cta-eyebrow reveal" data-cms="cta.eyebrow">{c("cta.eyebrow")}</p>
@@ -665,77 +616,6 @@ const img = (key: string) => _imgStyle(cms, key);
 }
 .equipo-bio { font-size: 13px; font-weight: 300; color: var(--color-texto-suave); line-height: 1.8; }
 
-/* ═══ GALERÍA ═══ */
-.galeria { background: var(--color-negro); padding: 100px 0 0; }
-.galeria-header {
-  padding: 0 60px 52px;
-  display: flex; align-items: baseline; justify-content: space-between;
-  border-bottom: 0.5px solid rgba(255,255,255,0.07);
-}
-.galeria-title {
-  font-family: var(--font-serif); font-size: clamp(30px,4vw,50px);
-  font-weight: 300; color: var(--color-blanco);
-}
-.galeria-filters { display: flex; gap: 20px; }
-.gal-filter {
-  font-family: var(--font-sans);
-  font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
-  color: rgba(255,255,255,0.3); cursor: pointer; padding-bottom: 4px;
-  border-bottom: 0.5px solid transparent; transition: all 0.2s;
-  background: none; border-top: none; border-left: none; border-right: none;
-}
-.gal-filter.active, .gal-filter:hover {
-  color: var(--color-blanco); border-bottom-color: var(--color-azul-claro);
-}
-.galeria-grid {
-  display: grid; grid-template-columns: repeat(4,1fr);
-  gap: 2px; margin-top: 2px;
-}
-.gal-item {
-  position: relative; overflow: hidden; cursor: pointer;
-  background: var(--color-azul-medio); aspect-ratio: 1;
-}
-.gal-item:first-child { grid-column: span 2; grid-row: span 2; }
-.gal-item:last-child { grid-column: span 2; aspect-ratio: 2/1; }
-.gi-bg-img { position: absolute; inset: 0; transition: transform 0.6s ease; }
-.gal-item:hover .gi-bg-img { transform: scale(1.06); }
-.gi-c1 { background: linear-gradient(135deg,#1a2f40,#2d5169); }
-.gi-c2 { background: linear-gradient(135deg,#0f2030,#1e3a4f); }
-.gi-c3 { background: linear-gradient(135deg,#1e3a4f,#3a6070); }
-.gi-c4 { background: linear-gradient(135deg,#162330,#2d5169); }
-.gi-c5 { background: linear-gradient(135deg,#1a2f40,#0f2030); }
-.gi-c6 { background: linear-gradient(135deg,#0f2030,#2d5169); }
-.gi-caption {
-  position: absolute; bottom: 16px; left: 16px;
-  font-family: var(--font-serif); font-size: 12px; font-style: italic;
-  color: rgba(253,252,250,0.45);
-}
-.gi-hover {
-  position: absolute; inset: 0;
-  background: rgba(10,20,28,0.45);
-  opacity: 0; transition: opacity 0.3s;
-  display: flex; align-items: center; justify-content: center;
-}
-.gal-item:hover .gi-hover { opacity: 1; }
-.gi-icon {
-  width: 42px; height: 42px;
-  border: 0.5px solid rgba(255,255,255,0.4);
-  display: flex; align-items: center; justify-content: center;
-}
-.galeria-cta { padding: 52px 60px; text-align: center; }
-.galeria-cta-text {
-  font-family: var(--font-serif); font-style: italic;
-  font-size: clamp(16px,2vw,22px); font-weight: 300;
-  color: rgba(255,255,255,0.4); margin-bottom: 24px;
-}
-.galeria-ver {
-  font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
-  color: rgba(255,255,255,0.3); text-decoration: none;
-  border-bottom: 0.5px solid rgba(255,255,255,0.15); padding-bottom: 3px;
-  transition: color 0.2s, border-color 0.2s;
-}
-.galeria-ver:hover { color: rgba(255,255,255,0.7); border-color: rgba(255,255,255,0.4); }
-
 /* ═══ CTA FINAL ═══ */
 .cta-final { background: var(--color-azul); padding: 100px 60px; text-align: center; }
 .cta-eyebrow {
@@ -786,19 +666,13 @@ const img = (key: string) => _imgStyle(cms, key);
   .equipo-grid { grid-template-columns: 1fr; }
   .equipo-card { grid-template-columns: 1fr; }
   .equipo-photo { min-height: 200px; }
-  .galeria-grid { grid-template-columns: repeat(2,1fr); }
-  .gal-item:first-child { grid-column: span 2; grid-row: span 1; aspect-ratio: 2/1; }
-  .gal-item:last-child { grid-column: span 2; }
-  .servicios, .porque, .resenas, .equipo, .galeria, .cta-final { padding: 60px 24px; }
-  .galeria-header { padding: 0 24px 40px; }
-  .galeria-cta { padding: 40px 24px; }
+  .servicios, .porque, .resenas, .equipo, .cta-final { padding: 60px 24px; }
   .claim-full { padding: 80px 24px; }
   .frase { padding: 48px 24px; }
   .bodas-header { padding: 60px 24px 40px; }
   .boda-photo { margin: 20px 20px 0; }
   .section-header { flex-direction: column; gap: 8px; }
   .resenas-header { flex-direction: column; gap: 16px; }
-  .galeria-header { flex-direction: column; gap: 16px; }
   .cta-btns { flex-direction: column; align-items: center; }
   .hero-mute { bottom: 20px; right: 20px; }
 }
@@ -833,20 +707,6 @@ const img = (key: string) => _imgStyle(cms, key);
   nextBtn?.addEventListener("click", () => moveSlider(1));
   dots.forEach((dot, i) => dot.addEventListener("click", () => { slideIndex = i; updateSlider(); }));
 
-  // Gallery filter
-  document.querySelectorAll(".gal-filter").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const cat = (btn as HTMLElement).dataset.cat;
-      document.querySelectorAll(".gal-filter").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      document.querySelectorAll(".gal-item").forEach(item => {
-        const el = item as HTMLElement;
-        el.style.opacity = (cat === "all" || el.dataset.cat === cat) ? "1" : "0.2";
-        el.style.transition = "opacity 0.4s";
-      });
-    });
-  });
-
   // Hero mute toggle
   const muteBtn = document.getElementById("muteBtn");
   const heroVideo = document.querySelector(".hero-video") as HTMLVideoElement | null;
@@ -867,28 +727,6 @@ const img = (key: string) => _imgStyle(cms, key);
         heroVideo.load();
         if (!paused) heroVideo.play().catch(() => {});
       }
-    } catch {}
-  })();
-
-  // Load gallery photos from Supabase
-  (async () => {
-    try {
-      const res = await fetch("/api/gallery/list?limit=6");
-      if (!res.ok) return;
-      const photos: { url: string; categoria: string; alt_text: string | null }[] = await res.json();
-      if (!photos.length) return;
-
-      const items = document.querySelectorAll<HTMLElement>(".gal-item");
-      photos.forEach((foto, i) => {
-        if (!items[i] || !foto.url) return;
-        const bg = items[i].querySelector(".gi-bg-img") as HTMLElement;
-        if (!bg) return;
-        const optimized = foto.url.replace("/upload/", "/upload/c_fill,w_800,h_800,q_auto,f_auto/");
-        bg.style.backgroundImage = `url(${optimized})`;
-        bg.style.backgroundSize = "cover";
-        bg.style.backgroundPosition = "center";
-        if (foto.categoria) items[i].dataset.cat = foto.categoria;
-      });
     } catch {}
   })();
 </script>
