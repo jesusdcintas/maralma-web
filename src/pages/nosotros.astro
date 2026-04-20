@@ -349,18 +349,90 @@ const img = (key: string) => _imgStyle(cms, key);
   /* RESPONSIVE */
   @media (max-width: 768px) {
     .page-hero-content { padding: 120px 24px 60px; }
-    .nosotros-section { grid-template-columns: 1fr; min-height: auto; }
-    .nosotros-section .celda-foto { min-height: 60vw; }
-    .nosotros-section .celda-texto { min-height: auto; padding: 48px 24px; }
-    .nosotros-section.fotos-2,
-    .nosotros-section.fotos-3 {
-      grid-template-columns: 1fr;
-      padding: 32px 24px;
-      gap: 16px;
+
+    /* Todas las secciones en columna única */
+    .nosotros-section {
+      grid-template-columns: 1fr !important;
+      min-height: unset !important;
     }
-    .nosotros-section.fotos-2 .celda-foto,
-    .nosotros-section.fotos-3 .celda-foto { min-height: unset; }
-    .phrase-sep { padding: 60px 24px; }
+
+    /* La foto siempre va primero (arriba) */
+    .nosotros-section .celda-foto {
+      order: -1 !important;
+      min-height: unset !important;
+      height: 70vw !important;
+      width: 100% !important;
+      position: relative !important;
+    }
+
+    .nosotros-section .celda-foto img,
+    .nosotros-section .celda-foto [data-editable-image],
+    .nosotros-section .celda-foto > div {
+      position: absolute !important;
+      inset: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover !important;
+    }
+
+    /* El texto va debajo */
+    .nosotros-section .celda-texto {
+      order: 0 !important;
+      min-height: unset !important;
+      padding: 40px 24px !important;
+    }
+
+    /* Tamaños de texto para móvil */
+    .celda-texto h2 {
+      font-size: clamp(28px, 8vw, 40px) !important;
+      margin-bottom: 16px !important;
+    }
+
+    .celda-texto p {
+      font-size: 16px !important;
+      line-height: 1.8 !important;
+    }
+
+    .celda-texto .frase {
+      font-size: 18px !important;
+    }
+
+    /* Separadores de 2 fotos — columna única en móvil */
+    .nosotros-section.fotos-2 {
+      grid-template-columns: 1fr !important;
+      padding: 0 !important;
+      gap: 4px !important;
+    }
+
+    .nosotros-section.fotos-2 .celda-foto {
+      height: 80vw !important;
+    }
+
+    /* Separadores de 3 fotos — columna única en móvil */
+    .nosotros-section.fotos-3 {
+      grid-template-columns: 1fr !important;
+      padding: 0 !important;
+      gap: 4px !important;
+    }
+
+    .nosotros-section.fotos-3 .celda-foto {
+      height: 80vw !important;
+    }
+
+    /* Foto única a sangre */
+    .nosotros-section.foto-1 .celda-foto {
+      height: 80vw !important;
+    }
+
+    /* Frases separadoras */
+    .phrase-sep {
+      padding: 48px 24px !important;
+    }
+
+    .phrase-sep em {
+      font-size: clamp(20px, 6vw, 28px) !important;
+    }
+
     .contact-cta { padding: 60px 24px; }
   }
 
