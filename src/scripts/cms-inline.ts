@@ -316,12 +316,10 @@ function openMediaPicker(): Promise<MediaResult | null> {
         resources.forEach((r) => {
           const item = document.createElement("div");
           item.className = "cms-media-item";
-          item.style.cssText = "aspect-ratio:1/1;width:100%;overflow:hidden;cursor:pointer;border-radius:4px;border:2px solid transparent;background:#e8e2d8;display:block;position:relative";
           const img = document.createElement("img");
           img.src = cloudinaryThumb(r.secure_url);
           img.alt = "";
           img.loading = "lazy";
-          img.style.cssText = "width:100%;height:100%;object-fit:cover;object-position:center;display:block;position:absolute;inset:0";
           item.appendChild(img);
           item.addEventListener("click", () => {
             finish({ url: r.secure_url, publicId: r.public_id });
@@ -541,9 +539,9 @@ function injectStyles() {
     '.cms-media-upload-btn:hover{background:#1e3a4f;color:#fdfcfa}' +
     '.cms-media-upload-btn svg{width:14px;height:14px}' +
     '.cms-media-upload-status{font-size:10px;letter-spacing:0.1em;color:#a8c4c8}' +
-    '.cms-media-grid{flex:1;overflow-y:auto;padding:16px 24px 24px;display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;align-content:start}' +
-    '.cms-media-item{aspect-ratio:1/1!important;width:100%;overflow:hidden;cursor:pointer;border-radius:4px;border:2px solid transparent;transition:border-color 0.2s;background:#e8e2d8;display:block}' +
-    '.cms-media-item img{width:100%!important;height:100%!important;object-fit:cover!important;object-position:center!important;display:block;aspect-ratio:1/1!important}' +
+    '.cms-media-grid{flex:1;overflow-y:auto;padding:16px 24px 24px;display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;align-content:start}' +
+    '.cms-media-item{overflow:hidden;cursor:pointer;border-radius:4px;border:2px solid transparent;transition:border-color 0.2s;background:#e8e2d8}' +
+    '.cms-media-item img{width:100%;display:block}' +
     '.cms-media-item:hover{border-color:#a8c4c8}' +
     '.cms-media-loading,.cms-media-empty{grid-column:1/-1;text-align:center;font-size:13px;color:rgba(15,26,32,0.4);padding:40px 0}' +
 
