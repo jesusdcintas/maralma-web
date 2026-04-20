@@ -869,4 +869,26 @@ const img = (key: string) => _imgStyle(cms, key);
       }
     } catch {}
   })();
+
+  // Load gallery photos from Supabase
+  (async () => {
+    try {
+      const res = await fetch("/api/gallery/list?limit=6");
+      if (!res.ok) return;
+      const photos: { url: string; categoria: string; alt_text: string | null }[] = await res.json();
+      if (!photos.length) return;
+
+      const items = document.querySelectorAll<HTMLElement>(".gal-item");
+      photos.forEach((foto, i) => {
+        if (!items[i] || !foto.url) return;
+        const bg = items[i].querySelector(".gi-bg-img") as HTMLElement;
+        if (!bg) return;
+        const optimized = foto.url.replace("/upload/", "/upload/c_fill,w_800,h_800,q_auto,f_auto/");
+        bg.style.backgroundImage = `url(${optimized})`;
+        bg.style.backgroundSize = "cover";
+        bg.style.backgroundPosition = "center";
+        if (foto.categoria) items[i].dataset.cat = foto.categoria;
+      });
+    } catch {}
+  })();
 </script>
